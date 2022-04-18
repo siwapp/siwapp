@@ -14,5 +14,5 @@ Ready to run in production? Please [check our deployment guides](https://hexdocs
 
 Siwapp has a graphQL API.
 
-You can browse the api docs [here](https://htmlpreview.github.io/?https://github.com/peillis/siwapp/blob/main/api_docs/public/index.html).
+You can browse the api docs [here](https://htmlpreview.github.io/?https://github.com/siwapp/siwapp/blob/main/api_docs/public/index.html).
 
