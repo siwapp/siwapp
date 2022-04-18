@@ -1,0 +1,98 @@
+$blue: hsl(217, 71%, 53%);
+.msa-wrapper {
+  &:focus-within {
+    .input-presentation {
+      border-bottom-right-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+  }
+  &>* {
+    display: block;
+    width: 100%;
+  }
+  .input-presentation {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+    min-height: 40px;
+    padding: 6px 35px 6px 0px;
+    font-size: 1rem;
+    position: relative;
+    cursor: pointer;
+    height: fit-content;
+    .placeholder {
+      font-weight: 400;
+      color: rgba(0, 0, 0, .6);
+    }
+    &:after {
+      content: '';
+      border-top: 6px solid black;
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      right: 14px;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+    }
+    &.active {
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+    .tag-badge {
+      background-color: $blue;
+      padding-left: 10px;
+      padding-right: 25px;
+      color: white;
+      border-radius: 10px;
+      position: relative;
+      span {
+        font-size: 16px;
+        line-height: 27px;
+      }
+      button {
+        display: inline-block;
+        padding: 0;
+        -webkit-appearance: none;
+        appearance: none;
+        background: transparent;
+        border: none;
+        color: rgba(255, 255, 255, .8);
+        font-size: 12px;
+        position: absolute;
+        right: 0px;
+        bottom: 1px;
+        padding-right: 10px;
+        padding-left: 5px;
+        cursor: pointer;
+        line-height: 26px;
+        height: 26px;
+        font-weight: 600;
+        &:hover {
+          background-color: rgba(255, 255, 255, .2);
+          color: white;
+        }
+      }
+    }
+  }
+  .tag-list {
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    font-size: 1rem;
+    margin: 0;
+    padding: 0;
+    border-top: none;
+    list-style: none;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    li {
+      padding: 6px 12px;
+      text-transform: capitalize;
+      cursor: pointer;
+      &:hover {
+        background: $blue;
+        color: white;
+      }
+    }
+  }
+}

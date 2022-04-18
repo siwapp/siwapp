@@ -1,0 +1,59 @@
+<fieldset class="fieldset">
+  <div class="field is-horizontal field-body">
+    <.live_component
+      module={SiwappWeb.InvoicesLive.CustomerInputComponent}
+      id="customer_input"
+      f={@f}
+      view={@view}
+    />
+
+    <div class="field">
+      <%= label(@f, :identification, class: "label") %>
+      <p class="control">
+        <%= text_input(@f, :identification, phx_debounce: "blur", class: "input") %>
+      </p>
+      <%= error_tag(@f, :identification) %>
+    </div>
+  </div>
+
+  <div class="field is-horizontal field-body">
+    <div class="field">
+      <%= label(@f, :contact_person, class: "label") %>
+      <p class="control">
+        <%= text_input(@f, :contact_person, phx_debounce: "blur", class: "input") %>
+      </p>
+      <%= error_tag(@f, :contact_person) %>
+    </div>
+
+    <div class="field">
+      <%= label(@f, :email, class: "label") %>
+      <p class="control">
+        <%= text_input(@f, :email, phx_debounce: "blur", class: "input") %>
+      </p>
+      <%= error_tag(@f, :email) %>
+    </div>
+  </div>
+
+  <div class="field is-horizontal field-body">
+    <div class="field">
+      <%= label(@f, :invoicing_address, class: "label") %>
+      <p class="control">
+        <%= textarea(@f, :invoicing_address, phx_debounce: "blur", class: "textarea") %>
+      </p>
+      <%= error_tag(@f, :invoicing_address) %>
+    </div>
+
+    <div class="field">
+      <%= label(@f, :shipping_address, class: "label") %>
+      <p class="control">
+        <%= textarea(@f, :shipping_address, phx_debounce: "blur", class: "textarea") %>
+      </p>
+      <%= error_tag(@f, :shipping_address) %>
+      <p class="help">
+        <a phx-click="copy">
+          Copy Invoicing Address
+        </a>
+      </p>
+    </div>
+  </div>
+</fieldset>

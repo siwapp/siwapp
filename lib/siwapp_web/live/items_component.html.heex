@@ -1,0 +1,132 @@
+<div>
+  <br />
+  <div class="columns is-multiline-mobile is-1 is-variable">
+    <div class="column is-4-desktop is-full-mobile">
+      <label class="label">
+        Description
+      </label>
+    </div>
+    <div class="column is-1-desktop is-half-mobile">
+      <label class="label">
+        Quantity
+      </label>
+    </div>
+    <div class="column is-1-desktop is-half-mobile">
+      <label class="label">
+        Price
+      </label>
+    </div>
+    <div class="column is-1-desktop is-half-mobile">
+      <label class="label">
+        Discount
+      </label>
+    </div>
+    <div class="column is-3-desktop is-half-mobile">
+      <label class="label">
+        Taxes
+      </label>
+    </div>
+    <div class="column is-1-desktop is-full-mobile">
+      <label class="label">
+        Total
+      </label>
+    </div>
+    <div class="column is-narrow-desktop"></div>
+  </div>
+  <%= for fi <- @inputs_for do %>
+    <div class="columns is-multiline-mobile is-1 is-variable">
+      <%= if fi.data.id do %>
+        <%= hidden_input(fi, :id) %>
+      <% end %>
+      <div class="column is-4-desktop is-full-mobile">
+        <p class="control">
+          <%= text_input(fi, :description, class: "input") %>
+        </p>
+        <%= error_tag(fi, :description) %>
+      </div>
+      <div class="column is-1-desktop is-half-mobile">
+        <p class="control">
+          <%= text_input(fi, :quantity, class: "input") %>
+        </p>
+        <%= error_tag(fi, :quantity) %>
+      </div>
+      <div class="column is-1-desktop is-half-mobile">
+        <p class="control">
+          <%= text_input(fi, :virtual_unitary_cost, class: "input") %>
+        </p>
+        <%= error_tag(fi, :virtual_unitary_cost) %>
+      </div>
+      <div class="column is-1-desktop is-half-mobile">
+        <p class="control">
+          <%= text_input(fi, :discount, class: "input") %>
+        </p>
+        <%= error_tag(fi, :discount) %>
+      </div>
+      <div class="column is-3-desktop is-half-mobile">
+        <.live_component
+          module={SiwappWeb.TaxesComponent}
+          id={"taxes-#{fi.index}"}
+          name={"#{@f.id}[items][#{fi.index}][taxes]"}
+          options={@multiselect_options}
+          f={@f}
+        />
+      </div>
+      <div class="column is-1-desktop is-full-mobile">
+        <p class="control">
+          <a class="button is-static is-fullwidth">
+            <%= money_format(input_value(fi, :net_amount), @currency, symbol: false) %>
+          </a>
+        </p>
+      </div>
+      <div class="column is-narrow-desktop">
+        <p class="control">
+          <%= link("Remove Line",
+            to: "#",
+            phx_click: "remove",
+            phx_target: @myself,
+            phx_value_item_id: fi.index,
+            class: "button is-danger is-light is-fullwidth"
+          ) %>
+        </p>
+      </div>
+    </div>
+  <% end %>
+  <div class="columns is-desktop">
+    <div class="column is-2">
+      <%= link("Add Line",
+        to: "#",
+        phx_click: "add",
+        phx_target: @myself,
+        class: "button is-dark is-fullwidth"
+      ) %>
+    </div>
+    <div class="column is-3 is-offset-8">
+      <table class="table is-fullwidth">
+        <tbody>
+          <tr>
+            <th>Subtotal:</th>
+            <td class="has-text-right">
+              <%= money_format(input_value(@f, :net_amount), @currency) %>
+            </td>
+          </tr>
+          <%= for {tax_name, tax_value} <- input_value(@f, :taxes_amounts) do %>
+            <tr>
+              <th>
+                <%= tax_name %>
+              </th>
+              <td class="has-text-right">
+                <%= money_format(tax_value, @currency) %>
+              </td>
+            </tr>
+          <% end %>
+          <tr>
+            <th>TOTAL</th>
+            <td class="has-text-right">
+              <%= money_format(input_value(@f, :gross_amount), @currency) %>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

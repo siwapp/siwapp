@@ -1,0 +1,48 @@
+<nav
+  class={"navbar is-fixed-bottom
+             #{if Enum.empty?(@checked), do: "is-invisible"}"}
+  role="navigation"
+  aria-label="main navigation"
+>
+  <div class="navbar-menu mr-3">
+    <div class="navbar-end">
+      <div class="navbar-item buttons">
+        <%= link("Delete",
+          to: "#",
+          phx_click: "delete",
+          data: [confirm: "Are you sure?"],
+          class: "button is-danger"
+        ) %>
+        <%= link("Send Email",
+          to: "#",
+          phx_click: "send_email",
+          class: "button is-purple"
+        ) %>
+        <%= link("Download PDf",
+          to: download_url(@checked),
+          class: "button is-info"
+        ) %>
+        <button class="button is-info" , phx-click="set_paid">
+          Set Paid
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<.live_component
+  module={SiwappWeb.InvoicesLive.HeaderComponent}
+  id="index-header"
+  page_title={@page_title}
+  query={@query}
+  invoices={@invoices}
+/>
+
+<%= render(SiwappWeb.PageView, "invoices_table.html", invoices: @invoices, checked: @checked) %>
+
+<div
+  id="infinite-scroll"
+  phx-hook="InfiniteScroll"
+  data-page={@page}
+  data-no_more_queries={@no_more_queries}
+></div>

@@ -1,0 +1,44 @@
+<fieldset class="fieldset">
+  <div class="content">
+    <h1>Log in</h1>
+  </div>
+  <.form let={f} for={@conn} action={Routes.user_session_path(@conn, :create)} as={:user}>
+    <%= if @error_message do %>
+      <div class="alert alert-danger">
+        <p>
+          <%= @error_message %>
+        </p>
+      </div>
+    <% end %>
+
+    <div class="field">
+      <label class="label">
+        Email
+      </label>
+      <p class="control">
+        <input class="input" name="user[email]" required type="email">
+      </p>
+    </div>
+    <div class="field">
+      <label class="label">
+        Password
+      </label>
+      <p class="control">
+        <input class="input" name="user[password]" required type="password">
+      </p>
+    </div>
+
+    <div class="columns is-desktop is-multiline">
+      <div class="column is-half">
+        <%= label(f, :remember_me, "Remember me on this computer") %>
+        <%= checkbox(f, :remember_me) %>
+      </div>
+      <div class="column is-half">
+        <%= link("Forgot your password?", to: Routes.user_reset_password_path(@conn, :new)) %>
+      </div>
+      <div class="column is-one-fifth">
+        <input class="button is-success is-fullwidth" type="submit" value="Log in">
+      </div>
+    </div>
+  </.form>
+</fieldset>

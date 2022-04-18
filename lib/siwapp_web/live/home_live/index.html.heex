@@ -1,0 +1,7 @@
+<%= dashboard_chart() %>
+
+<h1>Past due invoices</h1>
+
+<%= render(SiwappWeb.PageView, "invoices_table.html", invoices: @invoices, checked: []) %>
+
+<div id="infinite-scroll" phx-hook="InfiniteScroll" data-page={@page}></div>

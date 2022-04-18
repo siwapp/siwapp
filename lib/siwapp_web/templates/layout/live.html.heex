@@ -1,0 +1,16 @@
+<%= render(SiwappWeb.LayoutView, "nav.html", socket_or_conn: @socket, current_user: @current_user) %>
+<main class="container section has-navbar-fixed-bottom">
+  <%= if info_msg = live_flash(@flash, :info) do %>
+    <p class="alert alert-info" role="alert" phx-click="lv:clear-flash" phx-value-key="info">
+      <%= info_msg %>
+    </p>
+  <% end %>
+
+  <%= if error_msg = live_flash(@flash, :error) do %>
+    <p class="alert alert-danger" role="alert" phx-click="lv:clear-flash" phx-value-key="error">
+      <%= error_msg %>
+    </p>
+  <% end %>
+
+  <%= @inner_content %>
+</main>

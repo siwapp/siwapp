@@ -1,0 +1,36 @@
+<table class="table is-bordered is-narrow">
+  <tbody>
+    <tr>
+      <td class="has-text-weight-bold">
+        Gross Amount:
+      </td>
+      <%= for {currency, total} <- @gross_totals do %>
+        <td class="has-text-weight-medium has-text-right">
+          <%= money_format(total, currency) %>
+        </td>
+      <% end %>
+    </tr>
+    <tr>
+      <td class="has-text-weight-bold">
+        Net Amount:
+      </td>
+      <%= for {currency, total} <- @net_totals do %>
+        <td class="has-text-weight-medium has-text-right">
+          <%= money_format(total, currency) %>
+        </td>
+      <% end %>
+    </tr>
+    <%= for {name, list} <- @taxes do %>
+      <tr>
+        <td class="has-text-weight-bold">
+          <%= name %> :
+        </td>
+        <%= for {currency, total} <- list do %>
+          <td class="has-text-weight-medium has-text-right">
+            <%= money_format(total, currency) %>
+          </td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "dociql": "^1.1.7"
+  }
+}

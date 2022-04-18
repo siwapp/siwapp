@@ -1,0 +1,89 @@
+<fieldset class="fieldset">
+  <h1>Settings</h1>
+  <br>
+  <.form let={f} for={@changeset} action={Routes.settings_path(@conn, :update)}>
+    <%= if @changeset.action do %>
+      <div class="alert alert-danger">
+        <p>Oops, something went wrong! Please check the errors below.</p>
+      </div>
+    <% end %>
+    <div class="field is-horizontal field-body">
+      <div class="field">
+        <%= label(f, :company, class: "label") %>
+        <p class="control">
+          <%= text_input(f, :company, class: "input", type: "text") %>
+        </p>
+        <%= error_tag(f, :company) %>
+      </div>
+      <div class="field">
+        <%= label(f, :company_vat_id, class: "label") %>
+        <p class="control">
+          <%= text_input(f, :company_vat_id, class: "input", type: "text") %>
+        </p>
+        <%= error_tag(f, :company_vat_id) %>
+      </div>
+    </div>
+    <div class="field is-horizontal field-body">
+      <div class="field">
+        <%= label(f, :company_phone, class: "label") %>
+        <p class="control">
+          <%= telephone_input(f, :company_phone, class: "input", type: "tel") %>
+        </p>
+        <%= error_tag(f, :company_phone) %>
+      </div>
+      <div class="field">
+        <%= label(f, :company_email, class: "label") %>
+        <p class="control">
+          <%= email_input(f, :company_email, class: "input", type: "email") %>
+        </p>
+        <%= error_tag(f, :company_email) %>
+      </div>
+    </div>
+    <div class="field is-horizontal field-body">
+      <div class="field">
+        <%= label(f, :company_website, class: "label") %>
+        <p class="control">
+          <%= text_input(f, :company_website, class: "input", type: "text") %>
+        </p>
+        <%= error_tag(f, :company_website) %>
+      </div>
+      <div class="field">
+        <%= label(f, :days_to_due, class: "label") %>
+        <p class="control">
+          <%= number_input(f, :days_to_due, class: "input") %>
+        </p>
+        <%= error_tag(f, :days_to_due) %>
+      </div>
+    </div>
+    <div class="field is-horizontal field-body">
+      <div class="field">
+        <%= label(f, :currency, class: "label") %>
+        <p class="control select is-fullwidth is-hover">
+          <%= select(f, :currency, @currency_options) %>
+        </p>
+        <%= error_tag(f, :currency) %>
+      </div>
+    </div>
+    <div class="field is-horizontal field-body">
+      <div class="field">
+        <%= label(f, :company_address, class: "label") %>
+        <p class="control">
+          <%= textarea(f, :company_address, class: "textarea") %>
+        </p>
+        <%= error_tag(f, :company_address) %>
+      </div>
+      <div class="field">
+        <%= label(f, :legal_terms, class: "label") %>
+        <p class="control">
+          <%= textarea(f, :legal_terms, class: "textarea") %>
+        </p>
+        <%= error_tag(f, :legal_terms) %>
+      </div>
+    </div>
+    <div class="field">
+      <p class="control">
+        <%= submit("Save", class: "button is-success") %>
+      </p>
+    </div>
+  </.form>
+</fieldset>

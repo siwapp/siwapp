@@ -1,0 +1,124 @@
+<h1>
+  <%= @page_title %>
+</h1>
+
+<.form let={f} for={@changeset} phx-change="validate" phx-submit="save">
+  <%= render(SiwappWeb.PageView, "invoice_customer_form.html", f: f, view: :recurring_invoices) %>
+
+  <fieldset class="fieldset">
+    <h2>Configuration</h2>
+
+    <div class="field">
+      <label class="checkbox">
+        <%= checkbox(f, :enabled, phx_debounce: "blur", class: "checkbox") %> Enable this recurring invoice
+      </label>
+    </div>
+    <div class="field">
+      <label class="checkbox">
+        <%= checkbox(f, :send_by_email, phx_debounce: "blur", class: "checkbox") %> Automatically send generated invoices by email
+      </label>
+    </div>
+
+    <div class="field is-horizontal field-body">
+      <div class="field">
+        <%= label(f, :starting_date, class: "label") %>
+        <p class="control">
+          <%= date_input(f, :starting_date, class: "input") %>
+        </p>
+        <%= error_tag(f, :starting_date) %>
+      </div>
+      <div class="field">
+        <%= label(f, :finishing_date, class: "label") %>
+        <p class="control">
+          <%= date_input(f, :finishing_date, class: "input") %>
+        </p>
+        <%= error_tag(f, :finishing_date) %>
+      </div>
+    </div>
+
+    <div class="field is-horizontal field-body">
+      <div class="field">
+        <%= label(f, :period, class: "label") %>
+        <p class="control">
+          <%= number_input(f, :period, class: "input") %>
+        </p>
+        <%= error_tag(f, :period) %>
+      </div>
+      <div class="field">
+        <%= label(f, :period_type, class: "label") %>
+        <p class="control select is-fullwidth">
+          <%= select(f, :period_type, ["Daily", "Monthly", "Yearly"]) %>
+        </p>
+      </div>
+    </div>
+
+    <div class="field is-horizontal field-body">
+      <div class="field">
+        <%= label(f, :max_ocurrences, class: "label") %>
+        <p class="control">
+          <%= number_input(f, :max_ocurrences, class: "input") %>
+        </p>
+        <%= error_tag(f, :max_ocurrences) %>
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset class="fieldset">
+    <h2>Invoice Details</h2>
+    <div class="field is-horizontal field-body">
+      <div class="field">
+        <%= label(f, :series_id, class: "label") %>
+        <p class=" control select is-fullwidth">
+          <%= select(f, :series_id, Enum.map(@series, &{&1.name, &1.id})) %>
+        </p>
+      </div>
+      <div class="field">
+        <%= label(f, :days_to_due, class: "label") %>
+        <p class="control">
+          <%= number_input(f, :days_to_due, class: "input") %>
+        </p>
+        <%= error_tag(f, :days_to_due) %>
+      </div>
+      <div class="field">
+        <%= label(f, :currency, class: "label") %>
+        <p class="control select is-fullwidth">
+          <%= select(f, :currency, @currency_options) %>
+        </p>
+      </div>
+    </div>
+
+    <.live_component
+      module={SiwappWeb.ItemsComponent}
+      id="items"
+      f={f}
+      inputs_for={pseudo_inputs_for(@changeset)}
+    />
+  </fieldset>
+
+  <.live_component
+    module={SiwappWeb.MetaAttributesComponent}
+    id="meta_attributes"
+    f={f}
+    field={:meta_attributes}
+  />
+
+  <nav
+    class="navbar is-fixed-bottom navbar-menu mr-3"
+    role="navigation"
+    aria-label="main navigation"
+  >
+    <div class="navbar-end navbar-items buttons">
+      <%= if @live_action == :edit do %>
+        <%= link("Delete",
+          to: "#",
+          phx_click: "delete",
+          phx_value_id: @recurring_invoice.id,
+          data: [confirm: "Are you sure?"],
+          class: "button is-danger"
+        ) %>
+      <% end %>
+      <%= link("Back", to: "#", onclick: "history.back()", class: "button is-dark") %>
+      <%= submit("Save", class: "button is-success") %>
+    </div>
+  </nav>
+</.form>

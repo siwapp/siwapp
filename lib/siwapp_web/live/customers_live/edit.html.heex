@@ -1,0 +1,23 @@
+<h1>
+  <%= @page_title %>
+</h1>
+
+<.form let={f} for={@changeset} phx-submit="save" phx-change="validate">
+  <%= render(SiwappWeb.PageView, "customer_form.html", f: f, view: "customer") %>
+  <.live_component
+    module={SiwappWeb.MetaAttributesComponent}
+    id="meta_attributes"
+    f={f}
+    field={:meta_attributes}
+  />
+  <br>
+  <div class="buttons is-right">
+    <%= if @live_action == :edit do %>
+      <button class="button is-danger" phx-click="delete">
+        Delete
+      </button>
+    <% end %>
+    <%= link("Back", to: "#", onclick: "history.back()", class: "button is-dark") %>
+    <%= submit("Save", class: "button is-success") %>
+  </div>
+</.form>

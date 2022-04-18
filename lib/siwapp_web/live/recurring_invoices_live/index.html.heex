@@ -1,0 +1,118 @@
+<nav class="navbar is-fixed-bottom" role="navigation" aria-label="main navigation">
+  <div class="navbar-menu mr-3">
+    <div class="navbar-end">
+      <div class="navbar-item buttons">
+        <%= link("Delete",
+          to: "#",
+          phx_click: "delete",
+          data: [confirm: "Are you sure?"],
+          class: "button is-danger #{if Enum.empty?(@checked), do: "is-invisible"}"
+        ) %>
+        <button class="button is-info" phx-click="generate_invoices">
+          Build Pending Invoices
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="mb-4">
+  <div class="is-flex is-justify-content-space-between ">
+    <div class="is-flex is-align-items-end">
+      <h1 class="mb-2">
+        <%= @page_title %>
+        <span class="subtitle is-5">
+          <%= "(#{Statistics.count(@query)} Found)" %>
+        </span>
+      </h1>
+    </div>
+  </div>
+</div>
+
+<table class="table is-fullwidth is-striped is-bordered is-hoverable">
+  <thead>
+    <tr>
+      <th title="">
+        <input
+          type="checkbox"
+          checked={Enum.member?(@checked, 0)}
+          phx-click="click_checkbox"
+          phx-value-id="0"
+        >
+      </th>
+      <th title="Series">
+        Series
+      </th>
+      <th title="Customer">
+        Customer
+      </th>
+      <th title="Frecuency">
+        Frecuency
+      </th>
+      <th title="Enabled">
+        Enabled
+      </th>
+      <th title="Send">
+        Send&nbsp;Email
+      </th>
+      <th title="Total" class="has-text-right">
+        Total
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <%= for recurring_invoice <- @recurring_invoices do %>
+      <tr phx-click="edit" phx-value-id={recurring_invoice.id} class="is-clickable">
+        <td>
+          <input
+            type="checkbox"
+            phx-click="click_checkbox"
+            checked={Enum.member?(@checked, recurring_invoice.id)}
+            phx-value-id={recurring_invoice.id}
+          >
+        </td>
+        <td>
+          <%= recurring_invoice.series.code %>
+        </td>
+        <td>
+          <%= recurring_invoice.name %>
+        </td>
+        <td>
+          <%= recurring_invoice.period %>
+          <%= type_of_period(recurring_invoice.period_type, recurring_invoice.period) %>
+        </td>
+
+        <%= if recurring_invoice.enabled do %>
+          <td class="icon has-text-success table-icon">
+            <i class="fas fa-check"></i>
+          </td>
+        <% else %>
+          <td class="icon has-text-danger table-icon">
+            <i class="fas fa-times"></i>
+          </td>
+        <% end %>
+
+        <%= if recurring_invoice.send_by_email do %>
+          <td class="icon has-text-success table-icon">
+            <i class="fas fa-check"></i>
+          </td>
+        <% else %>
+          <td class="icon has-text-danger table-icon">
+            <i class="fas fa-times"></i>
+          </td>
+        <% end %>
+
+        <td class="has-text-right">
+          <%= money_format(recurring_invoice.gross_amount, recurring_invoice.currency) %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<div
+  id="infinite-scroll"
+  phx-hook="InfiniteScroll"
+  data-page={@page}
+  data-no_more_queries={@no_more_queries}
+></div>

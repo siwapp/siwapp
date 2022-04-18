@@ -1,0 +1,48 @@
+<h1>
+  <%= @page_title %>
+</h1>
+
+<fieldset class="fieldset">
+  <.form let={f} for={@changeset} id="templates-form" phx-change="validate" phx-submit="save">
+
+    <div class="field">
+      <%= label(f, :name, required: true, class: "label") %>
+      <p class="control">
+        <%= text_input(f, :name, class: "input") %>
+      </p>
+      <%= error_tag(f, :name) %>
+    </div>
+
+    <div class="field">
+      <%= label(f, :template, class: "label") %>
+      <p class="control">
+        <%= textarea(f, :template, class: "textarea", rows: "18") %>
+      </p>
+      <%= error_tag(f, :template) %>
+    </div>
+
+    <div class="field">
+      <%= label(f, :subject, class: "label") %>
+      <p class="control">
+        <%= text_input(f, :subject, class: "input") %>
+      </p>
+      <%= error_tag(f, :subject) %>
+    </div>
+
+    <nav class="navbar is-fixed-bottom navbar-menu" role="navigation" aria-label="main navigation">
+      <div class="navbar-end navbar-items buttons">
+        <%= if @action == :edit do %>
+          <%= link("Delete",
+            to: "#",
+            phx_click: "delete",
+            phx_value_id: @template.id,
+            data: [confirm: "Are you sure?"],
+            class: "button is-danger"
+          ) %>
+        <% end %>
+        <%= link("Back", to: "#", onclick: "history.back()", class: "button is-dark") %>
+        <%= submit("Save", class: "button is-success") %>
+      </div>
+    </nav>
+  </.form>
+</fieldset>

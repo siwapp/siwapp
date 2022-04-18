@@ -1,0 +1,58 @@
+<div class="fieldset">
+  <h2>
+    <%= @title %>
+  </h2>
+  <.form
+    let={f}
+    for={@changeset}
+    id="new-form"
+    phx-target={@myself}
+    phx-change="validate"
+    phx-submit="save"
+  >
+    <%= if @user.id != @current_user_id do %>
+      <label class="checkbox">
+        <%= checkbox(f, :admin) %> This user is an admin
+      </label>
+    <% end %>
+
+    <div class="field">
+      <%= label(f, :email, class: "label") %>
+      <p class="control">
+        <%= text_input(f, :email, class: "input") %>
+      </p>
+      <%= error_tag(f, :email) %>
+    </div>
+
+    <div class="field">
+      <%= label(f, :password, class: "label") %>
+      <p class="control">
+        <%= text_input(f, :password, type: :password, class: "input") %>
+      </p>
+      <%= error_tag(f, :password) %>
+    </div>
+
+    <div class="field">
+      <%= label(f, :password_confirmation, "Confirm new password", class: "label") %>
+      <p class="control">
+        <%= text_input(f, :password_confirmation, type: :password, class: "input") %>
+      </p>
+      <%= error_tag(f, :password_confirmation) %>
+    </div>
+
+    <div class="mt-4 buttons is-right">
+      <%= link("Back", to: "#", onclick: "history.back()", class: "button is-dark") %>
+      <%= if @action == :edit && @user.id != @current_user_id do %>
+        <%= link("Delete",
+          to: "#",
+          phx_click: "delete",
+          phx_value_id: @user.id,
+          phx_target: @myself,
+          data: [confirm: "Are you sure?"],
+          class: "button is-danger"
+        ) %>
+      <% end %>
+      <%= submit("Save", class: "button is-success") %>
+    </div>
+  </.form>
+</div>

@@ -1,0 +1,61 @@
+<h1>Series</h1>
+
+<%= if @live_action in [:new, :edit] do %>
+  <%= live_modal(SiwappWeb.SeriesLive.FormComponent,
+    id: @series.id || :new,
+    title: @page_title,
+    action: @live_action,
+    series: @series || %Siwapp.Commons.Series{},
+    return_to: Routes.series_index_path(@socket, :index)
+  ) %>
+<% end %>
+
+<table class="table is-fullwidth is-striped is-bordered is-hoverable">
+  <thead>
+    <tr>
+      <th title="Default">
+        Default
+      </th>
+      <th title="Name">
+        Name
+      </th>
+      <th title="Code">
+        Code
+      </th>
+      <th title="First Number">
+        First Number
+      </th>
+      <th title="Enabled">
+        Enabled
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <%= for series <- @series_list do %>
+      <tr phx-click="edit" phx-value-id={series.id} class="is-clickable">
+        <td class="icon table-icon">
+          <input type="radio" phx-click="defaultClicked" phx-value-id={series.id} checked={series.default}>
+        </td>
+        <td>
+          <%= series.name %>
+        </td>
+        <td>
+          <%= series.code %>
+        </td>
+        <td>
+          <%= series.first_number %>
+        </td>
+        <%= if series.enabled do %>
+          <td class="icon has-text-success table-icon">
+            <i class="fas fa-check"></i>
+          </td>
+        <% else %>
+          <td class="icon has-text-danger table-icon">
+            <i class="fas fa-times"></i>
+          </td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

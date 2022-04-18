@@ -1,0 +1,75 @@
+<fieldset class="fieldset">
+  <%= if error_msg = live_flash(@flash, :error) do %>
+    <span
+      class="alert alert-danger columns is-centered mx-6 mt-1"
+      role="alert"
+      phx-click="lv:clear-flash"
+      phx-value-key="error"
+    >
+      <%= error_msg %>
+    </span>
+  <% end %>
+  <h2>
+    <%= @title %>
+  </h2>
+  <.form
+    let={f}
+    for={@changeset}
+    id="series-form"
+    phx-target={@myself}
+    phx-change="validate"
+    phx-submit="save"
+  >
+
+    <div class="field">
+      <%= label(f, :name, class: "label") %>
+      <p class="control">
+        <%= text_input(f, :name, class: "input") %>
+      </p>
+      <%= error_tag(f, :name) %>
+    </div>
+
+    <div class="field">
+      <%= label(f, :code, required: true, class: "label") %>
+      <p class="control">
+        <%= text_input(f, :code, class: "input") %>
+      </p>
+      <%= error_tag(f, :code) %>
+    </div>
+
+    <div class="field">
+      <%= label(f, :first_number, class: "label") %>
+      <p class="control">
+        <%= number_input(f, :first_number, class: "input") %>
+      </p>
+      <%= error_tag(f, :first_number) %>
+    </div>
+
+    <div class="field">
+      <label class="checkbox">
+        <%= checkbox(f, :enabled, class: "checkbox") %> Enabled
+      </label>
+    </div>
+
+    <div class="field is-grouped is-pulled-right">
+      <p class="control">
+        <%= if @action == :edit do %>
+          <%= link("Delete",
+            to: "#",
+            phx_click: "delete",
+            phx_value_id: @series.id,
+            phx_target: @myself,
+            data: [confirm: "Are you sure?"],
+            class: "button is-danger"
+          ) %>
+        <% end %>
+      </p>
+      <p class="control">
+        <%= link("Back", to: "#", onclick: "history.back()", class: "button is-dark") %>
+      </p>
+      <p class="control">
+        <%= submit("Save", class: "button is-success") %>
+      </p>
+    </div>
+  </.form>
+</fieldset>

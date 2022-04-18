@@ -1,0 +1,177 @@
+<h1>
+  <%= @page_title %>
+</h1>
+
+<.form let={f} for={@changeset} phx-change="validate" phx-submit="save">
+  <%= if @live_action == :new do %>
+    <div class="field">
+      <label class="checkbox">
+        <%= checkbox(f, :draft, phx_debounce: "blur", class: "checkbox") %> Save as draft
+      </label>
+    </div>
+  <% end %>
+
+  <%= render(SiwappWeb.PageView, "invoice_customer_form.html", f: f, view: "invoices") %>
+
+  <fieldset class="fieldset">
+    <h2>Invoice Details</h2>
+
+    <div class="field is-horizontal field-body">
+      <div class="field">
+        <%= label(f, :series_id, class: "label") %>
+        <p class=" control select is-fullwidth">
+          <%= if @live_action == :new do %>
+            <%= select(f, :series_id, Enum.map(@series, &[key: &1.name, value: &1.id, selected: &1.default])) %>
+          <% else %>
+            <%= select(f, :series_id, Enum.map(@series, &{&1.name, &1.id})) %>
+          <% end %>
+        </p>
+        <%= error_tag(f, :series_id) %>
+      </div>
+      <%= if @live_action == :edit && is_nil(Ecto.Changeset.get_change(@changeset, :series_id)) do %>
+        <div class="field">
+          <%= label(f, :number, class: "label") %>
+          <p class="control">
+            <%= number_input(f, :number, phx_debounce: "blur", class: "input") %>
+          </p>
+          <%= error_tag(f, :number) %>
+        </div>
+      <% end %>
+      <div class="field">
+        <%= label(f, :currency, class: "label") %>
+        <p class="control select is-fullwidth">
+          <%= select(f, :currency, @currency_options) %>
+        </p>
+      </div>
+    </div>
+
+    <div class="field is-horizontal field-body">
+      <div class="field">
+        <%= label(f, :issue_date, class: "label") %>
+        <p class="control">
+          <%= date_input(f, :issue_date, phx_debounce: "blur", class: "input") %>
+        </p>
+        <%= error_tag(f, :issue_date) %>
+      </div>
+      <div class="field">
+        <%= label(f, :due_date, class: "label") %>
+        <p class="control">
+          <%= date_input(f, :due_date, phx_debounce: "blur", class: "input") %>
+        </p>
+        <%= error_tag(f, :due_date) %>
+      </div>
+    </div>
+
+    <.live_component
+      module={SiwappWeb.ItemsComponent}
+      id="items"
+      f={f}
+      inputs_for={inputs_for(f, :items)}
+    />
+  </fieldset>
+
+  <%= if @live_action == :edit do %>
+    <fieldset class="fieldset">
+      <h2>Payments</h2>
+
+      <%= for fp <- inputs_for(f, :payments) do %>
+        <div class="columns is-multiline-mobile is-1 is-variable">
+          <%= if fp.data.id do %>
+            <%= hidden_input(fp, :id) %>
+          <% end %>
+          <div class="column is-3-desktop is-full-mobile">
+            <label class="label">
+              Date
+            </label>
+            <p class="control">
+              <%= date_input(fp, :date, phx_debounce: "blur", class: "input") %>
+            </p>
+            <%= error_tag(fp, :date) %>
+          </div>
+          <div class="column is-6-desktop is-full-mobile">
+            <label class="label">
+              Notes
+            </label>
+            <p class="control">
+              <%= textarea(fp, :notes, phx_debounce: "blur", class: "textarea", rows: "1") %>
+            </p>
+            <%= error_tag(fp, :notes) %>
+
+          </div>
+          <div class="column is-1-desktop is-full-mobile">
+            <label class="label">
+              Amount
+            </label>
+            <p class="control">
+              <%= text_input(fp, :virtual_amount, class: "input") %>
+            </p>
+            <%= error_tag(fp, :virtual_amount) %>
+          </div>
+          <div class="column is-narrow-desktop is-full-mobile">
+            <label class="label is-invisible is-hidden-mobile">
+              invisible
+            </label>
+            <p class="control">
+              <%= link("Remove Payment",
+                to: "#",
+                phx_click: JS.push("remove_payment", value: %{params: f.params, payment_id: fp.index}),
+                class: "button is-danger is-light is-fullwidth"
+              ) %>
+            </p>
+          </div>
+        </div>
+      <% end %>
+
+      <%= link("Add Payment",
+        to: "#",
+        phx_click: JS.push("add_payment", value: %{params: f.params}),
+        class: "button is-dark is-fullwidth column is-2"
+      ) %>
+      <br>
+      <%= checkbox(f, :failed, class: "checkbox") %> Payment collection failed
+    </fieldset>
+  <% end %>
+
+  <.live_component
+    module={SiwappWeb.MetaAttributesComponent}
+    id="meta_attributes"
+    f={f}
+    field={:meta_attributes}
+  />
+
+  <nav
+    class="navbar is-fixed-bottom navbar-menu mr-3"
+    role="navigation"
+    aria-label="main navigation"
+  >
+    <div class="navbar-end navbar-items buttons">
+      <%= if @live_action == :edit do %>
+        <%= link("Delete",
+          to: "#",
+          phx_click: "delete",
+          phx_value_id: @invoice.id,
+          data: [confirm: "Are you sure?"],
+          class: "button is-danger"
+        ) %>
+      <% end %>
+      <%= link("Back", to: "#", onclick: "history.back()", class: "button is-dark") %>
+      <%= if @live_action == :edit do %>
+        <%= link("Send Email",
+          to: "#",
+          phx_click: "send_email",
+          phx_value_id: @invoice.id,
+          class: "button is-purple"
+        ) %>
+        <%= link("Download PDF",
+          to: Routes.page_path(@socket, :download, @invoice.id),
+          class: "button is-info"
+        ) %>
+        <%= link("Duplicate",
+          to: Routes.invoices_edit_path(@socket, :new, @invoice.id),
+          class: "button is-info"
+        ) %>
+      <% end %>
+      <%= submit("Save", class: "button is-success") %>
+    </div>
+  </nav>
+</.form>

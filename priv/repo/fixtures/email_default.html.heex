@@ -1,0 +1,625 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en" style="background-color: white">
+  <head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Invoice</title>
+  </head>
+  <body style="-moz-box-sizing: border-box; -ms-text-size-adjust: 100%; -webkit-box-sizing: border-box; -webkit-text-size-adjust: 100%; Margin: 0; background-color: white; box-sizing: border-box; color: #3d3f3e; font-family: Helvetica, Arial, sans-serif; font-size: 14px; font-weight: normal; line-height: 1.5; margin: 0; min-width: 100%; padding: 0; text-align: left; width: 100% !important">
+    <style>@media only screen {
+  html {
+    min-height: 100%;
+    background: #f3f3f3;
+  }
+}
+
+@media only screen and (max-width: 19.42333cm) {
+  .small-float-center {
+    margin: 0 auto !important;
+    float: none !important;
+    text-align: center !important;
+  }
+
+  .small-text-center {
+    text-align: center !important;
+  }
+
+  .small-text-left {
+    text-align: left !important;
+  }
+
+  .small-text-right {
+    text-align: right !important;
+  }
+}
+
+@media only screen and (max-width: 19.42333cm) {
+  .hide-for-large {
+    display: block !important;
+    width: auto !important;
+    overflow: visible !important;
+    max-height: none !important;
+    font-size: inherit !important;
+    line-height: inherit !important;
+  }
+}
+
+@media only screen and (max-width: 19.42333cm) {
+  table.body table.container .hide-for-large,
+  table.body table.container .row.hide-for-large {
+    display: table !important;
+    width: 100% !important;
+  }
+}
+
+@media only screen and (max-width: 19.42333cm) {
+  table.body table.container .callout-inner.hide-for-large {
+    display: table-cell !important;
+    width: 100% !important;
+  }
+}
+
+@media only screen and (max-width: 19.42333cm) {
+  table.body table.container .show-for-large {
+    display: none !important;
+    width: 0;
+    mso-hide: all;
+    overflow: hidden;
+  }
+}
+
+@media only screen and (max-width: 19.42333cm) {
+  table.body img {
+    width: auto;
+    height: auto;
+  }
+
+  table.body center {
+    min-width: 0 !important;
+  }
+
+  table.body .container {
+    width: 95% !important;
+  }
+
+  table.body .columns,
+  table.body .column {
+    height: auto !important;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
+  table.body .columns .column,
+  table.body .columns .columns,
+  table.body .column .column,
+  table.body .column .columns {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  table.body .collapse .columns,
+  table.body .collapse .column {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  td.small-1,
+  th.small-1 {
+    display: inline-block !important;
+    width: 8.33333% !important;
+  }
+
+  td.small-2,
+  th.small-2 {
+    display: inline-block !important;
+    width: 16.66667% !important;
+  }
+
+  td.small-3,
+  th.small-3 {
+    display: inline-block !important;
+    width: 25% !important;
+  }
+
+  td.small-4,
+  th.small-4 {
+    display: inline-block !important;
+    width: 33.33333% !important;
+  }
+
+  td.small-5,
+  th.small-5 {
+    display: inline-block !important;
+    width: 41.66667% !important;
+  }
+
+  td.small-6,
+  th.small-6 {
+    display: inline-block !important;
+    width: 50% !important;
+  }
+
+  td.small-7,
+  th.small-7 {
+    display: inline-block !important;
+    width: 58.33333% !important;
+  }
+
+  td.small-8,
+  th.small-8 {
+    display: inline-block !important;
+    width: 66.66667% !important;
+  }
+
+  td.small-9,
+  th.small-9 {
+    display: inline-block !important;
+    width: 75% !important;
+  }
+
+  td.small-10,
+  th.small-10 {
+    display: inline-block !important;
+    width: 83.33333% !important;
+  }
+
+  td.small-11,
+  th.small-11 {
+    display: inline-block !important;
+    width: 91.66667% !important;
+  }
+
+  td.small-12,
+  th.small-12 {
+    display: inlin-block !important;
+    width: 100% !important;
+  }
+
+  .columns td.small-12,
+  .column td.small-12,
+  .columns th.small-12,
+  .column th.small-12 {
+    display: block !important;
+    width: 100% !important;
+  }
+
+  table.body td.small-offset-1,
+  table.body th.small-offset-1 {
+    margin-left: 8.33333% !important;
+    Margin-left: 8.33333% !important;
+  }
+
+  table.body td.small-offset-2,
+  table.body th.small-offset-2 {
+    margin-left: 16.66667% !important;
+    Margin-left: 16.66667% !important;
+  }
+
+  table.body td.small-offset-3,
+  table.body th.small-offset-3 {
+    margin-left: 25% !important;
+    Margin-left: 25% !important;
+  }
+
+  table.body td.small-offset-4,
+  table.body th.small-offset-4 {
+    margin-left: 33.33333% !important;
+    Margin-left: 33.33333% !important;
+  }
+
+  table.body td.small-offset-5,
+  table.body th.small-offset-5 {
+    margin-left: 41.66667% !important;
+    Margin-left: 41.66667% !important;
+  }
+
+  table.body td.small-offset-6,
+  table.body th.small-offset-6 {
+    margin-left: 50% !important;
+    Margin-left: 50% !important;
+  }
+
+  table.body td.small-offset-7,
+  table.body th.small-offset-7 {
+    margin-left: 58.33333% !important;
+    Margin-left: 58.33333% !important;
+  }
+
+  table.body td.small-offset-8,
+  table.body th.small-offset-8 {
+    margin-left: 66.66667% !important;
+    Margin-left: 66.66667% !important;
+  }
+
+  table.body td.small-offset-9,
+  table.body th.small-offset-9 {
+    margin-left: 75% !important;
+    Margin-left: 75% !important;
+  }
+
+  table.body td.small-offset-10,
+  table.body th.small-offset-10 {
+    margin-left: 83.33333% !important;
+    Margin-left: 83.33333% !important;
+  }
+
+  table.body td.small-offset-11,
+  table.body th.small-offset-11 {
+    margin-left: 91.66667% !important;
+    Margin-left: 91.66667% !important;
+  }
+
+  table.body table.columns td.expander,
+  table.body table.columns th.expander {
+    display: none !important;
+  }
+
+  table.body .right-text-pad,
+  table.body .text-pad-right {
+    padding-left: 10px !important;
+  }
+
+  table.body .left-text-pad,
+  table.body .text-pad-left {
+    padding-right: 10px !important;
+  }
+
+  table.menu {
+    width: 100% !important;
+  }
+
+  table.menu td,
+  table.menu th {
+    width: auto !important;
+    display: inline-block !important;
+  }
+
+  table.menu.vertical td,
+  table.menu.vertical th,
+  table.menu.small-vertical td,
+  table.menu.small-vertical th {
+    display: block !important;
+  }
+
+  table.menu[align="center"] {
+    width: auto !important;
+  }
+
+  table.button.small-expand,
+  table.button.small-expanded {
+    width: 100% !important;
+  }
+
+  table.button.small-expand table,
+  table.button.small-expanded table {
+    width: 100%;
+  }
+
+  table.button.small-expand table a,
+  table.button.small-expanded table a {
+    text-align: center !important;
+    width: 100% !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  table.button.small-expand center,
+  table.button.small-expanded center {
+    min-width: 0;
+  }
+}
+    </style>
+    <table class="body" style="Margin: 0; background: #f3f3f3; background-color: white; border-collapse: collapse; border-spacing: 0; color: #3d3f3e; font-family: Helvetica, Arial, sans-serif; font-size: 14px; font-weight: normal; height: 100%; line-height: 1.5; margin: 0; padding: 0; text-align: left; vertical-align: top; width: 100%">
+      <tr style="padding: 0; text-align: left; vertical-align: top">
+        <td class="center" align="center" valign="top" style="-moz-hyphens: auto; -webkit-hyphens: auto; Margin: 0; border-collapse: collapse !important; color: #3d3f3e; font-family: Helvetica, Arial, sans-serif; font-size: 14px; font-weight: normal; hyphens: auto; line-height: 1.5; margin: 0; padding: 0; text-align: left; vertical-align: top; word-wrap: break-word">
+          <center data-parsed="" style="min-width: 19cm; width: 100%">
+            <table align="center" class="container float-center" style="Margin: 0 auto; background: #fefefe; background-color: white; border-collapse: collapse; border-spacing: 0; float: none; margin: 0 auto; padding: 0; text-align: center; vertical-align: top; width: 19cm">
+              <tbody>
+                <tr style="padding: 0; text-align: left; vertical-align: top">
+                  <td style="-moz-hyphens: auto; -webkit-hyphens: auto; Margin: 0; border-collapse: collapse !important; color: #3d3f3e; font-family: Helvetica, Arial, sans-serif; font-size: 14px; font-weight: normal; hyphens: auto; line-height: 1.5; margin: 0; padding: 0; text-align: left; vertical-align: top; word-wrap: break-word">
+                    <br>
+                    <div class="invoice">
+                      <table class="row" style="border-collapse: collapse; border-spacing: 0; display: table; padding: 0; position: relative; text-align: left; vertical-align: top; width: 100%">
+                        <tbody>
+                          <tr style="padding: 0; text-align: left; vertical-align: top">
+                            <th class="small-6 large-4 columns first" style="Margin: 0 auto; color: #3d3f3e; font-family: Helvetica, Arial, sans-serif; font-size: 14px; font-weight: normal; line-height: 1.5; margin: 0 auto; padding: 0; padding-bottom: 20px; padding-left: 16px; padding-right: 8px; text-align: left; width: 5.91cm">
+                              <table style="border-collapse: collapse; border-spacing: 0; padding: 0; text-align: left; vertical-align: top; width: 100%">
+                                <tr style="padding: 0; text-align: left; vertical-align: top">
+                                  <th style="Margin: 0; color: #3d3f3e; font-family: Helvetica, Arial, sans-serif; font-size: 14px; font-weight: normal; line-height: 1.5; margin: 0; padding: 0; text-align: left">
+                                      <!-- here was company_logo -->
+                                  </th>
+                                </tr>
+                              </table>
+                            </th>
+                            <th class="small-6 large-4 columns" style="Margin: 0 auto; color: #3d3f3e; font-family: Helvetica, Arial, sans-serif; font-size: 14px; font-weight: normal; line-height: 1.5; margin: 0 auto; padding: 0; padding-bottom: 20px; padding-left: 8px; padding-right: 8px; text-align: left; width: 5.91cm">
+                              <table style="border-collapse: collapse; border-spacing: 0; padding: 0; text-align: left; vertical-align: top; width: 100%">
+                                <tr style="padding: 0; text-align: left; vertical-align: top">
+                                  <th style="Margin: 0; color: #3d3f3e; font-family: Helvetica, Arial, sans-serif; font-size: 14px; font-weight: normal; line-height: 1.5; margin: 0; padding: 0; text-align: left">
+                                  </th>
+                                </tr>
+                              </table>
+                            </th>
+                            <th class="small-12 large-4 columns last" style="Margin: 0 auto; color: #3d3f3e; font-family: Helvetica, Arial, sans-serif; font-size: 14px; font-weight: normal; line-height: 1.5; margin: 0 auto; padding: 0; padding-bottom: 20px; padding-left: 8px; padding-right: 16px; text-align: left; width: 5.91cm">
+                              <table style="border-collapse: collapse; border-spacing: 0; padding: 0; text-align: left; vertical-align: top; width: 100%">
+                                <tr style="padding: 0; text-align: left; vertical-align: top">
+                                  <th style="Margin: 0; color: #3d3f3e; font-family: Helvetica, Arial, sans-serif; font-size: 14px; font-weight: normal; line-height: 1.5; margin: 0; padding: 0; text-align: left">
+                                    <div class="company company--right" style="line-height: 1.25; margin: 0; padding: 0">
+                                      <p class="text-bold" style="Margin: 0; Margin-bottom: 10px; color: #3d3f3e; font-family: Helvetica, Arial, sans-serif; font-size: 14px; font-weight: bold; line-height: 1.5; margin: 0; margin-bottom: 0; padding: 0; padding-bottom: 8px; text-align: right">
+                                        <%= settings.company %>
+                                        <%= if settings.company_vat_id do %>
+                                          <br>
+                                          <%= settings.company_vat_id %>
+                                        <% end %>
+                                      </p>
+                                      <p style="Margin: 0; Margin-bottom: 10px; color: #3d3f3e; font-family: Helvetica, Arial, sans-serif; font-size: 14px; font-weight: normal; line-height: 1.5; margin: 0; margin-bottom: 0; padding: 0; padding-bottom: 8px; text-align: right">
+                                        <%= settings.company_address %>
+                                      </p>
+                                      <p style="Margin: 0; Margin-bottom: 10px; color: #3d3f3e; font-family: Helvetica, Arial, sans-serif; font-size: 14px; font-weight: normal; line-height: 1.5; margin: 0; margin-bottom: 0; padding: 0; padding-bottom: 8px; text-align: right">
+                                        <a href="mailto:company_email"><%= settings.company_email %></a>
+                                      </p>
+                                    </div>
+                                  </th>
+                                </tr>
+                              </table>
+                            </th>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <table class="row" style="border-collapse: collapse; border-spacing: 0; display: table; padding: 0; position: relative; text-align: left; vertical-align: top; width: 100%">
+                        <tbody>
+                          <tr style="padding: 0; text-align: left; vertical-align: top">
+                            <th class="small-12 large-12 columns first last" style="Margin: 0 auto; color: #3d3f3e; font-family: Helvetica, Arial, sans-serif; font-size: 14px; font-weight: normal; line-height: 1.5; margin: 0 auto; padding: 0; padding-bottom: 20px; padding-left: 16px; padding-right: 16px; text-align: left; width: 18.57667cm">
+                              <table style="border-collapse: collapse; border-spacing: 0; padding: 0; text-align: left; vertical-align: top; width: 100%">
+                                <tr style="padding: 0; text-align: left; vertical-align: top">
+                                  <th style="Margin: 0; color: #3d3f3e; font-family: Helvetica, Arial, sans-serif; font-size: 14px; font-weight: normal; line-height: 1.5; margin: 0; padding: 0; text-align: left">
+                                    <h1 style="Margin: 0; Margin-bottom: 10px; color: inherit; font-family: Helvetica, Arial, sans-serif; font-size: 1.2rem; font-weight: normal; line-height: 1.5; margin: 0; margin-bottom: 10px; padding: 0; padding-bottom: 16px; text-align: left; text-transform: uppercase; word-wrap: normal">
+                                      Invoice
+                                    </h1>
+                                  </th>
+                                  <th class="expander" style="Margin: 0; color: #3d3f3e; font-family: Helvetica, Arial, sans-serif; font-size: 14px; font-weight: normal; line-height: 1.5; margin: 0; padding: 0 !important; text-align: left; visibility: hidden; width: 0">
+                                  </th>
+                                </tr>
+                              </table>
+                            </th>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <table class="row" style="border-collapse: collapse; border-spacing: 0; display: table; padding: 0; position: relative; text-align: left; vertical-align: top; width: 100%">
+                        <tbody>
+                          <tr style="padding: 0; text-align: left; vertical-align: top">
+                            <th class="small-12 large-6 columns first" style="Margin: 0 auto; color: #3d3f3e; font-family: Helvetica, Arial, sans-serif; font-size: 14px; font-weight: normal; line-height: 1.5; margin: 0 auto; padding: 0; padding-bottom: 20px; padding-left: 16px; padding-right: 8px; text-align: left; width: 9.07667cm">
+                              <table style="border-collapse: collapse; border-spacing: 0; padding: 0; text-align: left; vertical-align: top; width: 100%">
+                                <tr style="padding: 0; text-align: left; vertical-align: top">
+                                  <th style="Margin: 0; color: #3d3f3e; font-family: Helvetica, Arial, sans-serif; font-size: 14px; font-weight: normal; line-height: 1.5; margin: 0; padding: 0; text-align: left">
+                                    <p class="text-muted" style="Margin: 0; Margin-bottom: 10px; color: #6f7371; font-family: Helvetica, Arial, sans-serif; font-size: 14px; font-weight: normal; line-height: 1.5; margin: 0; margin-bottom: 10px; padding: 0; text-align: left">
+                                      Billed to:
+                                    </p>
+                                    <div class="company customer" style="line-height: 1.25; margin: 0; padding: 0">
+                                      <%= if invoice.name do %>
+                                        <p class="company__name" style="Margin: 0; Margin-bottom: 10px; color: #3d3f3e; font-family: Helvetica, Arial, sans-serif; font-size: 1.2rem; font-weight: normal; line-height: 1.5; margin: 0; margin-bottom: 0; padding: 0; padding-bottom: 8px; text-align: left">
+                                          <%= invoice.name %>
+                                        </p>
+                                      <% end %>
+                                      <%= if invoice.identification do %>
+                                        <p class="company__id" style="Margin: 0; Margin-bottom: 10px; color: #3d3f3e; font-family: Helvetica, Arial, sans-serif; font-size: 14px; font-weight: normal; line-height: 1.5; margin: 0; margin-bottom: 0; padding: 0; padding-bottom: 8px; text-align: left">
+                                          <%= invoice.identification %>
+                                        </p>
+                                      <% end %>
+                                      <%= if invoice.invoicing_address || invoice.contact_person do %>
+                                        <p class="company__address" style="Margin: 0; Margin-bottom: 10px; color: #3d3f3e; font-family: Helvetica, Arial, sans-serif; font-size: 14px; font-weight: normal; line-height: 1.5; margin: 0; margin-bottom: 0; padding: 0; padding-bottom: 8px; text-align: left">
+                                          <%= if invoice.contact_person do %>
+                                            <%= invoice.contact_person %>
+                                            <br>
+                                          <% end %>
+                                          <%= if invoice.invoicing_address do %>
+                                            <%= invoice.invoicing_address %>
+                                          <% end %>
+                                        </p>
+                                      <% end %>
+                                      <%= if invoice.email do %>
+                                        <p style="Margin: 0; Margin-bottom: 10px; color: #3d3f3e; font-family: Helvetica, Arial, sans-serif; font-size: 14px; font-weight: normal; line-height: 1.5; margin: 0; margin-bottom: 0; padding: 0; padding-bottom: 8px; text-align: left">
+                                          <a href="mailto:invoice.email"><%= invoice.email %></a>
+                                        </p>
+                                      <% end %>
+                                    </div>
+                                  </th>
+                                </tr>
+                              </table>
+                            </th>
+                            <th class="small-12 large-6 columns last" style="Margin: 0 auto; color: #3d3f3e; font-family: Helvetica, Arial, sans-serif; font-size: 14px; font-weight: normal; line-height: 1.5; margin: 0 auto; padding: 0; padding-bottom: 20px; padding-left: 8px; padding-right: 16px; text-align: left; width: 9.07667cm">
+                              <table style="border-collapse: collapse; border-spacing: 0; padding: 0; text-align: left; vertical-align: top; width: 100%">
+                                <tr style="padding: 0; text-align: left; vertical-align: top">
+                                  <th style="Margin: 0; color: #3d3f3e; font-family: Helvetica, Arial, sans-serif; font-size: 14px; font-weight: normal; line-height: 1.5; margin: 0; padding: 0; text-align: left">
+                                    <table cellspacing="0" class="table info" style="border-collapse: collapse; border-spacing: 0; padding: 0; text-align: left; vertical-align: top; width: 100%">
+                                      <tbody>
+                                        <tr style="padding: 0; text-align: left; vertical-align: top">
+                                          <th style="Margin: 0; color: #3d3f3e; font-family: Helvetica, Arial, sans-serif; font-size: 14px; font-weight: bold; line-height: 1.5; margin: 0; padding: .5rem; text-align: left">
+                                            Invoice Number:
+                                          </th>
+                                          <td class="total" style="-moz-hyphens: auto; -webkit-hyphens: auto; Margin: 0; border-collapse: collapse !important; color: #3d3f3e; font-family: Helvetica, Arial, sans-serif; font-size: 14px; font-weight: normal; hyphens: auto; line-height: 1.5; margin: 0; padding: .5rem; text-align: right; vertical-align: top; white-space: nowrap; word-wrap: break-word">
+                                            <%= SiwappWeb.PageView.reference(invoice.series.code, invoice.number) %>
+                                          </td>
+                                        </tr>
+                                        <tr style="background-color: #f2f2ef; padding: 0; text-align: left; vertical-align: top">
+                                          <th style="Margin: 0; color: #3d3f3e; font-family: Helvetica, Arial, sans-serif; font-size: 14px; font-weight: bold; line-height: 1.5; margin: 0; padding: .5rem; text-align: left">
+                                            Billed:
+                                          </th>
+                                          <td class="total" style="-moz-hyphens: auto; -webkit-hyphens: auto; Margin: 0; border-collapse: collapse !important; color: #3d3f3e; font-family: Helvetica, Arial, sans-serif; font-size: 14px; font-weight: normal; hyphens: auto; line-height: 1.5; margin: 0; padding: .5rem; text-align: right; vertical-align: top; white-space: nowrap; word-wrap: break-word">
+                                            <%= invoice.issue_date %>
+                                          </td>
+                                        </tr>
+                                        <tr style="padding: 0; text-align: left; vertical-align: top">
+                                          <th style="Margin: 0; color: #3d3f3e; font-family: Helvetica, Arial, sans-serif; font-size: 14px; font-weight: bold; line-height: 1.5; margin: 0; padding: .5rem; text-align: left">
+                                            Due on:
+                                          </th>
+                                          <td class="total" style="-moz-hyphens: auto; -webkit-hyphens: auto; Margin: 0; border-collapse: collapse !important; color: #3d3f3e; font-family: Helvetica, Arial, sans-serif; font-size: 14px; font-weight: normal; hyphens: auto; line-height: 1.5; margin: 0; padding: .5rem; text-align: right; vertical-align: top; white-space: nowrap; word-wrap: break-word">
+                                            <%= invoice.due_date %>
+                                          </td>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                  </th>
+                                </tr>
+                              </table>
+                            </th>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <br>
+                      <table class="row" style="border-collapse: collapse; border-spacing: 0; display: table; padding: 0; position: relative; text-align: left; vertical-align: top; width: 100%">
+                        <tbody>
+                          <tr style="padding: 0; text-align: left; vertical-align: top">
+                            <th class="small-12 large-12 columns first last" style="Margin: 0 auto; color: #3d3f3e; font-family: Helvetica, Arial, sans-serif; font-size: 14px; font-weight: normal; line-height: 1.5; margin: 0 auto; padding: 0; padding-bottom: 20px; padding-left: 16px; padding-right: 16px; text-align: left; width: 18.57667cm">
+                              <table style="border-collapse: collapse; border-spacing: 0; padding: 0; text-align: left; vertical-align: top; width: 100%">
+                                <tr style="padding: 0; text-align: left; vertical-align: top">
+                                  <th style="Margin: 0; color: #3d3f3e; font-family: Helvetica, Arial, sans-serif; font-size: 14px; font-weight: normal; line-height: 1.5; margin: 0; padding: 0; text-align: left">
+                                    <table class="table items" cellspacing="0" style="border: 1px solid #cbcbc0; border-collapse: collapse; border-spacing: 0; padding: 0; text-align: left; vertical-align: top; width: 100%">
+                                      <thead>
+                                        <tr style="padding: 0; text-align: left; vertical-align: top">
+                                          <th class="description" style="Margin: 0; background-color: #e7e7e2; border-bottom: 1px solid #cbcbc0; color: #3d3f3e; font-family: Helvetica, Arial, sans-serif; font-size: 14px; font-weight: bold; line-height: 1.5; margin: 0; padding: .625rem; text-align: left">
+                                            Description
+                                          </th>
+                                          <%= if have_discount? do %>
+                                            <th style="Margin: 0; background-color: #e7e7e2; border-bottom: 1px solid #cbcbc0; color: #3d3f3e; font-family: Helvetica, Arial, sans-serif; font-size: 14px; font-weight: bold; line-height: 1.5; margin: 0; padding: .625rem; text-align: left">
+                                              Price
+                                            </th>
+                                            <th style="Margin: 0; background-color: #e7e7e2; border-bottom: 1px solid #cbcbc0; color: #3d3f3e; font-family: Helvetica, Arial, sans-serif; font-size: 14px; font-weight: bold; line-height: 1.5; margin: 0; padding: .625rem; text-align: left">
+                                              Discount
+                                            </th>
+                                          <% end %>
+                                          <th class="total" style="Margin: 0; background-color: #e7e7e2; border-bottom: 1px solid #cbcbc0; color: #3d3f3e; font-family: Helvetica, Arial, sans-serif; font-size: 14px; font-weight: bold; line-height: 1.5; margin: 0; padding: .625rem; text-align: right; white-space: nowrap">
+                                            Total
+                                          </th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        <%= for item <- invoice.items do %>
+                                          <tr style="padding: 0; text-align: left; vertical-align: top">
+                                            <td style="-moz-hyphens: auto; -webkit-hyphens: auto; Margin: 0; border-collapse: collapse !important; color: #3d3f3e; font-family: Helvetica, Arial, sans-serif; font-size: 14px; font-weight: normal; hyphens: auto; line-height: 1.5; margin: 0; padding: .625rem; text-align: left; vertical-align: top; word-wrap: break-word">
+                                              <%= item.description %>
+                                            </td>
+                                            <%= if have_discount? do %>
+                                              <td style="-moz-hyphens: auto; -webkit-hyphens: auto; Margin: 0; border-collapse: collapse !important; color: #3d3f3e; font-family: Helvetica, Arial, sans-serif; font-size: 14px; font-weight: normal; hyphens: auto; line-height: 1.5; margin: 0; padding: .625rem; text-align: left; vertical-align: top; word-wrap: break-word">
+                                                  <%= SiwappWeb.PageView.money_format(item.unitary_cost, invoice.currency) %>
+                                              </td>
+                                              <td style="-moz-hyphens: auto; -webkit-hyphens: auto; Margin: 0; border-collapse: collapse !important; color: #3d3f3e; font-family: Helvetica, Arial, sans-serif; font-size: 14px; font-weight: normal; hyphens: auto; line-height: 1.5; margin: 0; padding: .625rem; text-align: left; vertical-align: top; word-wrap: break-word">
+                                                <%= if item.discount != 0 do %>
+                                                  <%= item.discount %>
+                                                <% end %>
+                                              </td>
+                                            <% end %>
+                                            <td class="total" style="-moz-hyphens: auto; -webkit-hyphens: auto; Margin: 0; border-collapse: collapse !important; color: #3d3f3e; font-family: Helvetica, Arial, sans-serif; font-size: 14px; font-weight: normal; hyphens: auto; line-height: 1.5; margin: 0; padding: .625rem; text-align: right; vertical-align: top; white-space: nowrap; word-wrap: break-word">
+                                                <%= SiwappWeb.PageView.money_format(item.net_amount, invoice.currency) %>
+                                            </td>
+                                          </tr>
+                                        <% end %>
+                                      </tbody>
+                                    </table>
+                                  </th>
+                                  <th class="expander" style="Margin: 0; color: #3d3f3e; font-family: Helvetica, Arial, sans-serif; font-size: 14px; font-weight: normal; line-height: 1.5; margin: 0; padding: 0 !important; text-align: left; visibility: hidden; width: 0">
+                                  </th>
+                                </tr>
+                              </table>
+                            </th>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <br>
+                      <table class="row" style="border-collapse: collapse; border-spacing: 0; display: table; padding: 0; position: relative; text-align: left; vertical-align: top; width: 100%">
+                        <tbody>
+                          <tr style="padding: 0; text-align: left; vertical-align: top">
+                            <th class="small-12 large-6 columns first" style="Margin: 0 auto; color: #3d3f3e; font-family: Helvetica, Arial, sans-serif; font-size: 14px; font-weight: normal; line-height: 1.5; margin: 0 auto; padding: 0; padding-bottom: 20px; padding-left: 16px; padding-right: 8px; text-align: left; width: 9.07667cm">
+                              <table style="border-collapse: collapse; border-spacing: 0; padding: 0; text-align: left; vertical-align: top; width: 100%">
+                                <tr style="padding: 0; text-align: left; vertical-align: top">
+                                  <th style="Margin: 0; color: #3d3f3e; font-family: Helvetica, Arial, sans-serif; font-size: 14px; font-weight: normal; line-height: 1.5; margin: 0; padding: 0; text-align: left">
+                                  </th>
+                                </tr>
+                              </table>
+                            </th>
+                            <th class="small-12 large-6 columns last" style="Margin: 0 auto; color: #3d3f3e; font-family: Helvetica, Arial, sans-serif; font-size: 14px; font-weight: normal; line-height: 1.5; margin: 0 auto; padding: 0; padding-bottom: 20px; padding-left: 8px; padding-right: 16px; text-align: left; width: 9.07667cm">
+                              <table style="border-collapse: collapse; border-spacing: 0; padding: 0; text-align: left; vertical-align: top; width: 100%">
+                                <tr style="padding: 0; text-align: left; vertical-align: top">
+                                  <th style="Margin: 0; color: #3d3f3e; font-family: Helvetica, Arial, sans-serif; font-size: 14px; font-weight: normal; line-height: 1.5; margin: 0; padding: 0; text-align: left">
+                                    <table class="table totals" cellspacing="0" style="border-collapse: collapse; border-spacing: 0; padding: 0; text-align: left; vertical-align: top; width: 100%">
+                                      <tbody>
+                                        <tr style="padding: 0; text-align: left; vertical-align: top">
+                                          <th style="Margin: 0; color: #3d3f3e; font-family: Helvetica, Arial, sans-serif; font-size: 14px; font-weight: bold; line-height: 1.5; margin: 0; padding: .625rem; padding-top: 0; text-align: right">
+                                            Subtotal
+                                          </th>
+                                          <td class="total" style="-moz-hyphens: auto; -webkit-hyphens: auto; Margin: 0; border-collapse: collapse !important; color: #3d3f3e; font-family: Helvetica, Arial, sans-serif; font-size: 14px; font-weight: normal; hyphens: auto; line-height: 1.5; margin: 0; padding: .625rem; padding-top: 0; text-align: right; vertical-align: top; white-space: nowrap; word-wrap: break-word">
+                                            <%= SiwappWeb.PageView.money_format(invoice.net_amount, invoice.currency) %>
+                                          </td>
+                                        </tr>
+                                        <%= for {tax_name, tax_value} <- invoice.taxes_amounts do  %>
+                                          <tr style="padding: 0; text-align: left; vertical-align: top">
+                                            <th style="Margin: 0; color: #3d3f3e; font-family: Helvetica, Arial, sans-serif; font-size: 14px; font-weight: bold; line-height: 1.5; margin: 0; padding: .625rem; padding-top: 0; text-align: right">
+                                              <%= tax_name %>
+                                            </th>
+                                            <td class="total" style="-moz-hyphens: auto; -webkit-hyphens: auto; Margin: 0; border-collapse: collapse !important; color: #3d3f3e; font-family: Helvetica, Arial, sans-serif; font-size: 14px; font-weight: normal; hyphens: auto; line-height: 1.5; margin: 0; padding: .625rem; padding-top: 0; text-align: right; vertical-align: top; white-space: nowrap; word-wrap: break-word">
+                                                <%= SiwappWeb.PageView.money_format(tax_value, invoice.currency) %>
+                                            </td>
+                                          </tr>
+                                        <% end %>
+                                        <tr class="grand-total" style="padding: 0; text-align: left; vertical-align: top">
+                                          <th style="Margin: 0; color: #3d3f3e; font-family: Helvetica, Arial, sans-serif; font-size: 1.5rem; font-weight: bold; line-height: 1.5; margin: 0; padding: .625rem; padding-top: 0; text-align: right">
+                                            Total
+                                          </th>
+                                          <td class="total" style="-moz-hyphens: auto; -webkit-hyphens: auto; Margin: 0; border-collapse: collapse !important; color: #3d3f3e; font-family: Helvetica, Arial, sans-serif; font-size: 1.5rem; font-weight: bold; hyphens: auto; line-height: 1.5; margin: 0; padding: .625rem; padding-top: 0; text-align: right; vertical-align: top; white-space: nowrap; word-wrap: break-word">
+                                            <%= SiwappWeb.PageView.money_format(invoice.gross_amount, invoice.currency) %>
+                                          </td>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                  </th>
+                                </tr>
+                              </table>
+                            </th>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <%= if invoice.terms do %>
+                        <br>
+                        <table class="row" style="border-collapse: collapse; border-spacing: 0; display: table; padding: 0; position: relative; text-align: left; vertical-align: top; width: 100%">
+                          <tbody>
+                            <tr style="padding: 0; text-align: left; vertical-align: top">
+                              <th class="small-12 large-12 columns first last" style="Margin: 0 auto; color: #3d3f3e; font-family: Helvetica, Arial, sans-serif; font-size: 14px; font-weight: normal; line-height: 1.5; margin: 0 auto; padding: 0; padding-bottom: 20px; padding-left: 16px; padding-right: 16px; text-align: left; width: 18.57667cm">
+                                <table style="border-collapse: collapse; border-spacing: 0; padding: 0; text-align: left; vertical-align: top; width: 100%">
+                                  <tr style="padding: 0; text-align: left; vertical-align: top">
+                                    <th style="Margin: 0; color: #3d3f3e; font-family: Helvetica, Arial, sans-serif; font-size: 14px; font-weight: normal; line-height: 1.5; margin: 0; padding: 0; text-align: left">
+                                      <div class="notes">
+                                        <p class="notes__title" style="Margin: 0; Margin-bottom: 10px; color: #3d3f3e; font-family: Helvetica, Arial, sans-serif; font-size: 1rem; font-weight: bold; line-height: 1.5; margin: 0; margin-bottom: 10px; padding: 0; text-align: left">
+                                          Terms &amp; Conditions
+                                        </p>
+                                        <div class="notes__content">
+                                          <%= invoice.terms %>
+                                        </div>
+                                      </div>
+                                    </th>
+                                    <th class="expander" style="Margin: 0; color: #3d3f3e; font-family: Helvetica, Arial, sans-serif; font-size: 14px; font-weight: normal; line-height: 1.5; margin: 0; padding: 0 !important; text-align: left; visibility: hidden; width: 0">
+                                    </th>
+                                  </tr>
+                                </table>
+                              </th>
+                            </tr>
+                          </tbody>
+                        </table>
+                      <% end %>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </center>
+        </td>
+      </tr>
+    </table>
+    <!-- prevent Gmail on iOS font size manipulation -->
+    <div style="display:none; white-space:nowrap; font:15px courier; line-height:0">
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+    </div>
+  </body>
+</html>

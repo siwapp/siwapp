@@ -1,0 +1,24 @@
+<fieldset class="fieldset">
+  <h2>Customer</h2>
+
+  <%= render(SiwappWeb.PageView, "customer_form.html", f: @f, view: @view) %>
+
+  <div class="field is-horizontal field-body">
+    <div class="field">
+      <%= label(@f, :terms, "Legal terms and conditions", class: "label") %>
+      <p class="control">
+        <%= textarea(@f, :terms, phx_debounce: "blur", class: "textarea") %>
+      </p>
+      <%= error_tag(@f, :terms) %>
+    </div>
+
+    <div class="field">
+      <%= label(@f, :notes, class: "label") %>
+      <p class="control">
+        <%= textarea(@f, :notes, phx_debounce: "blur", class: "textarea") %>
+      </p>
+      <%= error_tag(@f, :notes) %>
+    </div>
+  </div>
+
+</fieldset>

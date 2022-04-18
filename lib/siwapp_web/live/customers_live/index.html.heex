@@ -1,0 +1,61 @@
+<h1>
+  <%= @page_title %>
+</h1>
+<table class="table is-responsive is-bordered is-striped is-hoverable is-fullwidth">
+  <thead>
+    <tr>
+      <th class="no-wrap" title="Customer name">
+        Customer name
+      </th>
+      <th class="no-wrap" title="Identification">
+        Identification
+      </th>
+      <th class="has-text-right" title="Due">
+        Due
+      </th>
+      <th class="has-text-right" title="Total">
+        Total
+      </th>
+      <th class="text-right" title=" "></th>
+    </tr>
+  </thead>
+
+  <tbody role="infinite-content">
+    <%= for customer <- @customers do %>
+      <tr phx-click="edit" phx-value-id={customer.id} class="is-clickable">
+        <td class="no-wrap">
+          <%= customer.name %>
+        </td>
+        <td class="no-wrap">
+          <%= customer.identification %>
+        </td>
+        <td class="has-text-right">
+          <%= money_format(
+            due(customer.total, customer.paid),
+            set_currency(customer.currencies),
+            symbol_option(customer.currencies)
+          ) %>
+        </td>
+        <td class="has-text-right">
+          <%= money_format(
+            customer.total,
+            set_currency(customer.currencies),
+            symbol_option(customer.currencies)
+          ) %>
+        </td>
+        <td class="has-text-centered">
+          <%= live_redirect(" ",
+            class: "icon fas fa-list",
+            to: Routes.invoices_index_path(@socket, :customer, customer.id)
+          ) %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<div
+  id="infinite-scroll"
+  phx-hook="InfiniteScroll"
+  data-page={@page}
+  data-no_more_queries={@no_more_queries}
+></div>

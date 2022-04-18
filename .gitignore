@@ -1,0 +1,13 @@
+/_build
+/cover
+/deps
+/doc
+/.fetch
+erl_crash.dump
+*.ez
+*.beam
+/config/*.secret.exs
+.elixir_ls/
+/priv/static/assets/
+/priv/static/cache_manifest.json
+/api_docs/node_modules/

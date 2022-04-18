@@ -1,0 +1,123 @@
+<table class="table is-fullwidth is-striped is-bordered is-hoverable">
+  <thead>
+    <tr>
+      <%= if @checked != [] do %>
+        <th title="">
+          <input
+            type="checkbox"
+            checked={Enum.member?(@checked, 0)}
+            phx-click="click_checkbox"
+            phx-value-id="0"
+          >
+        </th>
+      <% end %>
+      <th title="Reference">
+        Reference
+      </th>
+      <th title="Customer">
+        Customer Name
+      </th>
+      <th title="Date">
+        Date
+      </th>
+      <th title="Sent">
+        Sent
+      </th>
+      <th title="Status" class="has-text-centered">
+        Status
+      </th>
+      <th title="Pending" class="has-text-right">
+        Pending
+      </th>
+      <th title="Total" class="has-text-right">
+        Total
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <%= for invoice <- @invoices do %>
+      <tr phx-click="redirect" phx-value-id={invoice.id} class="is-clickable">
+        <%= if @checked != [] do %>
+          <td>
+            <input
+              type="checkbox"
+              phx-click="click_checkbox"
+              checked={Enum.member?(@checked, invoice.id)}
+              phx-value-id={invoice.id}
+            >
+          </td>
+        <% end %>
+        <td>
+          <%= SiwappWeb.PageView.reference(invoice.series.code, invoice.number) %>
+        </td>
+        <td>
+          <%= invoice.name %>
+        </td>
+        <td>
+          <%= invoice.issue_date %>
+        </td>
+
+        <%= if invoice.sent_by_email do %>
+          <td class="icon has-text-success table-icon">
+            <i class="fas fa-check"></i>
+          </td>
+        <% else %>
+          <td class="icon has-text-danger table-icon">
+            <i class="fas fa-times"></i>
+          </td>
+        <% end %>
+
+        <%= case Siwapp.Invoices.status(invoice) do %>
+          <% :draft -> %>
+            <td class="table-span">
+              <span class="tag is-info">
+                Draft
+              </span>
+            </td>
+            <td></td>
+
+          <% :failed -> %>
+            <td class="table-span">
+              <span class="tag is-black">
+                Failed
+              </span>
+            </td>
+            <td></td>
+
+          <% :paid -> %>
+            <td class="table-span">
+              <span class="tag is-success">
+                Paid
+              </span>
+            </td>
+            <td></td>
+
+          <% :pending -> %>
+            <td class="table-span">
+              <span class="tag is-warning">
+                Pending
+              </span>
+            </td>
+            <td class="has-text-right">
+              <%= money_format(invoice.gross_amount - invoice.paid_amount, invoice.currency) %>
+            </td>
+
+          <% :past_due -> %>
+            <td class="table-span">
+              <span class="tag is-danger">
+                Past_Due
+              </span>
+            </td>
+            <td class="has-text-right">
+              <%= money_format(invoice.gross_amount - invoice.paid_amount, invoice.currency) %>
+            </td>
+        <% end %>
+
+        <td class="has-text-right">
+          <%= money_format(invoice.gross_amount, invoice.currency) %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

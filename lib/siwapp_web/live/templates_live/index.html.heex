@@ -1,0 +1,45 @@
+<h1>Templates</h1>
+
+<table class="table is-fullwidth is-striped is-bordered is-hoverable">
+  <thead>
+    <tr>
+      <th title="DefaultEmail">
+        Default Email
+      </th>
+      <th title="DefaultPrint">
+        Default PDF
+      </th>
+      <th title="Name">
+        Name
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <%= for template <- @templates do %>
+      <tr phx-click="edit" phx-value-id={template.id} class="is-clickable">
+        <td class="icon table-icon">
+          <input
+            type="radio"
+            phx-click="defaultClicked"
+            phx-value-id={template.id}
+            phx-value-type="email"
+            checked={template.email_default}
+          >
+        </td>
+        <td class="icon table-icon">
+          <input
+            type="radio"
+            phx-click="defaultClicked"
+            phx-value-id={template.id}
+            phx-value-type="print"
+            checked={template.print_default}
+          >
+        </td>
+        <td>
+          <%= template.name %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
