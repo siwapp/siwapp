@@ -6,7 +6,10 @@ defmodule Siwapp.Application do
   use Application
 
   defp chromic_pdf_opts do
-    [no_sandbox: true]
+    [
+      no_sandbox: true,
+      discard_stderr: false
+    ]
   end
 
   @impl Application
