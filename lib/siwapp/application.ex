@@ -22,7 +22,7 @@ defmodule Siwapp.Application do
       {Phoenix.PubSub, name: Siwapp.PubSub},
       # Start the Endpoint (http/https)
       SiwappWeb.Endpoint,
-      {ChromicPDF, chromic_pdf_opts()}
+      {ChromicPDF, chromic_pdf_opts()},
       # Start a worker by calling: Siwapp.Worker.start_link(arg)
       # {Siwapp.Worker, arg}
       {Cachex, name: :siwapp_cache},
