@@ -5,6 +5,10 @@ defmodule Siwapp.Application do
 
   use Application
 
+  defp chromic_pdf_opts do
+    [no_sandbox: true]
+  end
+
   @impl Application
   def start(_type, _args) do
     Logger.add_backend(Sentry.LoggerBackend)
@@ -18,7 +22,7 @@ defmodule Siwapp.Application do
       {Phoenix.PubSub, name: Siwapp.PubSub},
       # Start the Endpoint (http/https)
       SiwappWeb.Endpoint,
-      ChromicPDF,
+      {ChromicPDF, chromic_pdf_opts()}
       # Start a worker by calling: Siwapp.Worker.start_link(arg)
       # {Siwapp.Worker, arg}
       {Cachex, name: :siwapp_cache},
