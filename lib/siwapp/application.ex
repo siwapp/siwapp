@@ -5,6 +5,7 @@ defmodule Siwapp.Application do
 
   use Application
 
+  @spec chromic_pdf_opts :: list
   defp chromic_pdf_opts do
     [
       no_sandbox: true,
