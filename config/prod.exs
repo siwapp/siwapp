@@ -15,8 +15,7 @@ config :siwapp,
 config :siwapp, SiwappWeb.Endpoint,
   url: [scheme: "https", host: System.get_env("APP_HOST"), port: 443],
   force_ssl: [rewrite_on: [:x_forwarded_proto]],
-  cache_static_manifest: "priv/static/cache_manifest.json",
-  pdf_opts: []
+  cache_static_manifest: "priv/static/cache_manifest.json"
 
 database_url =
   System.get_env("DATABASE_URL") ||
