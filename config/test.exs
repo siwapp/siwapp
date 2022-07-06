@@ -24,7 +24,8 @@ config :siwapp, Siwapp.Repo,
 config :siwapp, SiwappWeb.Endpoint,
   http: [ip: {127, 0, 0, 1}, port: 4002],
   secret_key_base: "5Nh5G8eN44kRuBpfeA95oGSZG2XNocCd/0th20SZ8i1oUDmUCy+6NMoly74e5h15",
-  server: false
+  server: false,
+  pdf_opts: []
 
 # In test we don't send emails.
 config :siwapp, Siwapp.Mailer, adapter: Swoosh.Adapters.Test
