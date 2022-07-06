@@ -32,7 +32,7 @@ defmodule SiwappWeb.Router do
 
   scope "/graphql" do
     if @env in [:dev, :test] do
-      pipe_through :api
+      pipe_through [:api, :token_authenticated]
       forward "/graphiql", Absinthe.Plug.GraphiQL, schema: SiwappWeb.Schema
     else
       pipe_through [:api, :token_authenticated]
