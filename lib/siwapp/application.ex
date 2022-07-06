@@ -43,6 +43,5 @@ defmodule Siwapp.Application do
     :siwapp
     |> Application.get_env(SiwappWeb.Endpoint)
     |> Keyword.get(:pdf_opts, [])
-    |> IO.inspect()
   end
 end
