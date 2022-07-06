@@ -39,6 +39,7 @@ defmodule Siwapp.Application do
     :ok
   end
 
+  @spec pdf_opts :: list()
   defp pdf_opts do
     :siwapp
     |> Application.get_env(SiwappWeb.Endpoint)
