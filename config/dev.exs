@@ -1,7 +1,8 @@
 import Config
 
 config :siwapp,
-  env: :dev
+  env: :dev,
+  pdf_opts: [no_sandbox: true, discard_stderr: false]
 
 # Configure your database
 config :siwapp, Siwapp.Repo,
@@ -35,8 +36,7 @@ config :siwapp, SiwappWeb.Endpoint,
       :install_and_run,
       [:default, ~w(--embed-source-map --source-map-urls=absolute --watch)]
     }
-  ],
-  pdf_opts: [no_sandbox: true, discard_stderr: false]
+  ]
 
 # ## SSL Support
 #

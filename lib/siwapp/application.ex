@@ -41,8 +41,6 @@ defmodule Siwapp.Application do
 
   @spec pdf_opts :: list()
   defp pdf_opts do
-    :siwapp
-    |> Application.get_env(SiwappWeb.Endpoint)
-    |> Keyword.get(:pdf_opts, [])
+    Application.get_env(:siwapp, :pdf_opts, [])
   end
 end
