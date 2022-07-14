@@ -18,7 +18,7 @@ defmodule Siwapp.Application do
       {Phoenix.PubSub, name: Siwapp.PubSub},
       # Start the Endpoint (http/https)
       SiwappWeb.Endpoint,
-      ChromicPDF,
+      {ChromicPDF, pdf_opts()},
       # Start a worker by calling: Siwapp.Worker.start_link(arg)
       # {Siwapp.Worker, arg}
       {Cachex, name: :siwapp_cache},
@@ -37,5 +37,10 @@ defmodule Siwapp.Application do
   def config_change(changed, _new, removed) do
     SiwappWeb.Endpoint.config_change(changed, removed)
     :ok
+  end
+
+  @spec pdf_opts :: list()
+  defp pdf_opts do
+    Application.get_env(:siwapp, :pdf_opts, [])
   end
 end
