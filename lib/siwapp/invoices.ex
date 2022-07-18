@@ -188,7 +188,7 @@ defmodule Siwapp.Invoices do
 
   @spec due_date_status(DateTime.t()) :: :pendig | :past_due
   defp due_date_status(due_date) do
-    if Date.diff(due_date, Date.utc_today()) >= 0 do
+    if Date.diff(due_date, Date.utc_today()) > 0 do
       :pending
     else
       :past_due
