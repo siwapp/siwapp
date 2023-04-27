@@ -171,7 +171,7 @@ defmodule SiwappWeb.InvoicesLive.Edit do
 
     socket
     |> assign(:action, :edit)
-    |> assign(:page_title, invoice.series.code <> "-" <> Integer.to_string(invoice.number))
+    |> assign(:page_title, "#{invoice.series.code}-#{Map.get(invoice, :number)}")
     |> assign(:invoice, invoice)
     |> assign(
       :changeset,
