@@ -174,10 +174,7 @@ defmodule Siwapp.Invoices.Invoice do
       get_field(changeset, :draft) ->
         changeset
 
-      is_nil(get_change(changeset, :series_id)) ->
-        changeset
-
-      is_nil(get_change(changeset, :number)) ->
+      !is_nil(get_change(changeset, :series_id)) or is_nil(get_field(changeset, :number)) ->
         next_number =
           changeset
           |> get_field(:series_id)
