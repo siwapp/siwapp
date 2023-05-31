@@ -174,7 +174,9 @@ defmodule Siwapp.Invoices.Invoice do
       get_field(changeset, :draft) ->
         changeset
 
-      !is_nil(get_change(changeset, :series_id)) or is_nil(get_field(changeset, :number)) ->
+      # Next number is assigned when changing serie and no number if provided or draft status is removed
+      (!is_nil(get_change(changeset, :series_id)) and is_nil(get_change(changeset, :number))) or
+          is_nil(get_field(changeset, :number)) ->
         next_number =
           changeset
           |> get_field(:series_id)
