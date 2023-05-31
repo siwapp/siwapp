@@ -262,5 +262,12 @@ defmodule Siwapp.InvoicesTest do
       {:ok, invoice1} = Invoices.update(invoice1, %{series_id: new_series.id})
       assert invoice1.number == 21
     end
+
+    test "updating invoice removing draft status (no number). Number is next of greatest invoice's number in series" do
+      series = series_fixture(%{first_number: 7})
+      invoice1 = invoice_fixture(%{series_id: series.id, draft: true})
+      {:ok, invoice1} = Invoices.update(invoice1, %{draft: false})
+      assert invoice1.number == 7
+    end
   end
 end
