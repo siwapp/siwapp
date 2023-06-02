@@ -78,14 +78,22 @@ BEGIN
    return result;
 END; $$;
 
-CREATE FUNCTION change_metattributes(meta_attribute text)
+CREATE FUNCTION change_metattributes_type(meta_attribute text)
+RETURNS jsonb
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    return meta_attribute::jsonb;
+END; $$;
+
+CREATE FUNCTION remove_empty_metattributes(meta_attribute jsonb)
 RETURNS jsonb
 LANGUAGE plpgsql
 AS $$
 DECLARE result jsonb;
 BEGIN
     if meta_attribute IS NULL then result = '{}';
-    else result = meta_attribute::jsonb;
+    else result = meta_attribute;
     end if;
     return result;
 END; $$;
@@ -99,8 +107,9 @@ SELECT change_column_with_function('items_ror', 'unitary_cost', 'integer', 'to_c
 SELECT change_column_with_function('payments_ror', 'amount', 'integer', 'to_cents') AS amount_to_cents;
 SELECT change_column_with_function('commons', 'period_type', 'character varying(8)', 'period_type_conversion') AS period_type_conversion;
 SELECT change_column_with_function('customers_ror', 'identification', 'character varying(50)', 'remove_empty_strings') AS prune_empty_identification_customers;
-SELECT change_column_with_function('customers_ror', 'meta_attributes', 'jsonb', 'change_metattributes') AS customer_meta_attributes;
-SELECT change_column_with_function('commons', 'meta_attributes', 'jsonb', 'change_metattributes') AS commons_meta_attributes;
+SELECT change_column_with_function('customers_ror', 'meta_attributes', 'jsonb', 'change_metattributes_type') AS text_to_jsonb_conversion;
+SELECT change_column_with_function('customers_ror', 'meta_attributes', 'jsonb', 'remove_empty_metattributes') AS customers_ror_meta_attributes;
+SELECT change_column_with_function('commons', 'meta_attributes', 'jsonb', 'remove_empty_metattributes') AS commons_meta_attributes;
 
 CREATE TABLE items_invoices AS (SELECT * FROM items_ror WHERE common_id IN (SELECT * FROM commons_id_type_invoice) AND deleted_at IS NULL);
 CREATE TABLE items_recurring_invoices AS (SELECT * FROM items_ror WHERE id NOT IN (SELECT id FROM items_invoices) AND deleted_at IS NULL);
