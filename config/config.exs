@@ -49,7 +49,7 @@ config :logger, :console,
 config :phoenix, :json_library, Jason
 
 config :dart_sass,
-  version: "1.39.0",
+  version: "1.61.0",
   default: [
     args: ~w(--load-path=../deps/bulma css:../priv/static/assets),
     cd: Path.expand("../assets", __DIR__)
