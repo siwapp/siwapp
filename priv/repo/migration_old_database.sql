@@ -196,7 +196,7 @@ INSERT INTO recurring_invoices(series_id, customer_id, name, identification, ema
 SELECT 'recurring_invoices done' AS msg;
 
 --invoices
-INSERT INTO invoices(series_id, customer_id, name, identification, email, invoicing_address, shipping_address, contact_person, terms, notes, net_amount, gross_amount, paid_amount, draft, paid, sent_by_email, "number", recurring_invoice_id, issue_date, due_date, inserted_at, updated_at, deleted_at, failed, currency, meta_attributes, old_id)
+INSERT INTO invoices(series_id, customer_id, name, identification, email, invoicing_address, shipping_address, contact_person, terms, notes, net_amount, gross_amount, paid_amount, draft, paid, sent_by_email, number, recurring_invoice_id, issue_date, due_date, inserted_at, updated_at, deleted_at, failed, currency, meta_attributes, old_id)
   SELECT series.id, customers.id, commons.name, commons.identification, commons.email, commons.invoicing_address, commons.shipping_address, commons.contact_person, commons.terms, commons.notes, commons.net_amount, commons.gross_amount, commons.paid_amount, commons.draft, commons.paid, commons.sent_by_email, commons."number", recurring_invoices.id, commons.issue_date, commons.due_date, commons.created_at, commons.updated_at, commons.deleted_at, commons.failed, commons.currency, commons.meta_attributes, commons.id
     FROM commons
       LEFT OUTER JOIN recurring_invoices ON recurring_invoices.old_id=commons.recurring_invoice_id
