@@ -81,26 +81,24 @@ defmodule Siwapp.Invoices.InvoiceQuery do
       {:with_terms, value} ->
         with_terms(query, value)
 
-      {:customer_id, value} ->
-        where(query, customer_id: ^value)
-
       {:issue_date_gteq, value} ->
         issue_date_gteq(query, value)
 
       {:issue_date_lteq, value} ->
         issue_date_lteq(query, value)
 
-      {:series_id, value} ->
-        where(query, series_id: ^value)
-
-      {:recurring_invoice_id, value} ->
-        where(query, recurring_invoice_id: ^value)
+      {:meta_attributes, value} ->
+        meta_attributes(query, value)
 
       {:with_status, :past_due} ->
         past_due(query)
 
       {:with_status, value} ->
         where(query, ^[{value, true}])
+
+      _ ->
+        filter = [{key, value}]
+        where(query, ^filter)
     end
   end
 
@@ -110,5 +108,15 @@ defmodule Siwapp.Invoices.InvoiceQuery do
     query
     |> where(recurring_invoice_id: ^recurring_invoice_id)
     |> select([q], count(q.id))
+  end
+
+  @spec meta_attributes(Ecto.Query.t(), map) :: Ecto.Query.t()
+  def meta_attributes(query, meta_attributes) do
+    Enum.reduce(meta_attributes, query, &meta_attribute(&2, &1))
+  end
+
+  @spec meta_attribute(Ecto.Query.t(), tuple) :: Ecto.Query.t()
+  defp meta_attribute(query, {key, value}) do
+    where(query, [i], fragment("? ->> ? = ?", i.meta_attributes, ^key, ^value))
   end
 end

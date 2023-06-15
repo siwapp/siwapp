@@ -16,23 +16,24 @@ defmodule SiwappWeb.Resolvers.Invoice do
   end
 
   @spec list(map(), Absinthe.Resolution.t()) :: {:ok, [Invoices.Invoice.t()]}
-  def list(%{customer_id: customer_id, limit: limit, offset: offset}, _resolution) do
+  def list(%{limit: limit, offset: offset} = params, _resolution) do
+    filters = get_filters(params)
+
     invoices =
       Invoices.list(
         limit: limit,
         offset: offset,
-        preload: [:items, :payments],
-        filters: [customer_id: customer_id]
+        preload: [:items, :payments, :series],
+        filters: filters
       )
 
-    invoices = Enum.map(invoices, &set_correct_units/1)
-
-    {:ok, invoices}
-  end
-
-  def list(%{limit: limit, offset: offset}, _resolution) do
-    invoices = Invoices.list(limit: limit, offset: offset, preload: [:items, :payments])
-    invoices = Enum.map(invoices, &set_correct_units/1)
+    invoices =
+      Enum.map(invoices, fn invoice ->
+        invoice
+        |> set_correct_units()
+        |> set_status()
+        |> set_reference()
+      end)
 
     {:ok, invoices}
   end
@@ -88,4 +89,37 @@ defmodule SiwappWeb.Resolvers.Invoice do
       end)
     end)
   end
+
+  @spec set_status(Invoices.Invoice.t()) :: map
+  defp set_status(invoice) do
+    Map.put(invoice, :status, Atom.to_string(Invoices.status(invoice)))
+  end
+
+  @spec set_reference(map) :: map
+  defp set_reference(invoice) do
+    Map.put(invoice, :reference, "#{invoice.series.code}-#{Map.get(invoice, :number)}")
+  end
+
+  @spec get_filters(map()) :: Keyword.t()
+  defp get_filters(params) do
+    params
+    |> Map.drop([:limit, :offset])
+    |> with_status_params()
+    |> meta_attributes_params()
+    |> Map.to_list()
+  end
+
+  @spec with_status_params(map()) :: map()
+  defp with_status_params(%{with_status: status} = params),
+    do: Map.put(params, :with_status, String.to_existing_atom(status))
+
+  defp with_status_params(params), do: params
+
+  @spec meta_attributes_params(map()) :: map()
+  defp meta_attributes_params(%{meta_attributes: meta_attributes} = params) do
+    meta_attributes = Enum.reduce(meta_attributes, %{}, &Map.put(&2, &1.key, &1.value))
+    Map.put(params, :meta_attributes, meta_attributes)
+  end
+
+  defp meta_attributes_params(params), do: params
 end
