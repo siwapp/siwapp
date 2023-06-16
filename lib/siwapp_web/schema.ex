@@ -35,6 +35,8 @@ defmodule SiwappWeb.Schema do
       arg(:customer_id, :id)
       arg(:limit, :integer, default_value: 10)
       arg(:offset, :integer, default_value: 0)
+      arg(:with_status, :string)
+      arg(:meta_attributes, list_of(:meta_attributes))
 
       resolve(&Resolvers.Invoice.list/2)
     end
