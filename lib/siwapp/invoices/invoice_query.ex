@@ -16,7 +16,7 @@ defmodule Siwapp.Invoices.InvoiceQuery do
     |> where(paid: false)
     |> where(failed: false)
     |> where([i], not is_nil(i.due_date))
-    |> where([i], i.due_date < ^date_today)
+    |> where([i], i.due_date <= ^date_today)
   end
 
   @spec pending(Ecto.Query.t()) :: Ecto.Query.t()
