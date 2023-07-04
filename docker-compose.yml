@@ -15,11 +15,10 @@ services:
       - db
     entrypoint: [ "./docker/entrypoint.sh" ]
     environment:
-      PORT: 4010
       DB_HOST: db
       MIX_ENV: dev
     ports:
-      - "4010:4000"
+      - "4010:4010"
     volumes:
       - ${PWD}:/app
 version: '3'
