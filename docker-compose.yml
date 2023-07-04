@@ -4,7 +4,7 @@ services:
     environment:
       POSTGRES_PASSWORD: postgres
     ports:
-      - 5432:5432
+      - 5437:5432
 
   siwapp:
     build:
@@ -20,7 +20,7 @@ services:
       DB_HOST: db
       MIX_ENV: dev
     ports:
-      - "4000:4000"
+      - "4010:4000"
     volumes:
       - ${PWD}:/app
 version: '3'
