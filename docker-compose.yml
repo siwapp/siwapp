@@ -4,7 +4,8 @@ services:
     environment:
       POSTGRES_PASSWORD: postgres
     ports:
-      - 5432:5432
+      - "${DB_PORT}:${DB_PORT}"
+    command: -p ${DB_PORT}
 
   siwapp:
     build:
@@ -17,10 +18,12 @@ services:
       - db
     entrypoint: [ "./docker/entrypoint.sh" ]
     environment:
+      PORT: ${PORT}
       DB_HOST: db
+      DB_PORT: ${DB_PORT}
       MIX_ENV: dev
     ports:
-      - "4000:4000"
+      - "${PORT}:${PORT}"
     volumes:
       - ${PWD}:/app
 version: '3'
