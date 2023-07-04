@@ -14,7 +14,7 @@ docker compose run --rm siwapp mix setup   # execute only the first time
 docker compose up
 ```
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+Now you can visit [`localhost:4010`](http://localhost:4000) from your browser.
 
 To create a new user you can use `mix siwapp.register <your-email@domain.il> <your password>` or
 using docker `docker compose run --rm siwapp mix siwapp.register <your-email@domain.il> <your password>`.
