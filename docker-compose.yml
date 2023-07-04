@@ -3,8 +3,6 @@ services:
     image: postgres:13.5-alpine
     environment:
       POSTGRES_PASSWORD: postgres
-    ports:
-      - 5437:5432
 
   siwapp:
     build:
