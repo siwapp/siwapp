@@ -30,6 +30,10 @@ if config_env() == :prod do
     ],
     secret_key_base: secret_key_base
 
+  config :siwapp, Siwapp.Repo,
+    pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10"),
+    queue_target: String.to_integer(System.get_env("QUEUE_TARGET") || "2000")
+
   # ## Using releases
   #
   # If you are doing OTP releases, you need to instruct Phoenix

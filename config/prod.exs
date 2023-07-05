@@ -28,8 +28,6 @@ config :siwapp, Siwapp.Repo,
   ssl: true,
   # socket_options: [:inet6],
   url: database_url,
-  pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10"),
-  queue_target: String.to_integer(System.get_env("QUEUE_TARGET") || "2000"),
   database: "siwapp_prod",
   show_sensitive_data_on_connection_error: true
 
