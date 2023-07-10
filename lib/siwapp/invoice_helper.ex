@@ -96,7 +96,7 @@ defmodule Siwapp.InvoiceHelper do
 
   @spec set_taxes_amounts(Ecto.Changeset.t()) :: Ecto.Changeset.t()
   defp set_taxes_amounts(changeset) do
-    if is_nil(get_change(changeset, :items)) do
+    if is_nil(get_field(changeset, :items)) do
       changeset
     else
       total_taxes_amounts =
