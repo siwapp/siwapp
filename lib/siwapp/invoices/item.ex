@@ -99,7 +99,9 @@ defmodule Siwapp.Invoices.Item do
 
   @spec assoc_taxes(Ecto.Changeset.t(), map()) :: Ecto.Changeset.t()
   defp assoc_taxes(changeset, attrs) do
-    changeset_taxes_names = Enum.map(get_field(changeset, :taxes), fn tax -> String.upcase(tax.name) end)
+    changeset_taxes_names =
+      Enum.map(get_field(changeset, :taxes), fn tax -> String.upcase(tax.name) end)
+
     attr_taxes_names = MapSet.new(get(attrs, :taxes) || changeset_taxes_names, &String.upcase/1)
 
     all_taxes = Commons.list_taxes(:cache)
