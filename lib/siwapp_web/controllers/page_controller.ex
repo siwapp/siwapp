@@ -55,6 +55,7 @@ defmodule SiwappWeb.PageController do
       |> Kernel.++(queryable.fields)
       |> Kernel.--([:meta_attributes])
       |> Kernel.++([:inserted_at, :updated_at])
+      |> maybe_add_series_code_key(params["view"])
       |> maybe_delete_key(params["view"])
 
     query_params =
@@ -105,6 +106,10 @@ defmodule SiwappWeb.PageController do
     end
   end
 
+  @spec maybe_add_series_code_key([atom], binary) :: [atom]
+  defp maybe_add_series_code_key(keys, "invoice"), do: keys ++ [:series_code]
+  defp maybe_add_series_code_key(keys, _else), do: keys
+
   # Stream of the keys plus values from every invoice, recurring_invoice or customer a user decide to filter
   @spec get_stream_from_a_queryable(Ecto.Queryable.t(), [{binary, binary}], [atom]) ::
           Enumerable.t()
@@ -121,6 +126,7 @@ defmodule SiwappWeb.PageController do
     |> Searches.filters_query(query_params)
     |> maybe_deleted_at_query(queryable)
     |> Repo.all()
+    |> maybe_preload_series(queryable)
     |> Enum.map(&prepare_values(&1, fields))
   end
 
@@ -133,13 +139,24 @@ defmodule SiwappWeb.PageController do
     end
   end
 
+  @spec maybe_preload_series(list, Ecto.Queryable.t()) :: list
+  defp maybe_preload_series(invoices, Invoice), do: Repo.preload(invoices, :series)
+  defp maybe_preload_series(items, _else), do: items
+
   # For each invoice, customer or recurring_invoice gets its own sorted values
   @spec prepare_values(Ecto.Queryable.t(), [atom]) :: list()
   defp prepare_values(struct, fields) do
     struct
+    |> maybe_add_series_code()
     |> Map.from_struct()
     |> sort_values(fields)
   end
+
+  @spec maybe_add_series_code(Ecto.Queryable.t()) :: map()
+  defp maybe_add_series_code(%Invoice{series: %{code: code}} = invoice),
+    do: Map.put(invoice, :series_code, code)
+
+  defp maybe_add_series_code(item), do: item
 
   @spec sort_values(map, list) :: list
   defp sort_values(map, fields) do
