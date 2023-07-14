@@ -141,7 +141,7 @@ defmodule SiwappWeb.PageController do
 
   @spec maybe_preload_series(list, Ecto.Queryable.t()) :: list
   defp maybe_preload_series(invoices, Invoice), do: Repo.preload(invoices, :series)
-  defp maybe_preload_series(items, _else), do: items
+  defp maybe_preload_series(others, _else), do: others
 
   # For each invoice, customer or recurring_invoice gets its own sorted values
   @spec prepare_values(Ecto.Queryable.t(), [atom]) :: list()
@@ -156,7 +156,7 @@ defmodule SiwappWeb.PageController do
   defp maybe_add_series_code(%Invoice{series: %{code: code}} = invoice),
     do: Map.put(invoice, :series_code, code)
 
-  defp maybe_add_series_code(item), do: item
+  defp maybe_add_series_code(other), do: other
 
   @spec sort_values(map, list) :: list
   defp sort_values(map, fields) do
