@@ -57,6 +57,7 @@ defmodule SiwappWeb.PageController do
       |> Kernel.++([:inserted_at, :updated_at])
       |> maybe_add_series_code_key(params["view"])
       |> maybe_delete_key(params["view"])
+      |> maybe_add_meta_attributes_key(params)
 
     query_params =
       params
@@ -110,6 +111,14 @@ defmodule SiwappWeb.PageController do
   defp maybe_add_series_code_key(keys, "invoice"), do: keys ++ [:series_code]
   defp maybe_add_series_code_key(keys, _else), do: keys
 
+  @spec maybe_add_meta_attributes_key([atom], map) :: [atom]
+  defp maybe_add_meta_attributes_key(keys, %{"csv_meta_attributes" => meta_attributes_params}) do
+    keys ++
+      Enum.map(meta_attributes_params, fn {_key, %{"key" => key}} -> String.to_atom(key) end)
+  end
+
+  defp maybe_add_meta_attributes_key(keys, _else), do: keys
+
   # Stream of the keys plus values from every invoice, recurring_invoice or customer a user decide to filter
   @spec get_stream_from_a_queryable(Ecto.Queryable.t(), [{binary, binary}], [atom]) ::
           Enumerable.t()
@@ -122,12 +131,14 @@ defmodule SiwappWeb.PageController do
   # Values from every invoice, recurring_invoice or customer a user decide to filter
   @spec values(Ecto.Queryable.t(), [{binary, binary}], [atom]) :: [list()]
   defp values(queryable, query_params, fields) do
+    params = Map.new(query_params)
+
     queryable
     |> Searches.filters_query(query_params)
     |> maybe_deleted_at_query(queryable)
     |> Repo.all()
     |> maybe_preload_series(queryable)
-    |> Enum.map(&prepare_values(&1, fields))
+    |> Enum.map(&prepare_values(&1, fields, params))
   end
 
   @spec maybe_deleted_at_query(Ecto.Query.t(), Ecto.Queryable.t()) :: Ecto.Query.t()
@@ -144,11 +155,11 @@ defmodule SiwappWeb.PageController do
   defp maybe_preload_series(others, _else), do: others
 
   # For each invoice, customer or recurring_invoice gets its own sorted values
-  @spec prepare_values(Ecto.Queryable.t(), [atom]) :: list()
-  defp prepare_values(struct, fields) do
+  @spec prepare_values(Ecto.Queryable.t(), [atom], map) :: list()
+  defp prepare_values(struct, fields, params) do
     struct
     |> maybe_add_series_code()
-    |> Map.from_struct()
+    |> maybe_add_meta_attributes(params)
     |> sort_values(fields)
   end
 
@@ -157,6 +168,18 @@ defmodule SiwappWeb.PageController do
     do: Map.put(invoice, :series_code, code)
 
   defp maybe_add_series_code(other), do: other
+
+  @spec maybe_add_meta_attributes(map, map) :: map()
+  defp maybe_add_meta_attributes(%{meta_attributes: meta_attributes} = record, %{
+         "csv_meta_attributes" => meta_attributes_params
+       }) do
+    Enum.reduce(meta_attributes_params, record, fn {_index, %{"key" => key}}, acc ->
+      meta_attribute = Map.get(meta_attributes, key)
+      Map.put(acc, String.to_atom(key), meta_attribute)
+    end)
+  end
+
+  defp maybe_add_meta_attributes(record, _else), do: record
 
   @spec sort_values(map, list) :: list
   defp sort_values(map, fields) do

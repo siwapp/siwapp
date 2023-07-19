@@ -27,7 +27,8 @@
           SiwappWeb.PageView,
           "#{@view}_filters.html",
           series_names: @series_names,
-          f: f
+          f: f,
+          target: @myself
         ) %>
         <div class="buttons is-right">
           <%= link("Export to CSV",
