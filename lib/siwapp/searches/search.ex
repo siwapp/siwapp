@@ -50,7 +50,7 @@ defmodule Siwapp.Searches.Search do
     search
     |> cast(attrs, fields)
     |> cast_embed(:csv_meta_attributes,
-      with: &Siwapp.Searches.Search.CSVMetaAttributes.changeset/2
+      with: &CSVMetaAttributes.changeset/2
     )
   end
 end
