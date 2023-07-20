@@ -66,6 +66,8 @@ defmodule Siwapp.Searches.SearchQuery do
     |> distinct(true)
   end
 
+  def filter_by(query, "csv_meta_attributes", _value), do: query
+
   # Get invoices, customers or recurring_invoices by comparing value with name, email or id fields
   @spec name_email_or_id(Ecto.Queryable.t(), binary) :: Ecto.Queryable.t()
   defp name_email_or_id(query, value) do

@@ -29,11 +29,35 @@ defmodule SiwappWeb.SearchLive.SearchComponent do
   end
 
   def handle_event("search", %{"search" => params}, socket) do
-    params = Enum.reject(params, fn {_key, val} -> val in ["", "Choose..."] end)
+    params =
+      params
+      |> Map.delete("csv_meta_attributes")
+      |> Enum.reject(fn {_key, val} -> val in ["", "Choose..."] end)
 
     send(self(), {:search, params})
 
     {:noreply, socket}
+  end
+
+  def handle_event("add_meta_attribute", _params, socket) do
+    params = socket.assigns.changeset.params
+    params = Map.update(params, "csv_meta_attributes", new_ma(), fn csv_ma -> new_ma(csv_ma) end)
+
+    changeset = Searches.change(%Search{}, params)
+
+    {:noreply, assign(socket, :changeset, changeset)}
+  end
+
+  def handle_event("remove_meta_attribute", %{"index" => index}, socket) do
+    ma_params =
+      socket.assigns.changeset.params
+      |> Map.get("csv_meta_attributes")
+      |> Map.delete(index)
+      |> reindex_meta_attributes_params()
+
+    params = Map.put(socket.assigns.changeset.params, "csv_meta_attributes", ma_params)
+    changeset = Searches.change(%Search{}, params)
+    {:noreply, assign(socket, :changeset, changeset)}
   end
 
   @spec assign_changeset(Phoenix.LiveView.Socket.t(), map) ::
@@ -53,5 +77,15 @@ defmodule SiwappWeb.SearchLive.SearchComponent do
 
   defp assign_changeset(socket, _) do
     assign(socket, :changeset, Searches.change(%Search{}))
+  end
+
+  @spec new_ma(map) :: map
+  defp new_ma(ma_params \\ %{}) do
+    Map.put(ma_params, "#{Enum.count(ma_params)}", %{"key" => ""})
+  end
+
+  @spec reindex_meta_attributes_params(map) :: map
+  defp reindex_meta_attributes_params(ma_params) do
+    Enum.reduce(ma_params, %{}, fn {_k, v}, acc -> Map.put(acc, "#{Enum.count(acc)}", v) end)
   end
 end

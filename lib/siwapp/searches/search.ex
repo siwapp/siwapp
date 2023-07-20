@@ -2,23 +2,11 @@ defmodule Siwapp.Searches.Search do
   @moduledoc """
   Search
   """
+  use Ecto.Schema
+
   import Ecto.Changeset
 
-  @types %{
-    search_input: :string,
-    name: :string,
-    issue_from_date: :date,
-    issue_to_date: :date,
-    starting_from_date: :date,
-    starting_to_date: :date,
-    finishing_from_date: :date,
-    finishing_to_date: :date,
-    series: :string,
-    status: :string,
-    key: :string,
-    value: :string,
-    number: :integer
-  }
+  alias Siwapp.Searches.Search.CSVMetaAttributes
 
   @type t :: %__MODULE__{
           search_input: binary | nil,
@@ -33,27 +21,36 @@ defmodule Siwapp.Searches.Search do
           status: binary | nil,
           key: binary | nil,
           value: binary | nil,
-          number: integer | nil
+          number: integer | nil,
+          csv_meta_attributes: list()
         }
 
-  defstruct [
-    :search_input,
-    :name,
-    :issue_from_date,
-    :issue_to_date,
-    :starting_from_date,
-    :starting_to_date,
-    :finishing_from_date,
-    :finishing_to_date,
-    :series,
-    :status,
-    :key,
-    :value,
-    :number
-  ]
+  embedded_schema do
+    field :search_input, :string
+    field :name, :string
+    field :issue_from_date, :date
+    field :issue_to_date, :date
+    field :starting_from_date, :date
+    field :starting_to_date, :date
+    field :finishing_from_date, :date
+    field :finishing_to_date, :date
+    field :series, :string
+    field :status, :string
+    field :key, :string
+    field :value, :string
+    field :number, :integer
+
+    embeds_many :csv_meta_attributes, CSVMetaAttributes
+  end
 
   @spec changeset(t(), map) :: Ecto.Changeset.t()
   def changeset(search, attrs \\ %{}) do
-    cast({search, @types}, attrs, Map.keys(@types))
+    fields = __schema__(:fields) -- __schema__(:embeds)
+
+    search
+    |> cast(attrs, fields)
+    |> cast_embed(:csv_meta_attributes,
+      with: &CSVMetaAttributes.changeset/2
+    )
   end
 end
