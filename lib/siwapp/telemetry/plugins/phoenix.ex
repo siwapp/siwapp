@@ -40,7 +40,7 @@ defmodule Siwapp.Telemetry.Plugin.Phoenix do
         ],
         tags: [:route],
         unit: {:native, :second}
-      ),
+      )
     ]
 
     Event.build(:siwapp_distribution_metrics, metrics)

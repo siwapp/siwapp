@@ -51,7 +51,7 @@ config :siwapp, Siwapp.PromEx,
   drop_metrics_groups: [],
   grafana: :disabled,
   metrics_server: :disabled
-  
+
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
