@@ -18,11 +18,9 @@ defmodule SiwappWeb.InvoicesLive.Index do
     )
 
     page_title =
-      if Map.has_key?(params, "customer_id") do
-        "Invoices for #{Siwapp.Customers.get!(params["customer_id"]).name}"
-      else
-        "Invoices"
-      end
+      if Map.has_key?(params, "customer_id"),
+        do: "Invoices for #{Siwapp.Customers.get!(params["customer_id"]).name}",
+        else: "Invoices"
 
     {:ok,
      socket
@@ -33,6 +31,7 @@ defmodule SiwappWeb.InvoicesLive.Index do
        Searches.filters(query, limit: @invoices_limit, preload: [:series], deleted_at_query: true)
      )
      |> assign(:checked, MapSet.new())
+     |> assign(:params, params)
      |> assign(:query, query)
      |> assign(:page_title, page_title)}
   end
@@ -72,13 +71,10 @@ defmodule SiwappWeb.InvoicesLive.Index do
   end
 
   def handle_event("redirect", %{"id" => id}, socket) do
-    invoice = Invoices.get!(id)
-
-    if Invoices.status(invoice) == :paid do
-      {:noreply, push_redirect(socket, to: Routes.page_path(socket, :show_invoice, id))}
-    else
-      {:noreply, push_redirect(socket, to: Routes.invoices_edit_path(socket, :edit, id))}
-    end
+    id
+    |> Invoices.get!()
+    |> Invoices.status()
+    |> push_redirect_by_invoice_status(socket, id, socket.assigns.params)
   end
 
   def handle_event("delete", _params, socket) do
@@ -155,6 +151,21 @@ defmodule SiwappWeb.InvoicesLive.Index do
        |> MapSet.to_list()
        |> Enum.reject(&(&1 == 0))
        |> Enum.reduce("", fn id, acc -> acc <> "/#{id}" end))
+  end
+
+  @spec push_redirect_by_invoice_status(atom, Phoenix.LiveView.Socket.t(), binary, map) :: {:noreply, Phoenix.LiveView.Socket.t()}
+  defp push_redirect_by_invoice_status(:paid, socket, id, params) do
+    {:noreply,
+       push_redirect(socket,
+         to: Routes.page_path(socket, :show_invoice, id, params)
+       )}
+  end
+
+  defp push_redirect_by_invoice_status(_, socket, id, params) do
+    {:noreply,
+       push_redirect(socket,
+         to: Routes.invoices_edit_path(socket, :edit, id, params)
+       )}
   end
 
   @spec update_checked(map(), Phoenix.LiveView.Socket.t()) :: MapSet.t()
