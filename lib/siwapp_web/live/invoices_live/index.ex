@@ -4,8 +4,10 @@ defmodule SiwappWeb.InvoicesLive.Index do
   alias Siwapp.Invoices
   alias Siwapp.Invoices.Invoice
   alias Siwapp.Searches
+  alias SiwappWeb.Component.Sortener
 
   @invoices_limit 20
+  @order_by_default [desc: :id]
 
   @impl Phoenix.LiveView
   def mount(params, _session, socket) do
@@ -34,6 +36,8 @@ defmodule SiwappWeb.InvoicesLive.Index do
      )
      |> assign(:checked, MapSet.new())
      |> assign(:query, query)
+     |> assign(:sort_map, %Sortener{})
+     |> assign(:order_by, @order_by_default)
      |> assign(:page_title, page_title)}
   end
 
@@ -42,7 +46,8 @@ defmodule SiwappWeb.InvoicesLive.Index do
     %{
       page: page,
       invoices: invoices,
-      query: query
+      query: query,
+      order_by: order_by
     } = socket.assigns
 
     next_invoices =
@@ -50,7 +55,8 @@ defmodule SiwappWeb.InvoicesLive.Index do
         limit: @invoices_limit,
         offset: (page + 1) * @invoices_limit,
         preload: [:series],
-        deleted_at_query: true
+        deleted_at_query: true,
+        order_by: order_by
       )
 
     {invoices, no_more_queries} = maybe_add(invoices, next_invoices)
@@ -137,6 +143,47 @@ defmodule SiwappWeb.InvoicesLive.Index do
           limit: @invoices_limit,
           preload: [:series],
           deleted_at_query: true
+        )
+      )
+
+    {:noreply, socket}
+  end
+
+  def handle_event("reorder", %{"field" => field, "order" => order}, socket) do
+    order_by =
+      order
+      |> String.to_atom()
+      |> Searches.prepare_order_by(String.to_atom(field))
+
+    socket =
+      socket
+      |> assign(:order_by, order_by)
+      |> assign(:sort_map, %Sortener{order: order, field: field})
+      |> assign(
+        :invoices,
+        Searches.filters(socket.assigns.query,
+          limit: @invoices_limit,
+          preload: [:series],
+          deleted_at_query: true,
+          order_by: order_by
+        )
+      )
+
+    {:noreply, socket}
+  end
+
+  def handle_event("reorder", _params, socket) do
+    socket =
+      socket
+      |> assign(:order_by, @order_by_default)
+      |> assign(:sort_map, %Sortener{})
+      |> assign(
+        :invoices,
+        Searches.filters(socket.assigns.query,
+          limit: @invoices_limit,
+          preload: [:series],
+          deleted_at_query: true,
+          order_by: @order_by_default
         )
       )
 

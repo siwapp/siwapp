@@ -38,7 +38,11 @@
   invoices={@invoices}
 />
 
-<%= render(SiwappWeb.PageView, "invoices_table.html", invoices: @invoices, checked: @checked) %>
+<%= render(SiwappWeb.PageView, "invoices_table.html",
+  invoices: @invoices,
+  checked: @checked,
+  sort_map: @sort_map
+) %>
 
 <div
   id="infinite-scroll"

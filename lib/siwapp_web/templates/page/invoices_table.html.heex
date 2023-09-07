@@ -16,6 +16,9 @@
       </th>
       <th title="Customer">
         Customer Name
+        <%= if assigns[:sort_map] do %>
+          <SiwappWeb.Component.Sortener.sortener_button sort_map={@sort_map} current_field="name" />
+        <% end %>
       </th>
       <th title="Date">
         Date
@@ -31,6 +34,9 @@
       </th>
       <th title="Total" class="has-text-right">
         Total
+        <%= if assigns[:sort_map] do %>
+          <SiwappWeb.Component.Sortener.sortener_button sort_map={@sort_map} current_field="gross_amount" />
+        <% end %>
       </th>
     </tr>
   </thead>
