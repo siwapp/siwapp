@@ -172,23 +172,8 @@ defmodule SiwappWeb.InvoicesLive.Index do
     {:noreply, socket}
   end
 
-  def handle_event("reorder", _params, socket) do
-    socket =
-      socket
-      |> assign(:order_by, @order_by_default)
-      |> assign(:sort_map, %Sortener{})
-      |> assign(
-        :invoices,
-        Searches.filters(socket.assigns.query,
-          limit: @invoices_limit,
-          preload: [:series],
-          deleted_at_query: true,
-          order_by: @order_by_default
-        )
-      )
-
-    {:noreply, socket}
-  end
+  def handle_event("reorder", _params, socket),
+    do: handle_event("reorder", %{"field" => "id", "order" => "desc"}, socket)
 
   @impl Phoenix.LiveView
   def handle_info({:search, params}, socket) do
