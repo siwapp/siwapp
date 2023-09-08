@@ -39,7 +39,14 @@ defmodule SiwappWeb.RecurringInvoicesLive.Edit do
         socket =
           socket
           |> put_flash(:info, "Recurring Invoice successfully saved")
-          |> push_redirect(to: Routes.recurring_invoices_index_path(socket, :index, socket.assigns.url_query_string))
+          |> push_redirect(
+            to:
+              Routes.recurring_invoices_index_path(
+                socket,
+                :index,
+                socket.assigns.url_query_string
+              )
+          )
 
         {:noreply, socket}
 

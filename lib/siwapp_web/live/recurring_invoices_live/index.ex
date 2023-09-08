@@ -69,7 +69,10 @@ defmodule SiwappWeb.RecurringInvoicesLive.Index do
   end
 
   def handle_event("edit", %{"id" => id}, socket) do
-    {:noreply, push_redirect(socket, to: Routes.recurring_invoices_edit_path(socket, :edit, id, socket.assigns.params))}
+    {:noreply,
+     push_redirect(socket,
+       to: Routes.recurring_invoices_edit_path(socket, :edit, id, socket.assigns.params)
+     )}
   end
 
   def handle_event("generate_invoices", _, socket) do
