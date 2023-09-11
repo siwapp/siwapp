@@ -62,6 +62,7 @@ defmodule SiwappWeb.PageController do
       |> Kernel.--([:meta_attributes])
       |> Kernel.++([:inserted_at, :updated_at])
       |> maybe_add_series_code_key(params["view"])
+      |> maybe_add_reference_key(params["view"])
       |> maybe_delete_key(params["view"])
       |> maybe_add_meta_attributes_key(params)
 
@@ -117,6 +118,10 @@ defmodule SiwappWeb.PageController do
   defp maybe_add_series_code_key(keys, "invoice"), do: keys ++ [:series_code]
   defp maybe_add_series_code_key(keys, _else), do: keys
 
+  @spec maybe_add_reference_key([atom], binary) :: [atom]
+  defp maybe_add_reference_key(keys, "invoice"), do: keys ++ [:reference]
+  defp maybe_add_reference_key(keys, _else), do: keys
+
   @spec maybe_add_meta_attributes_key([atom], map) :: [atom]
   defp maybe_add_meta_attributes_key(keys, %{"csv_meta_attributes" => meta_attributes_params}) do
     keys ++
@@ -165,6 +170,7 @@ defmodule SiwappWeb.PageController do
   defp prepare_values(struct, fields, params) do
     struct
     |> maybe_add_series_code()
+    |> maybe_add_reference()
     |> maybe_add_meta_attributes(params)
     |> sort_values(fields)
   end
@@ -174,6 +180,12 @@ defmodule SiwappWeb.PageController do
     do: Map.put(invoice, :series_code, code)
 
   defp maybe_add_series_code(other), do: other
+
+  @spec maybe_add_reference(Ecto.Queryable.t()) :: map
+  defp maybe_add_reference(%Invoice{series: %{code: code}, number: number} = invoice),
+    do: Map.put(invoice, :reference, "#{code}-#{number}")
+
+  defp maybe_add_reference(other), do: other
 
   @spec maybe_add_meta_attributes(map, map) :: map()
   defp maybe_add_meta_attributes(%{meta_attributes: meta_attributes} = record, %{

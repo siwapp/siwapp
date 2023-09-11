@@ -103,6 +103,7 @@ defmodule Siwapp.Invoices.Invoice do
     field :terms, :string
     field :deleted_at, :utc_datetime
     field :series_code, :string, virtual: true
+    field :reference, :string, virtual: true
     field :meta_attributes, :map, default: %{}
     belongs_to :series, Series
     belongs_to :customer, Customer, on_replace: :nilify
