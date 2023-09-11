@@ -13,8 +13,8 @@ defmodule Siwapp.Telemetry.Plugin.Phoenix do
     ]
   end
 
-  @spec distribution_metrics() :: any
-  defp distribution_metrics() do
+  @spec distribution_metrics :: any
+  defp distribution_metrics do
     metrics = [
       counter("phoenix.endpoint.count",
         event_name: [:phoenix, :endpoint, :stop],
