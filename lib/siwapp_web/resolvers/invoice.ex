@@ -8,14 +8,12 @@ defmodule SiwappWeb.Resolvers.Invoice do
   alias SiwappWeb.Resolvers.Errors
   alias SiwappWeb.Resolvers.Helpers
 
-  @spec get(map(), Absinthe.Resolution.t()) :: {:ok, map()}
+  @spec get(map, Absinthe.Resolution.t()) :: {:ok, map} | {:error, binary}
   def get(%{id: id}, _resolution) do
-    invoice =
-      id
-      |> Invoices.get!(preload: [:items, :payments, :series])
-      |> set_reference()
-
-    {:ok, invoice}
+    case Invoices.get(id, preload: [:items, :payments, :series]) do
+      nil -> {:error, "Invoice with id #{id} not found."}
+      invoice -> {:ok, set_reference(invoice)}
+    end
   end
 
   @spec list(map(), Absinthe.Resolution.t()) :: {:ok, [Invoices.Invoice.t()]}
