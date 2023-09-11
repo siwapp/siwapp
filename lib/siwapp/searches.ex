@@ -52,4 +52,8 @@ defmodule Siwapp.Searches do
   def change(%Search{} = search, attrs \\ %{}) do
     Search.changeset(search, attrs)
   end
+
+  @spec prepare_order_by(atom, atom) :: Keyword.t()
+  def prepare_order_by(order, :name), do: [{order, dynamic([p], fragment("lower(?)", p.name))}]
+  def prepare_order_by(order, field), do: [{order, field}]
 end

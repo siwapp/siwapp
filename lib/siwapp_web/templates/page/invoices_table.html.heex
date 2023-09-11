@@ -15,10 +15,14 @@
         Reference
       </th>
       <th title="Customer">
-        Customer Name
+        Customer Name <%= if assigns[:sort_map] do %>
+          <SiwappWeb.Component.Sortener.sortener_button sort_map={@sort_map} current_field="name" />
+        <% end %>
       </th>
       <th title="Date">
-        Date
+        Date <%= if assigns[:sort_map] do %>
+          <SiwappWeb.Component.Sortener.sortener_button sort_map={@sort_map} current_field="issue_date" />
+        <% end %>
       </th>
       <th title="Sent">
         Sent
@@ -30,7 +34,9 @@
         Pending
       </th>
       <th title="Total" class="has-text-right">
-        Total
+        Total <%= if assigns[:sort_map] do %>
+          <SiwappWeb.Component.Sortener.sortener_button sort_map={@sort_map} current_field="gross_amount" />
+        <% end %>
       </th>
     </tr>
   </thead>
