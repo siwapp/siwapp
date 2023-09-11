@@ -6,8 +6,14 @@
       class: "button is-purple"
     ) %>
     <%= link("Download PDF", to: Routes.page_path(@conn, :download, @invoice.id), class: "button is-info") %>
-    <%= link("Duplicate", to: Routes.invoices_edit_path(@conn, :new, @invoice.id), class: "button is-info") %>
-    <%= link("Edit", to: Routes.invoices_edit_path(@conn, :edit, @invoice.id), class: "button is-info") %>
+    <%= link("Duplicate",
+      to: Routes.invoices_edit_path(@conn, :new, @invoice.id, @url_query_string),
+      class: "button is-info"
+    ) %>
+    <%= link("Edit",
+      to: Routes.invoices_edit_path(@conn, :edit, @invoice.id, @url_query_string),
+      class: "button is-info"
+    ) %>
   </div>
 </nav>
 <div class="columns is-centered">

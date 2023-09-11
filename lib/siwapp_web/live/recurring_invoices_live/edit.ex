@@ -10,10 +10,11 @@ defmodule SiwappWeb.RecurringInvoicesLive.Edit do
   alias Siwapp.RecurringInvoices.RecurringInvoice
 
   @impl Phoenix.LiveView
-  def mount(_params, _session, socket) do
+  def mount(params, _session, socket) do
     {:ok,
      socket
      |> assign(:series, Commons.list_series())
+     |> assign(:url_query_string, Map.delete(params, "id"))
      |> assign(:currency_options, Invoices.list_currencies())}
   end
 
@@ -38,7 +39,14 @@ defmodule SiwappWeb.RecurringInvoicesLive.Edit do
         socket =
           socket
           |> put_flash(:info, "Recurring Invoice successfully saved")
-          |> push_redirect(to: Routes.recurring_invoices_index_path(socket, :index))
+          |> push_redirect(
+            to:
+              Routes.recurring_invoices_index_path(
+                socket,
+                :index,
+                socket.assigns.url_query_string
+              )
+          )
 
         {:noreply, socket}
 

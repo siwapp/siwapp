@@ -167,7 +167,7 @@
           class: "button is-info"
         ) %>
         <%= link("Duplicate",
-          to: Routes.invoices_edit_path(@socket, :new, @invoice.id),
+          to: Routes.invoices_edit_path(@socket, :new, @invoice.id, @url_query_string),
           class: "button is-info"
         ) %>
       <% end %>
