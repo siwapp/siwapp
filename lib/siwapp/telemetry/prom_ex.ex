@@ -65,7 +65,7 @@ defmodule Siwapp.PromEx do
       {Plugins.Phoenix, router: SiwappWeb.Router, endpoint: SiwappWeb.Endpoint},
       # {Plugins.Ecto, repos: [Siwapp.Repo]},
       Siwapp.Telemetry.Plugin.Phoenix,
-      Plugins.Ecto,
+      Plugins.Ecto
       # Plugins.Oban,
       # Plugins.PhoenixLiveView,
       # Plugins.Absinthe,
