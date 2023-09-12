@@ -10,20 +10,20 @@ defmodule Siwapp.Application do
     Logger.add_backend(Sentry.LoggerBackend)
 
     children = [
-      # Start the Ecto repository
-      Siwapp.Repo,
-      # Start the Telemetry supervisor
-      SiwappWeb.Telemetry,
-      # Start the PubSub system
-      {Phoenix.PubSub, name: Siwapp.PubSub},
       # Start the Endpoint (http/https)
       SiwappWeb.Endpoint,
+      # Start the Telemetry supervisor
+      SiwappWeb.Telemetry,
+      {Siwapp.PromEx, delay_manual_start: :no_delay},
+      # Start the Ecto repository
+      Siwapp.Repo,
+      # Start the PubSub system
+      {Phoenix.PubSub, name: Siwapp.PubSub},
       {ChromicPDF, pdf_opts()},
       # Start a worker by calling: Siwapp.Worker.start_link(arg)
       # {Siwapp.Worker, arg}
       {Cachex, name: :siwapp_cache},
-      Siwapp.TimerEvents,
-      Siwapp.PromEx
+      Siwapp.TimerEvents
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
