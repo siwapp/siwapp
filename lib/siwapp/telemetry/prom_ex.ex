@@ -61,11 +61,11 @@ defmodule Siwapp.PromEx do
     [
       # PromEx built in plugins
       # Plugins.Application,
-      # Plugins.Beam,
+      Plugins.Beam,
       {Plugins.Phoenix, router: SiwappWeb.Router, endpoint: SiwappWeb.Endpoint},
-      Siwapp.Telemetry.Plugin.Phoenix
-      # {Plugins.Ecto, repos: [Siwapp.Repo]}
-      # Plugins.Ecto,
+      # {Plugins.Ecto, repos: [Siwapp.Repo]},
+      Siwapp.Telemetry.Plugin.Phoenix,
+      Plugins.Ecto
       # Plugins.Oban,
       # Plugins.PhoenixLiveView,
       # Plugins.Absinthe,
@@ -89,9 +89,9 @@ defmodule Siwapp.PromEx do
     [
       # PromEx built in Grafana dashboards
       # {:prom_ex, "application.json"},
-      # {:prom_ex, "beam.json"},
+      {:prom_ex, "beam.json"},
+      {:prom_ex, "ecto.json"},
       {:prom_ex, "phoenix.json"}
-      # {:prom_ex, "ecto.json"},
       # {:prom_ex, "oban.json"},
       # {:prom_ex, "phoenix_live_view.json"},
       # {:prom_ex, "absinthe.json"},
