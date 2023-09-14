@@ -14,8 +14,9 @@ defmodule SiwappWeb.StatusController do
     |> process_status(conn)
   end
 
-  @spec process_status(any, any) :: any 
+  @spec process_status(any, any) :: any
   defp process_status({:ok, _}, conn), do: text(conn, "OK")
+
   defp process_status(err, conn) do
     conn
     |> put_status(500)

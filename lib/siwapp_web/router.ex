@@ -88,7 +88,7 @@ defmodule SiwappWeb.Router do
     get "/users/reset_password/:token", UserResetPasswordController, :edit
     put "/users/reset_password/:token", UserResetPasswordController, :update
   end
-  
+
   scope "/", SiwappWeb do
     pipe_through(:browser)
 
