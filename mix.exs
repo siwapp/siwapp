@@ -66,6 +66,13 @@ defmodule Siwapp.MixProject do
         ],
         extras: ["README.md"],
         logo: "#{__DIR__}/priv/static/images/logo.svg"
+      ],
+      releases: [
+        siwapp: [
+          applications: [siwapp: :permanent],
+          include_erts: false,
+          include_executables_for: [:unix],
+        ]
       ]
     ]
   end
