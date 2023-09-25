@@ -71,7 +71,7 @@ defmodule Siwapp.MixProject do
         siwapp: [
           applications: [siwapp: :permanent],
           include_erts: false,
-          include_executables_for: [:unix],
+          include_executables_for: [:unix]
         ]
       ]
     ]
