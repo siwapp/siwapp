@@ -110,6 +110,7 @@ defmodule Siwapp.MixProject do
       {:gen_smtp, "~> 1.0"},
       {:hackney, "~> 1.8"},
       {:heex_formatter, github: "feliperenan/heex_formatter"},
+      {:hut, "~> 1.3.0", manager: :rebar3, override: true},
       {:jason, "~> 1.2"},
       {:mappable, "~> 0.2.4"},
       {:money, "~> 1.4"},
