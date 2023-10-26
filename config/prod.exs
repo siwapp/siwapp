@@ -29,6 +29,7 @@ config :siwapp, Siwapp.Repo,
   # socket_options: [:inet6],
   url: database_url,
   database: "siwapp_prod",
+  timeout: 30_000,
   show_sensitive_data_on_connection_error: true
 
 # Do not print debug messages in production
