@@ -34,21 +34,29 @@ defmodule Siwapp.Searches do
   Returns a query for the filter_params
   """
   @spec filters_query(Ecto.Queryable.t(), [{binary, binary}] | map()) :: Ecto.Queryable.t()
+  def filters_query(query, params) when is_list(params) do
+    filters_query(query, Map.new(params))
+  end
+
   def filters_query(query, params) do
+    params
+    |> transform_params()
+    |> Enum.reduce(query, fn {key, value}, acc_query ->
+      SearchQuery.filter_by(acc_query, key, value)
+    end)
+  end
+
+  @spec transform_params(map) :: map
+  defp transform_params(params) do
     {key, params} = Map.pop(params, "key")
     {value, params} = Map.pop(params, "value")
 
-    params =
-      if not is_nil(key) and not is_nil(value) do
-        # Transform params 'key' and 'value' into a single param 'meta_attribute'
-        Map.put(params, {"meta_attribute", key}, value)
-      else
-        params
-      end
-
-    Enum.reduce(params, query, fn {key, value}, acc_query ->
-      SearchQuery.filter_by(acc_query, key, value)
-    end)
+    if not is_nil(key) and not is_nil(value) do
+      # Transform params 'key' and 'value' into a single param 'meta_attribute'
+      Map.put(params, "meta_attribute", {key, value})
+    else
+      params
+    end
   end
 
   @doc """

@@ -10,7 +10,7 @@ defmodule Siwapp.Searches.SearchQuery do
   @doc """
   For each key, one different query
   """
-  @spec filter_by(Ecto.Queryable.t(), binary, binary) :: Ecto.Queryable.t()
+  @spec filter_by(Ecto.Queryable.t(), binary, any) :: Ecto.Queryable.t()
   def filter_by(query, "search_input", value) do
     name_email_or_id(query, value)
   end
@@ -52,7 +52,7 @@ defmodule Siwapp.Searches.SearchQuery do
     type_of_status(query, value)
   end
 
-  def filter_by(query, {"meta_attribute", key}, value) do
+  def filter_by(query, "meta_attribute", {key, value}) do
     where(
       query,
       [],
