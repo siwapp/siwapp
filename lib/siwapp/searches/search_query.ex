@@ -10,7 +10,7 @@ defmodule Siwapp.Searches.SearchQuery do
   @doc """
   For each key, one different query
   """
-  @spec filter_by(Ecto.Queryable.t(), binary, binary) :: Ecto.Queryable.t()
+  @spec filter_by(Ecto.Queryable.t(), binary, any) :: Ecto.Queryable.t()
   def filter_by(query, "search_input", value) do
     name_email_or_id(query, value)
   end
@@ -52,18 +52,12 @@ defmodule Siwapp.Searches.SearchQuery do
     type_of_status(query, value)
   end
 
-  def filter_by(query, "key", value) do
-    join(query, :inner, [q], m in fragment("jsonb_each_text(?)", q.meta_attributes),
-      on: m.key == ^value
+  def filter_by(query, "meta_attribute", {key, value}) do
+    where(
+      query,
+      [],
+      fragment("meta_attributes->>? = ?", type(^key, :string), type(^value, :string))
     )
-  end
-
-  def filter_by(query, "value", value) do
-    query
-    |> join(:inner, [q], m in fragment("jsonb_each_text(?)", q.meta_attributes),
-      on: m.value == ^value
-    )
-    |> distinct(true)
   end
 
   def filter_by(query, "csv_meta_attributes", _value), do: query

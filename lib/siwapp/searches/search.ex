@@ -52,5 +52,14 @@ defmodule Siwapp.Searches.Search do
     |> cast_embed(:csv_meta_attributes,
       with: &CSVMetaAttributes.changeset/2
     )
+    |> maybe_validate_key()
   end
+
+  # When field :value has a value, field :key needs to be set as well
+  @spec maybe_validate_key(Ecto.Changeset.t()) :: Ecto.Changeset.t()
+  defp maybe_validate_key(%{changes: %{value: value}} = changeset) when is_binary(value) do
+    validate_required(changeset, :key)
+  end
+
+  defp maybe_validate_key(changeset), do: changeset
 end

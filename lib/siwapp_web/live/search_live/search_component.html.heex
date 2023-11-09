@@ -33,9 +33,10 @@
         <div class="buttons is-right">
           <%= link("Export to CSV",
             to: Routes.page_path(@socket, :csv, Map.put(f.params, :view, @view)),
-            class: "button is-info"
+            class: "button is-info",
+            disabled: not @changeset.valid?
           ) %>
-          <%= submit("Search", class: "button is-info", "phx-click": JS.hide(to: "#search-menu")) %>
+          <%= submit("Search", class: "button is-info", disabled: not @changeset.valid?, "phx-click": JS.hide(to: "#search-menu")) %>
         </div>
       </div>
     </div>

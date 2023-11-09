@@ -24,6 +24,8 @@ defmodule SiwappWeb.SearchLive.SearchComponent do
   @impl Phoenix.LiveComponent
   def handle_event("change", %{"search" => search_params}, socket) do
     changeset = Searches.change(%Search{}, search_params)
+    # Without this error tags aren't shown
+    changeset = %{changeset | action: :validate}
 
     {:noreply, assign(socket, :changeset, changeset)}
   end
