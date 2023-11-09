@@ -52,18 +52,12 @@ defmodule Siwapp.Searches.SearchQuery do
     type_of_status(query, value)
   end
 
-  def filter_by(query, "key", value) do
-    join(query, :inner, [q], m in fragment("jsonb_each_text(?)", q.meta_attributes),
-      on: m.key == ^value
+  def filter_by(query, {"meta_attribute", key}, value) do
+    where(
+      query,
+      [],
+      fragment("meta_attributes->>? = ?", type(^key, :string), type(^value, :string))
     )
-  end
-
-  def filter_by(query, "value", value) do
-    query
-    |> join(:inner, [q], m in fragment("jsonb_each_text(?)", q.meta_attributes),
-      on: m.value == ^value
-    )
-    |> distinct(true)
   end
 
   def filter_by(query, "csv_meta_attributes", _value), do: query
