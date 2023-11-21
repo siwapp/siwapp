@@ -65,7 +65,7 @@ defmodule SiwappWeb.SearchLive.SearchComponent do
   @spec assign_changeset(Phoenix.LiveView.Socket.t(), map) ::
           Phoenix.LiveView.Socket.t()
   defp assign_changeset(%{assigns: %{changeset: changeset}} = socket, %{name: name}) do
-    changes_params = Map.replace(changeset.changes, :name, name)
+    changes_params = Map.replace(changeset.params, "name", name)
 
     changeset = Searches.change(%Search{}, changes_params)
     assign(socket, :changeset, changeset)

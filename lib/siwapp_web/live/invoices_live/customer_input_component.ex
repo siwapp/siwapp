@@ -112,6 +112,7 @@ defmodule SiwappWeb.InvoicesLive.CustomerInputComponent do
       customer_id
       |> Customers.get!()
       |> Map.get(:name)
+      |> IO.inspect(label: "picked user")
 
     view = SiwappWeb.LayoutView.which_view(socket.view)
 
@@ -119,6 +120,8 @@ defmodule SiwappWeb.InvoicesLive.CustomerInputComponent do
 
     {:noreply, assign(socket, customer_name: name)}
   end
+
+  def handle_event("pick_customer", _assign, socket), do: {:noreply, socket}
 
   def handle_event("load-more", _, socket) do
     %{
