@@ -5,6 +5,8 @@ defmodule SiwappWeb.ErrorHelpers do
 
   use Phoenix.HTML
 
+  import Plug.Conn
+
   @doc """
   Generates tag for inlined form input errors.
   """
@@ -49,5 +51,17 @@ defmodule SiwappWeb.ErrorHelpers do
     else
       Gettext.dgettext(SiwappWeb.Gettext, "errors", msg, opts)
     end
+  end
+
+  @doc """
+  REnder not found.
+  """
+  @spec render_not_found(Plug.Conn.t()) :: Plug.Conn.t()
+  def render_not_found(conn) do
+    conn
+    |> put_status(:not_found)
+    |> Phoenix.Controller.put_view(SiwappWeb.ErrorView)
+    |> Phoenix.Controller.render(:"404")
+    |> halt()
   end
 end
