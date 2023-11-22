@@ -54,7 +54,7 @@ defmodule SiwappWeb.ErrorHelpers do
   end
 
   @doc """
-  REnder not found.
+  Render not found.
   """
   @spec render_not_found(Plug.Conn.t()) :: Plug.Conn.t()
   def render_not_found(conn) do
