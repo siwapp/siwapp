@@ -112,7 +112,6 @@ defmodule SiwappWeb.InvoicesLive.CustomerInputComponent do
       customer_id
       |> Customers.get!()
       |> Map.get(:name)
-      |> IO.inspect(label: "picked user")
 
     view = SiwappWeb.LayoutView.which_view(socket.view)
 
