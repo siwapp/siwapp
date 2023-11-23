@@ -1,8 +1,6 @@
 defmodule SiwappWeb.PageController do
   use SiwappWeb, :controller
 
-  import SiwappWeb.ErrorHelpers, only: [render_not_found: 1]
-
   alias Siwapp.Customers.Customer
   alias Siwapp.Invoices
   alias Siwapp.Invoices.Invoice
@@ -17,18 +15,12 @@ defmodule SiwappWeb.PageController do
     invoice =
       id
       |> String.to_integer()
-      |> Invoices.get()
+      |> Invoices.get!()
 
-    case invoice do
-      nil ->
-        render_not_found(conn)
-
-      invoice ->
-        conn
-        |> assign(:invoice, invoice)
-        |> assign(:url_query_string, Map.delete(params, "id"))
-        |> render("show_invoice.html")
-    end
+    conn
+    |> assign(:invoice, invoice)
+    |> assign(:url_query_string, Map.delete(params, "id"))
+    |> render("show_invoice.html")
   end
 
   @spec download(Plug.Conn.t(), map) :: Plug.Conn.t()

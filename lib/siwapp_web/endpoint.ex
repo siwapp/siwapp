@@ -2,6 +2,9 @@ defmodule SiwappWeb.Endpoint do
   use Sentry.PlugCapture
   use Phoenix.Endpoint, otp_app: :siwapp
 
+  alias Phoenix.Controller
+  alias Plug.Conn
+
   # The session will be stored in the cookie and signed,
   # this means its contents can be read but not tampered with.
   # Set :encryption_salt if you would also like to encrypt it.
@@ -52,4 +55,28 @@ defmodule SiwappWeb.Endpoint do
   plug Plug.Head
   plug Plug.Session, @session_options
   plug SiwappWeb.Router
+
+  @impl true
+  def call(conn, opts) do
+    try do
+      super(conn, opts)
+    rescue
+      e ->
+        case e.reason do
+          %Ecto.NoResultsError{} ->
+            conn =
+              e.conn
+              |> Conn.put_private(:phoenix_layout, {SiwappWeb.LayoutView, :app})
+              |> Conn.put_status(:not_found)
+              |> Controller.put_view(SiwappWeb.ErrorView)
+              |> Controller.render(:"404")
+              |> Conn.halt()
+
+            call(conn, opts)
+
+          _ ->
+            raise e
+        end
+    end
+  end
 end
