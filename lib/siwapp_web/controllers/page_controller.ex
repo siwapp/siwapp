@@ -15,12 +15,18 @@ defmodule SiwappWeb.PageController do
     invoice =
       id
       |> String.to_integer()
-      |> Invoices.get!()
+      |> Invoices.get()
 
-    conn
-    |> assign(:invoice, invoice)
-    |> assign(:url_query_string, Map.delete(params, "id"))
-    |> render("show_invoice.html")
+    case invoice do
+      nil ->
+        raise SiwappWeb.Error.NotFound
+
+      invoice ->
+        conn
+        |> assign(:invoice, invoice)
+        |> assign(:url_query_string, Map.delete(params, "id"))
+        |> render("show_invoice.html")
+    end
   end
 
   @spec download(Plug.Conn.t(), map) :: Plug.Conn.t()

@@ -78,11 +78,17 @@ defmodule SiwappWeb.CustomersLive.Edit do
   end
 
   defp apply_action(socket, :edit, %{"id" => id}) do
-    customer = Customers.get!(String.to_integer(id))
+    customer = Customers.get(String.to_integer(id))
 
-    socket
-    |> assign(:page_title, customer.name)
-    |> assign(:customer, customer)
-    |> assign(:changeset, Customers.change(customer))
+    case customer do
+      nil ->
+        raise SiwappWeb.Error.NotFound
+
+      customer ->
+        socket
+        |> assign(:page_title, customer.name)
+        |> assign(:customer, customer)
+        |> assign(:changeset, Customers.change(customer))
+    end
   end
 end

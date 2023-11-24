@@ -55,28 +55,4 @@ defmodule SiwappWeb.Endpoint do
   plug Plug.Head
   plug Plug.Session, @session_options
   plug SiwappWeb.Router
-
-  @impl true
-  def call(conn, opts) do
-    try do
-      super(conn, opts)
-    rescue
-      e ->
-        case e.reason do
-          %Ecto.NoResultsError{} ->
-            conn =
-              e.conn
-              |> Conn.put_private(:phoenix_layout, {SiwappWeb.LayoutView, :app})
-              |> Conn.put_status(:not_found)
-              |> Controller.put_view(SiwappWeb.ErrorView)
-              |> Controller.render(:"404")
-              |> Conn.halt()
-
-            call(conn, opts)
-
-          _ ->
-            raise e
-        end
-    end
-  end
 end
