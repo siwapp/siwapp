@@ -55,8 +55,8 @@ defmodule Siwapp.Searches.SearchQuery do
   def filter_by(query, "meta_attribute", {key, value}) do
     where(
       query,
-      [],
-      fragment("meta_attributes->>? = ?", type(^key, :string), type(^value, :string))
+      [q],
+      fragment("?->>? = ?", q.meta_attributes, type(^key, :string), type(^value, :string))
     )
   end
 
