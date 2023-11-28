@@ -120,6 +120,8 @@ defmodule SiwappWeb.InvoicesLive.CustomerInputComponent do
     {:noreply, assign(socket, customer_name: name)}
   end
 
+  def handle_event("pick_customer", _assign, socket), do: {:noreply, socket}
+
   def handle_event("load-more", _, socket) do
     %{
       page: page,
