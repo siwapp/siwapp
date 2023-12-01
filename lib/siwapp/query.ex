@@ -17,7 +17,7 @@ defmodule Siwapp.Query do
   """
   @spec search_in_string(Ecto.Queryable.t(), atom, binary) :: Ecto.Query.t()
   def search_in_string(query, field, string_search_value) do
-    where(query, [q], ilike(field(q, ^field), ^string_search_value))
+    where(query, [q], ilike(field(q, ^field), ^"%#{string_search_value}%"))
   end
 
   @spec not_deleted(Ecto.Queryable.t()) :: Ecto.Query.t()
