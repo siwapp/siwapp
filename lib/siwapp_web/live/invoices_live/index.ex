@@ -178,7 +178,7 @@ defmodule SiwappWeb.InvoicesLive.Index do
 
   @spec download_url(MapSet.t()) :: binary
   def download_url(checked) do
-    "invoices/download" <>
+    "/invoices/download" <>
       (checked
        |> MapSet.to_list()
        |> Enum.reject(&(&1 == 0))

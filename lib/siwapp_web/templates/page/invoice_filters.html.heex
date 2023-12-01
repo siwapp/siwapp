@@ -60,6 +60,7 @@
       KEY
     </label>
     <%= text_input(@f, :key, class: "input") %>
+    <%= error_tag @f, :key, style: "margin: 0", phx_feedback_for: "" %>
   </div>
   <div class="column">
     <label class="label">

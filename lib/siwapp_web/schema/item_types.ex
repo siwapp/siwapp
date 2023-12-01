@@ -3,6 +3,11 @@ defmodule SiwappWeb.Schema.ItemTypes do
 
   use Absinthe.Schema.Notation
 
+  object :tax do
+    field :value, :integer
+    field :id, :integer
+  end
+
   object :item do
     field :id, :id
     field :quantity, :integer
@@ -10,5 +15,6 @@ defmodule SiwappWeb.Schema.ItemTypes do
     field :description, :string
     field :unitary_cost, :string
     field :invoice, :invoice
+    field :taxes, list_of(:tax)
   end
 end
