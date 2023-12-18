@@ -42,6 +42,6 @@ defmodule Siwapp.Application do
 
   @spec pdf_opts :: list()
   defp pdf_opts do
-    Application.get_env(:siwapp, :pdf_opts, [])
+    Application.get_env(:siwapp, :pdf_opts, [session_pool: [timeout: 10_000] ])
   end
 end
