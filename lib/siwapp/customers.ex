@@ -75,9 +75,17 @@ defmodule Siwapp.Customers do
   Gets a customer by id
   """
   @spec get!(binary | integer) :: Customer.t()
-  def get!(id), do: Repo.get!(Customer, id)
+  def get!(id) do
+    with nil <- Repo.get(Customer, id),
+         do: raise(Siwapp.Error.NotFoundError, id: id, type: "customer")
+  end
+
   @spec get!(binary, atom) :: Customer.t()
-  def get!(id, :preload), do: Customer |> Repo.get!(id) |> Repo.preload([:invoices])
+  def get!(id, :preload) do
+    id
+    |> get!()
+    |> Repo.preload([:invoices])
+  end
 
   @doc """
   Gets a customer by id
