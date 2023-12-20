@@ -1,9 +1,15 @@
+version: '3'
 services:
   db:
     image: postgres:13.5-alpine
     environment:
       POSTGRES_PASSWORD: postgres
-
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U layer -p 5432"]
+      interval: 5s
+      timeout: 25s
+      retries: 5
+      start_period: 5s
   siwapp:
     build:
       context: .
@@ -12,7 +18,8 @@ services:
       dockerfile: docker/Dockerfile
     command: elixir -S mix phx.server
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     entrypoint: [ "./docker/entrypoint.sh" ]
     environment:
       DB_HOST: db
@@ -21,4 +28,3 @@ services:
       - "4010:4010"
     volumes:
       - ${PWD}:/app
-version: '3'
