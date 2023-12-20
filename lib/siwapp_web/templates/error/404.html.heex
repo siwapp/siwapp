@@ -18,7 +18,10 @@
     </script>
   </head>
   <body class="has-navbar-fixed-top content">
-    <%= render(SiwappWeb.LayoutView, "nav.html", socket_or_conn: @conn, current_user: assigns[:current_user]) %>
+    <%= render(SiwappWeb.LayoutView, "nav.html",
+      socket_or_conn: @conn,
+      current_user: assigns[:current_user]
+    ) %>
     <main class="container section">
       <h1>Not Found</h1>
       <%= if Map.has_key?(@reason, :type) do %>
