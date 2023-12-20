@@ -136,16 +136,16 @@ defmodule Siwapp.Invoices do
 
   @spec get!(pos_integer() | binary()) :: Invoice.t()
   def get!(id) do
-    Invoice
-    |> Query.not_deleted()
-    |> Repo.get!(id)
+    query = Query.not_deleted(Invoice)
+
+    with nil <- Repo.get(query, id),
+         do: raise(Siwapp.Error.NotFoundError, id: id, type: "invoice")
   end
 
   @spec get!(pos_integer(), keyword()) :: Invoice.t()
   def get!(id, preload: list) do
-    Invoice
-    |> Query.not_deleted()
-    |> Repo.get!(id)
+    id
+    |> get!()
     |> Repo.preload(list)
   end
 
