@@ -17,9 +17,8 @@
     <script src="https://kit.fontawesome.com/138af46218.js" crossorigin="anonymous">
     </script>
   </head>
-
   <body class="has-navbar-fixed-top content">
-    <%= render(SiwappWeb.LayoutView, "nav_404.html", socket_or_conn: @conn) %>
+    <%= render(SiwappWeb.LayoutView, "nav.html", socket_or_conn: @conn, current_user: @current_user) %>
     <main class="container section">
       <h1>Not Found</h1>
       <%= if Map.has_key?(@reason, :type) do %>
