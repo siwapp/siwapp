@@ -15,5 +15,6 @@ defmodule SiwappWeb.ErrorView do
   # This pattern match is to make sure that the api calls
   # receiving 404 do receive this text instead of the
   # current template
+  @spec render(binary, map) :: binary
   def render("404.html", %{conn: %{path_info: ["api" | _]}}), do: "Not Found"
 end
