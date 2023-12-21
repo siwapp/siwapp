@@ -34,6 +34,7 @@ defmodule Siwapp.Invoices.Item do
     field :discount, :integer, default: 0
     field :description, :string
     field :unitary_cost, :integer, default: 0
+    field :base_amount, :integer, virtual: true, default: 0
     field :net_amount, :integer, virtual: true, default: 0
     field :taxes_amount, :map, virtual: true, default: %{}
     field :virtual_unitary_cost, :decimal, virtual: true
@@ -58,24 +59,26 @@ defmodule Siwapp.Invoices.Item do
   end
 
   @doc """
-  Performs the totals calculations for net_amount and taxes_amount fields.
+  Performs the totals calculations for base_amount, net_amount and taxes_amount fields.
   """
   @spec calculate(Ecto.Changeset.t()) :: Ecto.Changeset.t()
   def calculate(changeset) do
     changeset
-    |> set_net_amount()
+    |> set_amounts()
     |> set_taxes_amount()
   end
 
-  @spec set_net_amount(Ecto.Changeset.t()) :: Ecto.Changeset.t()
-  defp set_net_amount(changeset) do
+  @spec set_amounts(Ecto.Changeset.t()) :: Ecto.Changeset.t()
+  defp set_amounts(changeset) do
     quantity = get_field(changeset, :quantity)
     unitary_cost = get_field(changeset, :unitary_cost)
     discount = get_field(changeset, :discount)
+    base_amount = quantity * unitary_cost
+    net_amount = round(base_amount * (1 - discount / 100))
 
-    net_amount = round(quantity * unitary_cost * (1 - discount / 100))
-
-    put_change(changeset, :net_amount, net_amount)
+    changeset
+    |> put_change(:base_amount, base_amount)
+    |> put_change(:net_amount, net_amount)
   end
 
   @spec set_taxes_amount(Ecto.Changeset.t()) :: Ecto.Changeset.t()
