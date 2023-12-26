@@ -123,8 +123,7 @@ defmodule SiwappWeb.TaxesComponent do
     new_items =
       items
       |> Enum.with_index(0)
-      |> Enum.map(fn {value, index} -> {"#{index}", value} end)
-      |> Map.new()
+      |> Map.new(fn {value, index} -> {"#{index}", value} end)
 
     Map.put(structure, "items", new_items)
   end
