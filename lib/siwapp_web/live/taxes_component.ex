@@ -119,7 +119,7 @@ defmodule SiwappWeb.TaxesComponent do
   @spec normalize_items_params(map | list) :: map
   defp normalize_items_params(%{"items" => %{}} = structure), do: structure
 
-  defp normalize_items_params(%{"items" => items} = structure) do
+  defp normalize_items_params(%{"items" => items} = structure) when is_list(items) do
     new_items =
       items
       |> Enum.with_index(0)
