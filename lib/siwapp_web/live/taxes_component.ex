@@ -68,8 +68,9 @@ defmodule SiwappWeb.TaxesComponent do
     selected = MapSet.delete(socket.assigns.selected, {key, value})
 
     params =
-      put_in(
-        socket.assigns.f.params,
+      socket.assigns.f.params
+      |> normalize_items_params()
+      |> put_in(
         ["items", index, "taxes"],
         Enum.map(selected, fn {k, _v} -> k end)
       )
@@ -86,8 +87,9 @@ defmodule SiwappWeb.TaxesComponent do
     selected = MapSet.put(socket.assigns.selected, {key, value})
 
     params =
-      put_in(
-        socket.assigns.f.params,
+      socket.assigns.f.params
+      |> normalize_items_params()
+      |> put_in(
         ["items", index, "taxes"],
         Enum.map(selected, fn {k, _v} -> k end)
       )
@@ -112,5 +114,17 @@ defmodule SiwappWeb.TaxesComponent do
     else
       Map.get(item.data, :taxes)
     end
+  end
+
+  @spec normalize_items_params(map | list) :: map
+  defp normalize_items_params(%{"items" => %{}} = structure), do: structure
+
+  defp normalize_items_params(%{"items" => items} = structure) when is_list(items) do
+    new_items =
+      items
+      |> Enum.with_index(0)
+      |> Map.new(fn {value, index} -> {"#{index}", value} end)
+
+    Map.put(structure, "items", new_items)
   end
 end
