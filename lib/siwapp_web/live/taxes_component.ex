@@ -69,7 +69,7 @@ defmodule SiwappWeb.TaxesComponent do
 
     params =
       put_in(
-        socket.assigns.f.params,
+        unify_items_structure(socket.assigns.f.params),
         ["items", index, "taxes"],
         Enum.map(selected, fn {k, _v} -> k end)
       )
@@ -87,7 +87,7 @@ defmodule SiwappWeb.TaxesComponent do
 
     params =
       put_in(
-        socket.assigns.f.params,
+        unify_items_structure(socket.assigns.f.params),
         ["items", index, "taxes"],
         Enum.map(selected, fn {k, _v} -> k end)
       )
@@ -112,5 +112,18 @@ defmodule SiwappWeb.TaxesComponent do
     else
       Map.get(item.data, :taxes)
     end
+  end
+
+  @spec unify_items_structure(map | list) :: map
+  defp unify_items_structure(%{"items" => %{}} = structure), do: structure
+
+  defp unify_items_structure(%{"items" => items} = structure) do
+    new_items =
+      items
+      |> Enum.with_index(0)
+      |> Enum.map(fn {value, index} -> {"#{index}", value} end)
+      |> Map.new()
+
+    Map.put(structure, "items", new_items)
   end
 end
