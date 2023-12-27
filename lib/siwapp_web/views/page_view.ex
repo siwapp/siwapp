@@ -7,7 +7,11 @@ defmodule SiwappWeb.PageView do
   to see more options available
   """
   @spec money_format(number, atom | binary, keyword) :: binary
-  def money_format(value, currency, options \\ []) do
+  def money_format(value, currency, options \\ [])
+
+  def money_format(value, nil, options), do: money_format(value, "EUR", options)
+
+  def money_format(value, currency, options) do
     value
     |> Money.new(currency)
     |> Money.to_string(options)
