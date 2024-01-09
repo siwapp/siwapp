@@ -12,6 +12,7 @@ defmodule Siwapp.Sentry do
 
     @spec exclude_exception?(struct, atom) :: boolean
     def exclude_exception?(%Siwapp.Error.NotFoundError{}, _), do: true
+    def exclude_exception?(%Phoenix.Router.NoRouteError{}, _), do: true
     def exclude_exception?(_exception, _source), do: false
   end
 end
