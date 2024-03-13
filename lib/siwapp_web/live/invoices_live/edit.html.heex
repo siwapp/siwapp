@@ -21,7 +21,7 @@
         <%= label(f, :series_id, class: "label") %>
         <p class=" control select is-fullwidth">
           <%= if @live_action == :new do %>
-            <%= select(f, :series_id, Enum.map(@series, &[key: &1.name, value: &1.id, selected: &1.default])) %>
+            <%= select(f, :series_id, Enum.map(@series, &[key: &1.name, value: &1.id])) %>
           <% else %>
             <%= select(f, :series_id, Enum.map(@series, &{&1.name, &1.id})) %>
           <% end %>
