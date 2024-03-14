@@ -288,6 +288,7 @@ defmodule Siwapp.Invoices do
       Invoice.fields() -- [:paid_amount, :paid, :sent_by_email, :number, :recurring_invoice_id]
 
     new_items_attrs = Enum.map(invoice.items, &take_items_attrs(&1))
+
     attrs =
       invoice
       |> Map.take(params_keys)
