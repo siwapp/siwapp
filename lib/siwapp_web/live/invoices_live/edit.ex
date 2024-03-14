@@ -145,6 +145,7 @@ defmodule SiwappWeb.InvoicesLive.Edit do
           Phoenix.LiveView.Socket.t()
   defp apply_action(socket, :new, %{"id" => id}) do
     invoice = Invoices.get!(id, preload: [{:items, :taxes}, :payments, :series, :customer])
+
     socket
     |> assign(:action, :new)
     |> assign(:page_title, "New Invoice")
@@ -193,6 +194,7 @@ defmodule SiwappWeb.InvoicesLive.Edit do
   defp set_default_series(invoice) do
     selected_series = invoice.series.id
     all_series = Commons.list_series()
+
     Enum.map(all_series, fn x -> [key: x.name, value: x.id, selected: x.id == selected_series] end)
   end
 
