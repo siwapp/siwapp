@@ -11,7 +11,7 @@ defmodule SiwappWeb.InvoicesLive.Edit do
   def mount(params, _session, socket) do
     {:ok,
      socket
-     |> assign(:series, Commons.list_series())
+     |> assign(:series, set_default_series())
      |> assign(:url_query_string, Map.delete(params, "id"))
      |> assign(:currency_options, Invoices.list_currencies())}
   end
@@ -144,16 +144,13 @@ defmodule SiwappWeb.InvoicesLive.Edit do
   @spec apply_action(Phoenix.LiveView.Socket.t(), :new | :edit, map()) ::
           Phoenix.LiveView.Socket.t()
   defp apply_action(socket, :new, %{"id" => id}) do
+    invoice = Invoices.get!(id, preload: [{:items, :taxes}, :payments, :series, :customer])
     socket
     |> assign(:action, :new)
     |> assign(:page_title, "New Invoice")
     |> assign(:invoice, %Invoice{})
-    |> assign(
-      :changeset,
-      Invoices.duplicate(
-        Invoices.get!(id, preload: [{:items, :taxes}, :payments, :series, :customer])
-      )
-    )
+    |> assign(:series, set_default_series(invoice))
+    |> assign(:changeset, Invoices.duplicate(invoice))
   end
 
   defp apply_action(socket, :new, _params) do
@@ -176,6 +173,7 @@ defmodule SiwappWeb.InvoicesLive.Edit do
     |> assign(:action, :edit)
     |> assign(:page_title, "#{invoice.series.code}-#{Map.get(invoice, :number)}")
     |> assign(:invoice, invoice)
+    |> assign(:series, set_default_series(invoice))
     |> assign(
       :changeset,
       Invoices.change(invoice, %{
@@ -183,6 +181,19 @@ defmodule SiwappWeb.InvoicesLive.Edit do
         "payments" => payments_as_params(invoice.payments)
       })
     )
+  end
+
+  @spec set_default_series() :: list
+  defp set_default_series() do
+    Commons.list_series()
+    |> Enum.map(fn x -> [key: x.name, value: x.id, selected: x.default] end)
+  end
+
+  @spec set_default_series(invoice :: Invoice.t()) :: list
+  defp set_default_series(invoice) do
+    selected_series = invoice.series.id
+    all_series = Commons.list_series()
+    Enum.map(all_series, fn x -> [key: x.name, value: x.id, selected: x.id == selected_series] end)
   end
 
   @spec put_assoc_if_empty(map()) :: map()
