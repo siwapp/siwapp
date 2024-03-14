@@ -184,10 +184,9 @@ defmodule SiwappWeb.InvoicesLive.Edit do
     )
   end
 
-  @spec set_default_series() :: list
-  defp set_default_series() do
-    Commons.list_series()
-    |> Enum.map(fn x -> [key: x.name, value: x.id, selected: x.default] end)
+  @spec set_default_series :: list
+  defp set_default_series do
+    Enum.map(Commons.list_series(), fn x -> [key: x.name, value: x.id, selected: x.default] end)
   end
 
   @spec set_default_series(invoice :: Invoice.t()) :: list
