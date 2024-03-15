@@ -7,11 +7,17 @@ defmodule SiwappWeb.InvoicesLive.Edit do
   alias Siwapp.Invoices
   alias Siwapp.Invoices.Invoice
 
+  @typep series_options :: list(
+    keyword(key: String.t(), value: String.t(), selected: String.t())
+  )
+
   @impl Phoenix.LiveView
   def mount(params, _session, socket) do
+    series = Commons.list_series()
     {:ok,
      socket
-     |> assign(:series, set_default_series())
+     |> assign(:series, series)
+     |> assign(:series_options, set_series_options(series))
      |> assign(:url_query_string, Map.delete(params, "id"))
      |> assign(:currency_options, Invoices.list_currencies())}
   end
@@ -150,7 +156,7 @@ defmodule SiwappWeb.InvoicesLive.Edit do
     |> assign(:action, :new)
     |> assign(:page_title, "New Invoice")
     |> assign(:invoice, %Invoice{})
-    |> assign(:series, set_default_series(invoice))
+    |> then(&assign(&1, :series_options, set_series_options(&1, invoice)))
     |> assign(:changeset, Invoices.duplicate(invoice))
   end
 
@@ -174,7 +180,7 @@ defmodule SiwappWeb.InvoicesLive.Edit do
     |> assign(:action, :edit)
     |> assign(:page_title, "#{invoice.series.code}-#{Map.get(invoice, :number)}")
     |> assign(:invoice, invoice)
-    |> assign(:series, set_default_series(invoice))
+    |> then(&assign(&1, :series_options, set_series_options(&1, invoice)))
     |> assign(
       :changeset,
       Invoices.change(invoice, %{
@@ -184,17 +190,15 @@ defmodule SiwappWeb.InvoicesLive.Edit do
     )
   end
 
-  @spec set_default_series :: list
-  defp set_default_series do
-    Enum.map(Commons.list_series(), fn x -> [key: x.name, value: x.id, selected: x.default] end)
+  @spec set_series_options(series :: list(Series.t())) :: series_options
+  defp set_series_options(series) do
+    Enum.map(series, &[key: &1.name, value: &1.id, selected: &1.default])
   end
 
-  @spec set_default_series(invoice :: Invoice.t()) :: list
-  defp set_default_series(invoice) do
+  @spec set_series_options(socket :: Socket.t(), invoice :: Invoice.t()) :: series_options
+  defp set_series_options(socket, invoice) do
     selected_series = invoice.series.id
-    all_series = Commons.list_series()
-
-    Enum.map(all_series, fn x -> [key: x.name, value: x.id, selected: x.id == selected_series] end)
+    Enum.map(socket.assigns.series, &[key: &1.name, value: &1.id, selected: &1.id == selected_series])
   end
 
   @spec put_assoc_if_empty(map()) :: map()

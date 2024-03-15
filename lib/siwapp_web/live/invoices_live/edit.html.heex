@@ -20,7 +20,7 @@
       <div class="field">
         <%= label(f, :series_id, class: "label") %>
         <p class=" control select is-fullwidth">
-          <%= select(f, :series_id, @series) %>
+          <%= select(f, :series_id, @series_options) %>
         </p>
         <%= error_tag(f, :series_id) %>
       </div>
