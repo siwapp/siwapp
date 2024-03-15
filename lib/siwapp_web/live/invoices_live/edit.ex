@@ -6,6 +6,7 @@ defmodule SiwappWeb.InvoicesLive.Edit do
   alias Siwapp.Commons
   alias Siwapp.Invoices
   alias Siwapp.Invoices.Invoice
+  alias Siwapp.Commons.Series
 
   @typep series_options :: list(keyword(key: String.t(), value: String.t(), selected: String.t()))
 
