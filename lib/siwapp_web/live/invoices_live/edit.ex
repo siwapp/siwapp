@@ -7,13 +7,12 @@ defmodule SiwappWeb.InvoicesLive.Edit do
   alias Siwapp.Invoices
   alias Siwapp.Invoices.Invoice
 
-  @typep series_options :: list(
-    keyword(key: String.t(), value: String.t(), selected: String.t())
-  )
+  @typep series_options :: list(keyword(key: String.t(), value: String.t(), selected: String.t()))
 
   @impl Phoenix.LiveView
   def mount(params, _session, socket) do
     series = Commons.list_series()
+
     {:ok,
      socket
      |> assign(:series, series)
@@ -198,7 +197,11 @@ defmodule SiwappWeb.InvoicesLive.Edit do
   @spec set_series_options(socket :: Socket.t(), invoice :: Invoice.t()) :: series_options
   defp set_series_options(socket, invoice) do
     selected_series = invoice.series.id
-    Enum.map(socket.assigns.series, &[key: &1.name, value: &1.id, selected: &1.id == selected_series])
+
+    Enum.map(
+      socket.assigns.series,
+      &[key: &1.name, value: &1.id, selected: &1.id == selected_series]
+    )
   end
 
   @spec put_assoc_if_empty(map()) :: map()
