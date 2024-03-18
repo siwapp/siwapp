@@ -292,6 +292,8 @@ defmodule Siwapp.Invoices do
     attrs =
       invoice
       |> Map.take(params_keys)
+      |> Map.put(:due_date, Date.utc_today())
+      |> Map.put(:issue_date, Date.utc_today())
       |> Map.put(:items, new_items_attrs)
 
     change(%Invoice{}, attrs)

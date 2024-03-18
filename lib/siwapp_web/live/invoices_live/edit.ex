@@ -3,15 +3,22 @@ defmodule SiwappWeb.InvoicesLive.Edit do
   use SiwappWeb, :live_view
 
   alias Phoenix.LiveView.JS
+  alias Phoenix.LiveView.Socket
   alias Siwapp.Commons
+  alias Siwapp.Commons.Series
   alias Siwapp.Invoices
   alias Siwapp.Invoices.Invoice
 
+  @typep series_options :: list(keyword(key: String.t(), value: String.t(), selected: String.t()))
+
   @impl Phoenix.LiveView
   def mount(params, _session, socket) do
+    series = Commons.list_series()
+
     {:ok,
      socket
-     |> assign(:series, Commons.list_series())
+     |> assign(:series, series)
+     |> assign(:series_options, set_series_options(series))
      |> assign(:url_query_string, Map.delete(params, "id"))
      |> assign(:currency_options, Invoices.list_currencies())}
   end
@@ -144,16 +151,14 @@ defmodule SiwappWeb.InvoicesLive.Edit do
   @spec apply_action(Phoenix.LiveView.Socket.t(), :new | :edit, map()) ::
           Phoenix.LiveView.Socket.t()
   defp apply_action(socket, :new, %{"id" => id}) do
+    invoice = Invoices.get!(id, preload: [{:items, :taxes}, :payments, :series, :customer])
+
     socket
     |> assign(:action, :new)
     |> assign(:page_title, "New Invoice")
     |> assign(:invoice, %Invoice{})
-    |> assign(
-      :changeset,
-      Invoices.duplicate(
-        Invoices.get!(id, preload: [{:items, :taxes}, :payments, :series, :customer])
-      )
-    )
+    |> then(&assign(&1, :series_options, set_series_options(&1, invoice)))
+    |> assign(:changeset, Invoices.duplicate(invoice))
   end
 
   defp apply_action(socket, :new, _params) do
@@ -176,12 +181,28 @@ defmodule SiwappWeb.InvoicesLive.Edit do
     |> assign(:action, :edit)
     |> assign(:page_title, "#{invoice.series.code}-#{Map.get(invoice, :number)}")
     |> assign(:invoice, invoice)
+    |> then(&assign(&1, :series_options, set_series_options(&1, invoice)))
     |> assign(
       :changeset,
       Invoices.change(invoice, %{
         "items" => items_as_params(invoice.items),
         "payments" => payments_as_params(invoice.payments)
       })
+    )
+  end
+
+  @spec set_series_options(series :: list(Series.t())) :: series_options
+  defp set_series_options(series) do
+    Enum.map(series, &[key: &1.name, value: &1.id, selected: &1.default])
+  end
+
+  @spec set_series_options(socket :: Socket.t(), invoice :: Invoice.t()) :: series_options
+  defp set_series_options(socket, invoice) do
+    selected_series = invoice.series.id
+
+    Enum.map(
+      socket.assigns.series,
+      &[key: &1.name, value: &1.id, selected: &1.id == selected_series]
     )
   end
 

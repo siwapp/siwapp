@@ -20,11 +20,7 @@
       <div class="field">
         <%= label(f, :series_id, class: "label") %>
         <p class=" control select is-fullwidth">
-          <%= if @live_action == :new do %>
-            <%= select(f, :series_id, Enum.map(@series, &[key: &1.name, value: &1.id, selected: &1.default])) %>
-          <% else %>
-            <%= select(f, :series_id, Enum.map(@series, &{&1.name, &1.id})) %>
-          <% end %>
+          <%= select(f, :series_id, @series_options) %>
         </p>
         <%= error_tag(f, :series_id) %>
       </div>
