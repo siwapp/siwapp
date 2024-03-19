@@ -36,7 +36,11 @@
             class: "button is-info",
             disabled: not @changeset.valid?
           ) %>
-          <%= submit("Search", class: "button is-info", disabled: not @changeset.valid?, "phx-click": JS.hide(to: "#search-menu")) %>
+          <%= submit("Search",
+            class: "button is-info",
+            disabled: not @changeset.valid?,
+            "phx-click": JS.hide(to: "#search-menu")
+          ) %>
         </div>
       </div>
     </div>
