@@ -2,7 +2,7 @@
   <%= @page_title %>
 </h1>
 
-<.form let={f} for={@changeset} phx-change="validate" phx-submit="save">
+<.form :let={f} for={@changeset} phx-change="validate" phx-submit="save">
   <%= if @live_action == :new do %>
     <div class="field">
       <label class="checkbox">

@@ -3,9 +3,6 @@ defmodule Siwapp.Telemetry.Plugin.Phoenix do
 
   use PromEx.Plugin
 
-  @prometheus_bucket [1, 10, 100, 500, 1_000, 2_000, 3_000, 4_000, 5_000, 7_000, 10_000]
-  @time :millisecond
-
   @impl true
   def event_metrics(_opts) do
     [

@@ -2,7 +2,7 @@
   <div class="content">
     <h1>Log in</h1>
   </div>
-  <.form let={f} for={@conn} action={Routes.user_session_path(@conn, :create)} as={:user}>
+  <.form :let={f} for={@conn} action={Routes.user_session_path(@conn, :create)} as={:user}>
     <%= if @error_message do %>
       <div class="alert alert-danger">
         <p>
