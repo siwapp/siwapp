@@ -30,4 +30,3 @@ services:
       - "4010:4010"
     volumes:
       - ${PWD}:/app
-version: '3'
