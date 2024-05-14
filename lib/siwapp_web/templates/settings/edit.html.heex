@@ -1,6 +1,6 @@
 <fieldset class="fieldset">
   <h1>Settings</h1>
-  <br>
+  <br />
   <.form :let={f} for={@changeset} action={Routes.settings_path(@conn, :update)}>
     <%= if @changeset.action do %>
       <div class="alert alert-danger">

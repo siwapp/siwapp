@@ -41,7 +41,7 @@
           checked={Enum.member?(@checked, 0)}
           phx-click="click_checkbox"
           phx-value-id="0"
-        >
+        />
       </th>
     <% end %>
     <th title="email">
@@ -59,7 +59,7 @@
           phx-click="click_checkbox"
           checked={Enum.member?(@checked, user.id)}
           phx-value-id={user.id}
-        >
+        />
       </td>
       <td>
         <%= user.email %>

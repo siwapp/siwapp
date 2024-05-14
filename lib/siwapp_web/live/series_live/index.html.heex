@@ -35,7 +35,12 @@
     <%= for series <- @series_list do %>
       <tr phx-click="edit" phx-value-id={series.id} class="is-clickable">
         <td class="icon table-icon">
-          <input type="radio" phx-click="defaultClicked" phx-value-id={series.id} checked={series.default}>
+          <input
+            type="radio"
+            phx-click="defaultClicked"
+            phx-value-id={series.id}
+            checked={series.default}
+          />
         </td>
         <td>
           <%= series.name %>

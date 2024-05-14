@@ -8,20 +8,25 @@
             checked={Enum.member?(@checked, 0)}
             phx-click="click_checkbox"
             phx-value-id="0"
-          >
+          />
         </th>
       <% end %>
       <th title="Reference">
         Reference
       </th>
       <th title="Customer">
-        Customer Name <%= if assigns[:sort_map] do %>
+        Customer Name
+        <%= if assigns[:sort_map] do %>
           <SiwappWeb.Component.Sortener.sortener_button sort_map={@sort_map} current_field="name" />
         <% end %>
       </th>
       <th title="Date">
-        Date <%= if assigns[:sort_map] do %>
-          <SiwappWeb.Component.Sortener.sortener_button sort_map={@sort_map} current_field="issue_date" />
+        Date
+        <%= if assigns[:sort_map] do %>
+          <SiwappWeb.Component.Sortener.sortener_button
+            sort_map={@sort_map}
+            current_field="issue_date"
+          />
         <% end %>
       </th>
       <th title="Sent">
@@ -34,8 +39,12 @@
         Pending
       </th>
       <th title="Total" class="has-text-right">
-        Total <%= if assigns[:sort_map] do %>
-          <SiwappWeb.Component.Sortener.sortener_button sort_map={@sort_map} current_field="gross_amount" />
+        Total
+        <%= if assigns[:sort_map] do %>
+          <SiwappWeb.Component.Sortener.sortener_button
+            sort_map={@sort_map}
+            current_field="gross_amount"
+          />
         <% end %>
       </th>
     </tr>
@@ -51,7 +60,7 @@
               phx-click="click_checkbox"
               checked={Enum.member?(@checked, invoice.id)}
               phx-value-id={invoice.id}
-            >
+            />
           </td>
         <% end %>
         <td>
@@ -82,7 +91,6 @@
               </span>
             </td>
             <td></td>
-
           <% :failed -> %>
             <td class="table-span">
               <span class="tag is-black">
@@ -90,7 +98,6 @@
               </span>
             </td>
             <td></td>
-
           <% :paid -> %>
             <td class="table-span">
               <span class="tag is-success">
@@ -98,7 +105,6 @@
               </span>
             </td>
             <td></td>
-
           <% :pending -> %>
             <td class="table-span">
               <span class="tag is-warning">
@@ -108,7 +114,6 @@
             <td class="has-text-right">
               <%= money_format(invoice.gross_amount - invoice.paid_amount, invoice.currency) %>
             </td>
-
           <% :past_due -> %>
             <td class="table-span">
               <span class="tag is-danger">

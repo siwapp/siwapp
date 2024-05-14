@@ -75,7 +75,8 @@ defmodule SiwappWeb.InvoicesLive.CustomerInputComponent do
                 data-page={@page}
                 data-no_more_queries={@no_more_queries}
                 phx-target={@myself}
-              ></div>
+              >
+              </div>
             </div>
           </div>
         </div>

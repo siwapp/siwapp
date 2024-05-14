@@ -40,23 +40,32 @@
               to: Routes.user_settings_path(@socket_or_conn, :edit),
               class: "navbar-item"
             ) %>
-            <hr class="navbar-divider">
+            <hr class="navbar-divider" />
             <%= if @current_user.admin do %>
-              <%= live_redirect("Users", to: Routes.users_index_path(@socket_or_conn, :index), class: "navbar-item") %>
-              <hr class="navbar-divider">
+              <%= live_redirect("Users",
+                to: Routes.users_index_path(@socket_or_conn, :index),
+                class: "navbar-item"
+              ) %>
+              <hr class="navbar-divider" />
             <% end %>
-            <%= live_redirect("Settings", to: Routes.settings_path(@socket_or_conn, :edit), class: "navbar-item") %>
-            <hr class="navbar-divider">
+            <%= live_redirect("Settings",
+              to: Routes.settings_path(@socket_or_conn, :edit),
+              class: "navbar-item"
+            ) %>
+            <hr class="navbar-divider" />
             <%= live_redirect("Series",
               to: Routes.series_index_path(@socket_or_conn, :index),
               class: "navbar-item"
             ) %>
-            <%= live_redirect("Taxes", to: Routes.taxes_index_path(@socket_or_conn, :index), class: "navbar-item") %>
+            <%= live_redirect("Taxes",
+              to: Routes.taxes_index_path(@socket_or_conn, :index),
+              class: "navbar-item"
+            ) %>
             <%= live_redirect("Templates",
               to: Routes.templates_index_path(@socket_or_conn, :index),
               class: "navbar-item"
             ) %>
-            <hr class="navbar-divider">
+            <hr class="navbar-divider" />
             <%= link("Log out",
               to: Routes.user_session_path(@socket_or_conn, :delete),
               method: :delete,

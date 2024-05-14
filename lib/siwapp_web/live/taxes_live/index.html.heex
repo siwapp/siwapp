@@ -26,7 +26,12 @@
     <%= for tax <- @taxes do %>
       <tr phx-click="edit" phx-value-id={tax.id} class="is-clickable">
         <td class="icon table-icon">
-          <input type="checkbox" phx-click="defaultClicked" phx-value-id={tax.id} checked={tax.default}>
+          <input
+            type="checkbox"
+            phx-click="defaultClicked"
+            phx-value-id={tax.id}
+            checked={tax.default}
+          />
         </td>
         <td>
           <%= tax.name %>

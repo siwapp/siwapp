@@ -6,7 +6,6 @@ defmodule SiwappWeb.ErrorHelpers do
   import Phoenix.HTML.Form
   use PhoenixHTMLHelpers
 
-
   @doc """
   Generates tag for inlined form input errors.
   """

@@ -11,7 +11,12 @@ defmodule SiwappWeb.Component.Sortener do
   def sortener_button(assigns) do
     ~H"""
     <%= if @sort_map.field == @current_field and @sort_map.order == "asc" do %>
-      <span class="pointer" phx-click="reorder" phx-value-field={@current_field} phx-value-order="desc">
+      <span
+        class="pointer"
+        phx-click="reorder"
+        phx-value-field={@current_field}
+        phx-value-order="desc"
+      >
         <svg
           width="16px"
           height="16px"
