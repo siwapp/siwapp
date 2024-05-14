@@ -33,7 +33,7 @@
     </div>
     <div class="column is-narrow-desktop"></div>
   </div>
-  <%= for fi <- @inputs_for do %>
+  <.inputs_for :let={fi} field={@f[:items]}>
     <div class="columns is-multiline-mobile is-1 is-variable">
       <%= if fi.data.id do %>
         <%= hidden_input(fi, :id) %>
@@ -90,7 +90,7 @@
         </p>
       </div>
     </div>
-  <% end %>
+  </.inputs_for>
   <div class="columns is-desktop">
     <div class="column is-2">
       <%= link("Add Line",

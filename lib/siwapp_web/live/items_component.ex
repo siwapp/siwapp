@@ -19,8 +19,7 @@ defmodule SiwappWeb.ItemsComponent do
      socket
      |> assign(f: assigns.f)
      |> assign(changeset: assigns.f.source)
-     |> assign(currency: Changeset.get_field(assigns.f.source, :currency))
-     |> assign(inputs_for: assigns.inputs_for)}
+     |> assign(currency: Changeset.get_field(assigns.f.source, :currency))}
   end
 
   @impl Phoenix.LiveComponent

@@ -62,7 +62,6 @@
       module={SiwappWeb.ItemsComponent}
       id="items"
       f={f}
-      inputs_for={inputs_for(f, :items)}
     />
   </fieldset>
 
@@ -70,7 +69,7 @@
     <fieldset class="fieldset">
       <h2>Payments</h2>
 
-      <%= for fp <- inputs_for(f, :payments) do %>
+      <.inputs_for :let={fp} field={f[:payments]}>
         <div class="columns is-multiline-mobile is-1 is-variable">
           <%= if fp.data.id do %>
             <%= hidden_input(fp, :id) %>
@@ -116,7 +115,7 @@
             </p>
           </div>
         </div>
-      <% end %>
+      </.inputs_for>
 
       <%= link("Add Payment",
         to: "#",
