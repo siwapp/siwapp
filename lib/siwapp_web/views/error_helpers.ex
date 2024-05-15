@@ -3,8 +3,8 @@ defmodule SiwappWeb.ErrorHelpers do
   Conveniences for translating and building error messages.
   """
 
-  import Phoenix.HTML.Form
   use PhoenixHTMLHelpers
+  import Phoenix.HTML.Form
 
   @doc """
   Generates tag for inlined form input errors.
