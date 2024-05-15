@@ -1,5 +1,5 @@
 # To fetch schema from
-introspection: http://localhost:4000/graphql
+introspection: http://localhost:4010/graphql
 
 servers: # same format as for OpenAPI Specification
   - url: https://dev-server.com
