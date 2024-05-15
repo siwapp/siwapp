@@ -1,16 +1,14 @@
 <h1>Taxes</h1>
 
 <%= if @live_action in [:new, :edit] do %>
-  <SiwappWeb.ModalComponent.modal
-    id="modal"
-    return_to={Routes.taxes_index_path(@socket, :index)}>
-      <.live_component
-        id="form"
-        module={SiwappWeb.TaxesLive.FormComponent}
-        tax={@tax || %Siwapp.Commons.Tax{}}
-        title={@page_title}
-        action={@live_action}
-      />
+  <SiwappWeb.ModalComponent.modal id="modal" return_to={Routes.taxes_index_path(@socket, :index)}>
+    <.live_component
+      id="form"
+      module={SiwappWeb.TaxesLive.FormComponent}
+      tax={@tax || %Siwapp.Commons.Tax{}}
+      title={@page_title}
+      action={@live_action}
+    />
   </SiwappWeb.ModalComponent.modal>
 <% end %>
 

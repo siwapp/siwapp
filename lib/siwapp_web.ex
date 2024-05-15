@@ -53,7 +53,7 @@ defmodule SiwappWeb do
   def live_view do
     quote do
       use Phoenix.LiveView,
-        layout: {SiwappWeb.LayoutView, "live.html"}
+        layout: {SiwappWeb.LayoutView, :live}
 
       unquote(view_helpers())
     end

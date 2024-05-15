@@ -55,7 +55,13 @@ defmodule SiwappWeb.LayoutView do
 
   @spec new_button(binary, binary) :: any()
   defp new_button(text, to) do
-    live_redirect(text, to: to, method: :get, class: "button is-info")
+    render_button(%{text: text, to: to})
+  end
+
+  defp render_button(assigns) do
+    ~H"""
+    <.link navigate={@to} class="button is-info"><%= @text %></.link>
+    """
   end
 
   @spec which_view(atom()) :: binary()
