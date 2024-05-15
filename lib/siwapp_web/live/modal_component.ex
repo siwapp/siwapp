@@ -15,8 +15,17 @@ defmodule SiwappWeb.ModalComponent do
       phx-page-loading
     >
       <div class="phx-modal-content">
-        <%= live_patch(raw("&times;"), to: @return_to, class: "phx-modal-close") %>
-        <%= live_component(@component, @opts) %>
+        <.link navigate={@return_to} class="phx-modal-close">&times;</.link>
+        <.live_component
+          id="form"
+          module={@component}
+          series={@series}
+          tax={@tax}
+          user={@user}
+          current_user_id={@current_user_id}
+          title={@title}
+          action={@action}
+        />
       </div>
     </div>
     """

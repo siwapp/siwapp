@@ -1,14 +1,18 @@
 <h1>Users</h1>
 
 <%= if @live_action in [:new, :edit] do %>
-  <%= live_modal(SiwappWeb.UsersLive.FormComponent,
-    id: @user.id || :new,
-    current_user_id: @current_user.id,
-    title: @page_title,
-    action: @live_action,
-    user: @user || %Siwapp.Accounts.User{},
-    return_to: Routes.users_index_path(@socket, :index)
-  ) %>
+  <.live_component
+    id="modal"
+    module={SiwappWeb.ModalComponent}
+    return_to={Routes.users_index_path(@socket, :index)}
+    component={SiwappWeb.UsersLive.FormComponent}
+    series={nil}
+    tax={nil}
+    user={@user || %Siwapp.Accounts.User{}}
+    current_user_id={@current_user.id}
+    title={@page_title}
+    action={@live_action}
+  />
 <% end %>
 <nav
   class={"navbar is-fixed-bottom
