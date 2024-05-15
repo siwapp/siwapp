@@ -1,20 +1,18 @@
 <h1>Series</h1>
 
 <%= if @live_action in [:new, :edit] do %>
-  <.live_component
+  <SiwappWeb.ModalComponent.modal
     id="modal"
-    module={SiwappWeb.ModalComponent}
-    return_to={Routes.series_index_path(@socket, :index)}
-    component={SiwappWeb.SeriesLive.FormComponent}
-    series={@series || %Siwapp.Commons.Series{}}
-    tax={nil}
-    user={nil}
-    current_user_id={nil}
-    title={@page_title}
-    action={@live_action}
-  />
+    return_to={Routes.series_index_path(@socket, :index)}>
+      <.live_component
+        id="form"
+        module={SiwappWeb.SeriesLive.FormComponent}
+        series={@series || %Siwapp.Commons.Series{}}
+        title={@page_title}
+        action={@live_action}
+      />
+  </SiwappWeb.ModalComponent.modal>
 <% end %>
-
 <table class="table is-fullwidth is-striped is-bordered is-hoverable">
   <thead>
     <tr>
