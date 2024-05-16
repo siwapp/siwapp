@@ -5,7 +5,7 @@ defmodule Siwapp.Invoices.AmountHelper do
   import Ecto.Changeset
 
   @doc """
-  Given the a virtual_field value it sets the field value to that.
+  Given a virtual_field value it sets the field value to that.
   If the virtual_field is not set, then is set to the value of field.
   """
   @spec set_amount(Ecto.Changeset.t(), atom(), atom(), atom() | binary()) :: Ecto.Changeset.t()
