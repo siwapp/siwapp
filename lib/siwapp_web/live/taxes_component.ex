@@ -71,17 +71,14 @@ defmodule SiwappWeb.TaxesComponent do
     selected = MapSet.delete(socket.assigns.selected, {key, value})
 
     params =
-      socket.assigns.f.params
-      |> normalize_items_params()
+      socket.assigns.f
+      |> get_params()
       |> put_in(
-        ["items", index, "taxes"],
+        ["items", "#{index}", "taxes"],
         Enum.map(selected, fn {k, _v} -> k end)
       )
 
-    send(
-      self(),
-      {:params_updated, params}
-    )
+    send(self(), {:params_updated, params})
 
     {:noreply, socket}
   end
@@ -90,17 +87,14 @@ defmodule SiwappWeb.TaxesComponent do
     selected = MapSet.put(socket.assigns.selected, {key, value})
 
     params =
-      socket.assigns.f.params
-      |> normalize_items_params()
+      socket.assigns.f
+      |> get_params()
       |> put_in(
-        ["items", index, "taxes"],
+        ["items", "#{index}", "taxes"],
         Enum.map(selected, fn {k, _v} -> k end)
       )
 
-    send(
-      self(),
-      {:params_updated, params}
-    )
+    send(self(), {:params_updated, params})
 
     {:noreply, socket}
   end
@@ -119,15 +113,32 @@ defmodule SiwappWeb.TaxesComponent do
     end
   end
 
-  @spec normalize_items_params(map | list) :: map
-  defp normalize_items_params(%{"items" => %{}} = structure), do: structure
+  defp get_params(form) do
+    case Map.keys(form.params) do
+      [] ->
+        items =
+          form.data.items
+          |> Enum.with_index(fn item, index -> {index, item} end)
+          |> Enum.map(&convert_item/1)
+          |> Map.new()
 
-  defp normalize_items_params(%{"items" => items} = structure) when is_list(items) do
-    new_items =
-      items
-      |> Enum.with_index(0)
-      |> Map.new(fn {value, index} -> {"#{index}", value} end)
+        %{"items" => items}
 
-    Map.put(structure, "items", new_items)
+      _ ->
+        form.params
+    end
+  end
+
+  defp convert_item({index, item}) do
+    {"#{index}",
+     %{
+       "_persistent_id" => index,
+       "description" => item.description,
+       "discount" => item.discount,
+       "id" => item.id,
+       "quantity" => item.quantity,
+       "taxes" => Enum.map(item.taxes, fn t -> t.name end),
+       "virtual_unitary_cost" => item.virtual_unitary_cost
+     }}
   end
 end

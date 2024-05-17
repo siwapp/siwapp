@@ -67,7 +67,9 @@ defmodule Siwapp.Invoices.AmountHelper do
   """
   def process_attrs(attrs, key, virtual_field, field, currency) do
     case Map.get(attrs, key) do
-      nil -> attrs
+      nil ->
+        attrs
+
       items ->
         new_items =
           Enum.map(items, fn {k, v} ->

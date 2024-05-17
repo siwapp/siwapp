@@ -148,5 +148,4 @@ defmodule SiwappWeb.InvoicesLive.Edit do
       &[key: &1.name, value: &1.id, selected: &1.id == selected_series]
     )
   end
-
 end
