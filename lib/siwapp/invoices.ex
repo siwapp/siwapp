@@ -5,6 +5,7 @@ defmodule Siwapp.Invoices do
   import Ecto.Query, warn: false
 
   alias Siwapp.InvoiceHelper
+  alias Siwapp.Invoices.AmountHelper
   alias Siwapp.Invoices.Invoice
   alias Siwapp.Invoices.InvoiceQuery
   alias Siwapp.Invoices.Item
@@ -165,7 +166,11 @@ defmodule Siwapp.Invoices do
   """
   @spec change(Invoice.t(), map) :: Ecto.Changeset.t()
   def change(%Invoice{} = invoice, attrs \\ %{}) do
-    Invoice.changeset(invoice, attrs)
+    attrs = AmountHelper.process_payment_attrs(attrs, invoice.currency)
+
+    invoice
+    |> AmountHelper.set_virtual_amount_payments()
+    |> Invoice.changeset(attrs)
   end
 
   @spec status(Invoice.t()) :: :draft | :failed | :paid | :pending | :past_due
@@ -237,49 +242,6 @@ defmodule Siwapp.Invoices do
   @spec change_item(Item.t(), binary | atom, map) :: Ecto.Changeset.t()
   def change_item(%Item{} = item, currency, attrs \\ %{}) do
     Item.changeset(item, attrs, currency)
-  end
-
-  @doc """
-  Gets a payment by id
-  """
-  @spec get_payment_by_id!(pos_integer()) :: Payment.t()
-  def get_payment_by_id!(id), do: Repo.get!(Payment, id)
-
-  @doc """
-  Creates a payment associated to an invoice
-  """
-  @spec create_payment(Invoice.t(), atom() | binary(), map()) ::
-          {:ok, Payment.t()} | {:error, Ecto.Changeset.t()}
-  def create_payment(%Invoice{} = invoice, currency, attrs \\ %{}) do
-    invoice
-    |> Ecto.build_assoc(:payments)
-    |> Payment.changeset(attrs, currency)
-    |> Repo.insert()
-  end
-
-  @doc """
-  Updates a payment
-  """
-  @spec update_payment(Payment.t(), atom() | binary(), map()) ::
-          {:ok, Payment.t()} | {:error, Ecto.Changeset.t()}
-  def update_payment(%Payment{} = payment, currency, attrs) do
-    payment
-    |> Payment.changeset(attrs, currency)
-    |> Repo.update()
-  end
-
-  @doc """
-  Deletes a payment
-  """
-  @spec delete_payment(Payment.t()) :: {:ok, Payment.t()} | {:error, Ecto.Changeset.t()}
-  def delete_payment(%Payment{} = payment), do: Repo.delete(payment)
-
-  @doc """
-  Change a payment
-  """
-  @spec change_payment(Payment.t(), atom() | binary(), map) :: Ecto.Changeset.t()
-  def change_payment(%Payment{} = payment, currency, attrs \\ %{}) do
-    Payment.changeset(payment, attrs, currency)
   end
 
   @spec duplicate(Invoice.t()) :: Ecto.Changeset.t()

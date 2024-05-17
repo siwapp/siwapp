@@ -4,7 +4,6 @@ defmodule Siwapp.Invoices.Payment do
   """
   use Ecto.Schema
   import Ecto.Changeset
-  import Siwapp.Invoices.AmountHelper
   alias Siwapp.Invoices.Invoice
 
   @fields [
@@ -35,12 +34,11 @@ defmodule Siwapp.Invoices.Payment do
     timestamps()
   end
 
-  @spec changeset(t(), map, atom() | binary()) :: Ecto.Changeset.t()
-  def changeset(payment, attrs \\ %{}, currency) do
+  @spec changeset(t(), map) :: Ecto.Changeset.t()
+  def changeset(payment, attrs \\ %{}) do
     payment
     |> cast(attrs, @fields)
     |> assign_date()
-    |> set_amount(:amount, :virtual_amount, currency)
     |> foreign_key_constraint(:invoice_id)
   end
 

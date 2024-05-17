@@ -69,41 +69,6 @@ defmodule SiwappWeb.InvoicesLive.Edit do
     {:noreply, socket}
   end
 
-  def handle_event("add_payment", %{"params" => params}, socket) do
-    currency = Ecto.Changeset.get_field(socket.assigns.changeset, :currency)
-    gross_amount = Ecto.Changeset.get_field(socket.assigns.changeset, :gross_amount)
-    paid_amount = Ecto.Changeset.get_field(socket.assigns.changeset, :paid_amount)
-
-    virtual_left_amount =
-      (gross_amount - paid_amount)
-      |> Money.new(currency)
-      |> Money.to_decimal()
-
-    params =
-      if params["payments"] == nil do
-        Map.put(params, "payments", %{"0" => new_payment_params(virtual_left_amount)})
-      else
-        next_payment_index =
-          params["payments"]
-          |> Enum.count()
-          |> Integer.to_string()
-
-        put_in(params, ["payments", next_payment_index], new_payment_params(virtual_left_amount))
-      end
-
-    {:noreply, assign(socket, changeset: Invoices.change(socket.assigns.invoice, params))}
-  end
-
-  def handle_event("remove_payment", %{"payment_id" => payment_index, "params" => params}, socket) do
-    params =
-      params
-      |> pop_in(["payments", Integer.to_string(payment_index)])
-      |> elem(1)
-      |> Map.update!("payments", &sort_indexes/1)
-
-    {:noreply, assign(socket, changeset: Invoices.change(socket.assigns.invoice, params))}
-  end
-
   def handle_event("copy", _params, socket) do
     invoicing_address = Ecto.Changeset.get_field(socket.assigns.changeset, :invoicing_address)
 
@@ -185,8 +150,7 @@ defmodule SiwappWeb.InvoicesLive.Edit do
     |> assign(
       :changeset,
       Invoices.change(invoice, %{
-        "items" => items_as_params(invoice.items),
-        "payments" => payments_as_params(invoice.payments)
+        "items" => items_as_params(invoice.items)
       })
     )
   end
@@ -228,21 +192,4 @@ defmodule SiwappWeb.InvoicesLive.Edit do
     |> Map.new()
   end
 
-  @spec payments_as_params([Siwapp.Invoices.Payment.t()]) :: map
-  defp payments_as_params(payments) do
-    payments
-    |> Enum.map(&Map.take(Map.from_struct(&1), [:amount, :date, :notes, :id]))
-    |> Enum.with_index()
-    |> Enum.map(fn {payment, i} -> {Integer.to_string(i), payment} end)
-    |> Map.new()
-  end
-
-  @spec new_payment_params(Decimal.t()) :: map
-  defp new_payment_params(virtual_amount) do
-    %{
-      "date" => Date.utc_today(),
-      "notes" => "",
-      "virtual_amount" => virtual_amount
-    }
-  end
 end

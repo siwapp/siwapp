@@ -67,57 +67,56 @@
 
       <.inputs_for :let={fp} field={f[:payments]}>
         <div class="columns is-multiline-mobile is-1 is-variable">
-          <%= if fp.data.id do %>
-            <%= hidden_input(fp, :id) %>
-          <% end %>
+          <input type="hidden" name="invoice[payments_sort][]" value={fp.index} />
           <div class="column is-3-desktop is-full-mobile">
-            <label class="label">
-              Date
-            </label>
+            <label class="label">Date</label>
             <p class="control">
               <%= date_input(fp, :date, phx_debounce: "blur", class: "input") %>
             </p>
             <%= error_tag(fp, :date) %>
           </div>
           <div class="column is-6-desktop is-full-mobile">
-            <label class="label">
-              Notes
-            </label>
+            <label class="label">Notes</label>
             <p class="control">
               <%= textarea(fp, :notes, phx_debounce: "blur", class: "textarea", rows: "1") %>
             </p>
             <%= error_tag(fp, :notes) %>
           </div>
           <div class="column is-1-desktop is-full-mobile">
-            <label class="label">
-              Amount
-            </label>
+            <label class="label">Amount</label>
             <p class="control">
               <%= text_input(fp, :virtual_amount, class: "input") %>
             </p>
-            <%= error_tag(fp, :virtual_amount) %>
           </div>
           <div class="column is-narrow-desktop is-full-mobile">
-            <label class="label is-invisible is-hidden-mobile">
-              invisible
-            </label>
+            <label class="label is-invisible is-hidden-mobile">invisible</label>
             <p class="control">
-              <%= link("Remove Payment",
-                to: "#",
-                phx_click:
-                  JS.push("remove_payment", value: %{params: f.params, payment_id: fp.index}),
-                class: "button is-danger is-light is-fullwidth"
-              ) %>
+              <button
+                name="invoice[payments_drop][]"
+                value={fp.index}
+                type="button"
+                class="button is-danger is-light is-fullwidth"
+                phx-click={JS.dispatch("change")}
+              >
+                Remove Payment
+              </button>
             </p>
           </div>
         </div>
       </.inputs_for>
 
-      <%= link("Add Payment",
-        to: "#",
-        phx_click: JS.push("add_payment", value: %{params: f.params}),
-        class: "button is-dark is-fullwidth column is-2"
-      ) %>
+      <input type="hidden" name="invoice[payments_drop][]" />
+
+      <button
+        class="button is-dark is-fullwidth column is-2"
+        type="button"
+        name="invoice[payments_sort][]"
+        value="new"
+        phx-click={JS.dispatch("change")}
+      >
+        Add Payment
+      </button>
+
       <br />
       <%= checkbox(f, :failed, class: "checkbox") %> Payment collection failed
     </fieldset>

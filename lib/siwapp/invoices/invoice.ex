@@ -162,8 +162,11 @@ defmodule Siwapp.Invoices.Invoice do
 
   @spec cast_payments(Ecto.Changeset.t()) :: Ecto.Changeset.t()
   def cast_payments(changeset) do
-    currency = get_field(changeset, :currency)
-    cast_assoc(changeset, :payments, with: {Payment, :changeset, [currency]})
+    cast_assoc(changeset, :payments,
+      with: &Payment.changeset/2,
+      sort_param: :payments_sort,
+      drop_param: :payments_drop
+    )
   end
 
   @doc """
