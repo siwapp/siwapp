@@ -102,17 +102,6 @@ defmodule SiwappWeb.InvoicesLive.Edit do
     {:noreply, assign(socket, changeset: changeset)}
   end
 
-  @spec sort_indexes(map) :: map
-  def sort_indexes(elements) do
-    values = Map.values(elements)
-    indexes = 0..(length(values) - 1)
-
-    indexes
-    |> Enum.zip(values)
-    |> Enum.map(fn {k, v} -> {Integer.to_string(k), v} end)
-    |> Map.new()
-  end
-
   @spec apply_action(Phoenix.LiveView.Socket.t(), :new | :edit, map()) ::
           Phoenix.LiveView.Socket.t()
   defp apply_action(socket, :new, %{"id" => id}) do
@@ -131,12 +120,7 @@ defmodule SiwappWeb.InvoicesLive.Edit do
     |> assign(:action, :new)
     |> assign(:page_title, "New Invoice")
     |> assign(:invoice, %Invoice{})
-    |> assign(
-      :changeset,
-      Invoices.change(%Invoice{}, %{
-        "items" => %{"0" => %{"taxes" => Commons.default_taxes_names()}}
-      })
-    )
+    |> assign(:changeset, Invoices.change(%Invoice{}, %{}))
   end
 
   defp apply_action(socket, :edit, %{"id" => id}) do

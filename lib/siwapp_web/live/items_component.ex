@@ -18,7 +18,6 @@ defmodule SiwappWeb.ItemsComponent do
     {:ok,
      socket
      |> assign(f: assigns.f)
-     |> assign(changeset: assigns.f.source)
      |> assign(currency: Changeset.get_field(assigns.f.source, :currency))}
   end
 end

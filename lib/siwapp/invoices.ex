@@ -150,7 +150,6 @@ defmodule Siwapp.Invoices do
   @doc """
   Get a single invoice by the params
   """
-
   @spec get_by!(atom(), any()) :: Invoice.t()
   def get_by!(key, value) do
     Invoice
