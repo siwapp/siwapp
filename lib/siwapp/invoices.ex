@@ -73,12 +73,9 @@ defmodule Siwapp.Invoices do
   """
   @spec with_virtual_fields(Invoice.t()) :: Invoice.t()
   def with_virtual_fields(invoice) do
-    items_with_calculations =
-      Enum.map(invoice.items, &Ecto.Changeset.apply_changes(change_item(&1, invoice.currency)))
-
-    invoice = Map.put(invoice, :items, items_with_calculations)
-    changeset = change(invoice)
-    Ecto.Changeset.apply_changes(changeset)
+    invoice
+    |> AmountHelper.set_virtual_amounts(:payments, :virtual_amount, :amount)
+    |> AmountHelper.set_virtual_amounts(:items, :virtual_unitary_cost, :unitary_cost)
   end
 
   @doc """
@@ -166,10 +163,13 @@ defmodule Siwapp.Invoices do
   """
   @spec change(Invoice.t(), map) :: Ecto.Changeset.t()
   def change(%Invoice{} = invoice, attrs \\ %{}) do
-    attrs = AmountHelper.process_payment_attrs(attrs, invoice.currency)
+    attrs =
+      attrs
+      |> AmountHelper.process_payment_attrs(invoice.currency)
+      |> AmountHelper.process_item_attrs(invoice.currency)
 
     invoice
-    |> AmountHelper.set_virtual_amount_payments()
+    |> with_virtual_fields()
     |> Invoice.changeset(attrs)
   end
 
@@ -198,50 +198,6 @@ defmodule Siwapp.Invoices do
     else
       :past_due
     end
-  end
-
-  @doc """
-  Gets an item by id
-  """
-  @spec get_item_by_id!(pos_integer()) :: Item.t()
-  def get_item_by_id!(id), do: Repo.get!(Item, id)
-
-  @doc """
-  Creates an item associated to an invoice
-  """
-  @spec create_item(Invoice.t(), atom() | binary(), map()) ::
-          {:ok, Item.t()} | {:error, Ecto.Changeset.t()}
-  def create_item(%Invoice{} = invoice, currency, attrs \\ %{}) do
-    invoice
-    |> Ecto.build_assoc(:items)
-    |> Item.changeset(attrs, currency)
-    |> Repo.insert()
-  end
-
-  @doc """
-  Updates an item
-  """
-  @spec update_item(Item.t(), atom() | binary(), map()) ::
-          {:ok, Item.t()} | {:error, Ecto.Changeset.t()}
-  def update_item(%Item{} = item, currency, attrs) do
-    item
-    |> Repo.preload(:taxes)
-    |> Item.changeset(attrs, currency)
-    |> Repo.update()
-  end
-
-  @doc """
-  Deletes an item
-  """
-  @spec delete_item(Item.t()) :: {:ok, Item.t()} | {:error, Ecto.Changeset.t()}
-  def delete_item(%Item{} = item), do: Repo.delete(item)
-
-  @doc """
-  Change an item
-  """
-  @spec change_item(Item.t(), binary | atom, map) :: Ecto.Changeset.t()
-  def change_item(%Item{} = item, currency, attrs \\ %{}) do
-    Item.changeset(item, attrs, currency)
   end
 
   @spec duplicate(Invoice.t()) :: Ecto.Changeset.t()

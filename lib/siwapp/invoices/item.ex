@@ -5,7 +5,6 @@ defmodule Siwapp.Invoices.Item do
   use Ecto.Schema
 
   import Ecto.Changeset
-  import Siwapp.Invoices.AmountHelper
 
   alias Siwapp.Commons
   alias Siwapp.Commons.Tax
@@ -45,11 +44,10 @@ defmodule Siwapp.Invoices.Item do
       on_replace: :delete
   end
 
-  @spec changeset(t(), map, binary | atom) :: Ecto.Changeset.t()
-  def changeset(item, attrs \\ %{}, currency) do
+  @spec changeset(t(), map) :: Ecto.Changeset.t()
+  def changeset(item, attrs \\ %{}) do
     item
     |> cast(attrs, @fields)
-    |> set_amount(:unitary_cost, :virtual_unitary_cost, currency)
     |> assoc_taxes(attrs)
     |> foreign_key_constraint(:invoice_id)
     |> validate_length(:description, max: 20_000)

@@ -33,7 +33,7 @@ defmodule SiwappWeb.InvoicesLive.Edit do
     result =
       case socket.assigns.live_action do
         :new -> Invoices.create(params)
-        :edit -> Invoices.update(socket.assigns.invoice, put_assoc_if_empty(params))
+        :edit -> Invoices.update(socket.assigns.invoice, params)
       end
 
     case result do
@@ -147,12 +147,7 @@ defmodule SiwappWeb.InvoicesLive.Edit do
     |> assign(:page_title, "#{invoice.series.code}-#{Map.get(invoice, :number)}")
     |> assign(:invoice, invoice)
     |> then(&assign(&1, :series_options, set_series_options(&1, invoice)))
-    |> assign(
-      :changeset,
-      Invoices.change(invoice, %{
-        "items" => items_as_params(invoice.items)
-      })
-    )
+    |> assign(:changeset, Invoices.change(invoice))
   end
 
   @spec set_series_options(series :: list(Series.t())) :: series_options
@@ -168,28 +163,6 @@ defmodule SiwappWeb.InvoicesLive.Edit do
       socket.assigns.series,
       &[key: &1.name, value: &1.id, selected: &1.id == selected_series]
     )
-  end
-
-  @spec put_assoc_if_empty(map()) :: map()
-  defp put_assoc_if_empty(params) do
-    params
-    |> then(&if Map.has_key?(&1, "items"), do: &1, else: Map.put(&1, "items", []))
-    |> then(&if Map.has_key?(&1, "payments"), do: &1, else: Map.put(&1, "payments", []))
-  end
-
-  @spec items_as_params([Siwapp.Invoices.Item.t()]) :: map()
-  defp items_as_params(items) do
-    items
-    |> Enum.map(fn item ->
-      item
-      |> Map.take([:description, :discount, :quantity, :id])
-      |> Mappable.to_map(keys: :strings)
-      |> Map.put("taxes", Enum.map(item.taxes, & &1.name))
-      |> Map.put("virtual_unitary_cost", item.virtual_unitary_cost)
-    end)
-    |> Enum.with_index()
-    |> Enum.map(fn {item, i} -> {Integer.to_string(i), item} end)
-    |> Map.new()
   end
 
 end
