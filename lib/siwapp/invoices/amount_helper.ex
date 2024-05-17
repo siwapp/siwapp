@@ -62,44 +62,29 @@ defmodule Siwapp.Invoices.AmountHelper do
   end
 
   @doc """
-  Modifies the payments attrs getting the value from the `virtual_amount`
-  and setting the `amount`.
+  Modifies the payments and item attrs getting the value from the virtual fields
+  and setting the right amounts in the real fields.
   """
-  def process_payment_attrs(%{"payments" => payments} = attrs, currency) do
-    payments =
-      Enum.map(payments, fn {k, v} ->
-        amount =
-          v
-          |> Map.get("virtual_amount")
-          |> get_amount(currency)
+  def process_attrs(attrs, key, virtual_field, field, currency) do
+    case Map.get(attrs, key) do
+      nil -> attrs
+      items ->
+        new_items =
+          Enum.map(items, fn {k, v} ->
+            amount =
+              v
+              |> Map.get(virtual_field)
+              |> get_amount(currency)
 
-        {k, Map.put(v, "amount", "#{amount}")}
-      end)
-      |> Map.new()
+            {k, Map.put(v, field, "#{amount}")}
+          end)
+          |> Map.new()
 
-    Map.put(attrs, "payments", payments)
+        Map.put(attrs, key, new_items)
+    end
   end
 
-  def process_payment_attrs(attrs, _currency), do: attrs
-
-  def process_item_attrs(%{"items" => items} = attrs, currency) do
-    items =
-      Enum.map(items, fn {k, v} ->
-        amount =
-          v
-          |> Map.get("virtual_unitary_cost")
-          |> get_amount(currency)
-
-        {k, Map.put(v, "unitary_cost", "#{amount}")}
-      end)
-      |> Map.new()
-
-    Map.put(attrs, "items", items)
-  end
-
-  def process_item_attrs(attrs, _currency), do: attrs
-
-  def get_amount(virtual_amount, currency) do
+  defp get_amount(virtual_amount, currency) do
     case Money.parse(virtual_amount, currency) do
       {:ok, money} ->
         money.amount
@@ -109,7 +94,7 @@ defmodule Siwapp.Invoices.AmountHelper do
     end
   end
 
-  def get_virtual_amount(amount, currency) do
+  defp get_virtual_amount(amount, currency) do
     amount
     |> Money.new(currency)
     |> Money.to_decimal()

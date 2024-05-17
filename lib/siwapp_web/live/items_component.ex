@@ -6,7 +6,6 @@ defmodule SiwappWeb.ItemsComponent do
   import SiwappWeb.PageView, only: [money_format: 3, money_format: 2]
 
   alias Ecto.Changeset
-  alias SiwappWeb.InvoicesLive
   alias Phoenix.LiveView.JS
 
   @impl Phoenix.LiveComponent

@@ -165,8 +165,8 @@ defmodule Siwapp.Invoices do
   def change(%Invoice{} = invoice, attrs \\ %{}) do
     attrs =
       attrs
-      |> AmountHelper.process_payment_attrs(invoice.currency)
-      |> AmountHelper.process_item_attrs(invoice.currency)
+      |> AmountHelper.process_attrs("payments", "virtual_amount", "amount", invoice.currency)
+      |> AmountHelper.process_attrs("items", "virtual_unitary_cost", "unitary_cost", invoice.currency)
 
     invoice
     |> with_virtual_fields()
