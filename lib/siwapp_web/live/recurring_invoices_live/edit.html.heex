@@ -2,7 +2,7 @@
   <%= @page_title %>
 </h1>
 
-<.form :let={f} for={@changeset} phx-change="validate" phx-submit="save">
+<.form :let={f} for={@changeset} as={:invoice} phx-change="validate" phx-submit="save">
   <%= render(SiwappWeb.PageView, "invoice_customer_form.html", f: f, view: :recurring_invoices) %>
 
   <fieldset class="fieldset">
@@ -87,12 +87,7 @@
       </div>
     </div>
 
-    <.live_component
-      module={SiwappWeb.ItemsComponent}
-      id="items"
-      f={f}
-      inputs_for={pseudo_inputs_for(@changeset)}
-    />
+    <.live_component module={SiwappWeb.ItemsComponent} id="items" f={f} />
   </fieldset>
 
   <.live_component

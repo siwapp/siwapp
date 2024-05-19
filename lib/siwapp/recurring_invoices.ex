@@ -52,7 +52,6 @@ defmodule Siwapp.RecurringInvoices do
     %RecurringInvoice{}
     |> RecurringInvoice.changeset(attrs)
     |> InvoiceHelper.maybe_find_customer_or_new()
-    |> RecurringInvoice.untransform_items()
     |> Repo.insert()
   end
 
@@ -67,7 +66,6 @@ defmodule Siwapp.RecurringInvoices do
     recurring_invoice
     |> RecurringInvoice.changeset(attrs)
     |> InvoiceHelper.maybe_find_customer_or_new()
-    |> RecurringInvoice.untransform_items()
     |> Repo.update()
   end
 

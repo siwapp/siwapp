@@ -34,7 +34,6 @@ defmodule Siwapp.RecurringInvoices.RecurringInvoice do
     :notes,
     :terms,
     :meta_attributes,
-    :items,
     :customer_id,
     :series_id
   ]
@@ -96,25 +95,35 @@ defmodule Siwapp.RecurringInvoices.RecurringInvoice do
     field :notes, :string
     field :terms, :string
     field :meta_attributes, :map, default: %{}
-    field :items, :map, default: %{}
     belongs_to :customer, Customer, on_replace: :nilify
     belongs_to :series, Series
     has_many :invoices, Invoice, on_replace: :delete
+    embeds_many :items, Item, on_replace: :delete, primary_key: false do
+      field :quantity, :integer, default: 1
+      field :discount, :integer, default: 0
+      field :description, :string
+      field :unitary_cost, :integer, default: 0
+      field :base_amount, :integer, virtual: true, default: 0
+      field :net_amount, :integer, virtual: true, default: 0
+      field :taxes_amount, :map, virtual: true, default: %{}
+      field :virtual_unitary_cost, :decimal, virtual: true
+      field :taxes, {:array, :string}
+    end
 
     timestamps()
   end
 
   @spec changeset(t, map) :: Ecto.Changeset.t()
-  @doc false
   def changeset(recurring_invoice, attrs) do
     recurring_invoice
     |> cast(attrs, @fields)
     |> assign_currency()
-    |> transform_items()
-    |> validate_items()
-    |> apply_changes_items()
+    #|> transform_items()
+    #|> validate_items()
+    #|> apply_changes_items()
+    |> cast_embed(:items, with: &Item.changeset_for_recurring/2, sort_param: :items_sort, drop_param: :items_drop)
     |> calculate()
-    |> unapply_changes_items()
+    #|> unapply_changes_items()
     |> validate_required([:starting_date, :period, :period_type])
     |> foreign_key_constraint(:series_id)
     |> foreign_key_constraint(:customer_id)
@@ -128,89 +137,4 @@ defmodule Siwapp.RecurringInvoices.RecurringInvoice do
     |> validate_length(:currency, max: 3)
   end
 
-  @doc """
-  Converts field items from list of Item changesets to list of maps when
-  changeset is valid to be able to save in database
-  """
-  @spec untransform_items(Ecto.Changeset.t()) :: Ecto.Changeset.t()
-  def untransform_items(%{valid?: true} = changeset) do
-    items = get_field(changeset, :items)
-
-    items =
-      items
-      |> Enum.map(&make_item(&1.data))
-      |> Enum.with_index()
-      |> Map.new(fn {item, i} -> {i, item} end)
-
-    put_change(changeset, :items, items)
-  end
-
-  def untransform_items(changeset), do: changeset
-
-  @spec fields :: [atom]
-  def fields, do: @fields
-
-  # Converts field items from list of maps to list of Item changesets.
-  # This is used to handle items validation and calculations
-  @spec transform_items(Ecto.Changeset.t()) :: Ecto.Changeset.t()
-  defp transform_items(changeset) do
-    currency = get_field(changeset, :currency)
-
-    items_transformed =
-      Enum.map(get_field(changeset, :items), fn {_i, item} ->
-        Item.changeset(%Item{}, item, currency)
-      end)
-
-    put_change(changeset, :items, items_transformed)
-  end
-
-  # Adds error to changeset if any item is invalid
-  @spec validate_items(Ecto.Changeset.t()) :: Ecto.Changeset.t()
-  defp validate_items(changeset) do
-    items_valid? =
-      changeset
-      |> get_field(:items)
-      |> Enum.all?(& &1.valid?)
-
-    if items_valid? do
-      changeset
-    else
-      add_error(changeset, :items, "Items are invalid")
-    end
-  end
-
-  # Applies changes (builds Item struct) to each Item changeset in field items.
-  # Used to recycle calculate functions in invoice_helper, that use Item structs
-  @spec apply_changes_items(Ecto.Changeset.t()) :: Ecto.Changeset.t()
-  defp apply_changes_items(changeset) do
-    items =
-      changeset
-      |> get_field(:items)
-      |> Enum.map(&apply_changes(&1))
-
-    put_change(changeset, :items, items)
-  end
-
-  # Converts each Item struct in a changeset (changing empty map).
-  # Used to recycle add_item, remove_item functions in views and
-  # build item forms' for user to fill
-  @spec unapply_changes_items(Ecto.Changeset.t()) :: Ecto.Changeset.t()
-  defp unapply_changes_items(changeset) do
-    items = get_field(changeset, :items)
-    currency = get_field(changeset, :currency)
-    items_changeset = Enum.map(items, &Item.changeset(&1, %{}, currency))
-
-    put_change(changeset, :items, items_changeset)
-  end
-
-  @spec make_item(Item.t()) :: map
-  defp make_item(%Item{description: d, quantity: q, unitary_cost: u, discount: di, taxes: t}) do
-    %{
-      "description" => d,
-      "quantity" => q,
-      "unitary_cost" => u,
-      "discount" => di,
-      "taxes" => Enum.map(t, & &1.name)
-    }
-  end
 end

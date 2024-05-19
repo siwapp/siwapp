@@ -56,6 +56,16 @@ defmodule Siwapp.Invoices.Item do
     |> calculate()
   end
 
+  def changeset_for_recurring(item, attrs \\ %{}) do
+    item
+    |> cast(attrs, [:description, :quantity, :discount, :unitary_cost, :virtual_unitary_cost])
+    #|> assoc_taxes(attrs)
+    |> validate_length(:description, max: 20_000)
+    |> validate_number(:quantity, greater_than_or_equal_to: 0)
+    |> validate_number(:discount, greater_than_or_equal_to: 0, less_than_or_equal_to: 100)
+    #|> calculate()
+  end
+
   @doc """
   Performs the totals calculations for base_amount, net_amount and taxes_amount fields.
   """
