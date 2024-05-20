@@ -76,13 +76,25 @@ defmodule Siwapp.Invoices.Item do
     |> set_taxes_amount()
   end
 
+  def get_taxes_amount(taxes, net_amount) do
+    for tax <- taxes, into: %{} do
+      tax_val = Decimal.new("#{tax.value / 100}")
+      {tax.name, Decimal.mult(net_amount, tax_val)}
+    end
+  end
+
+  def get_amounts(quantity, unitary_cost, discount) do
+    base_amount = quantity * unitary_cost
+    net_amount = round(base_amount * (1 - discount / 100))
+    {base_amount, net_amount}
+  end
+
   @spec set_amounts(Ecto.Changeset.t()) :: Ecto.Changeset.t()
   defp set_amounts(changeset) do
     quantity = get_field(changeset, :quantity)
     unitary_cost = get_field(changeset, :unitary_cost)
     discount = get_field(changeset, :discount)
-    base_amount = quantity * unitary_cost
-    net_amount = round(base_amount * (1 - discount / 100))
+    {base_amount, net_amount} = get_amounts(quantity, unitary_cost, discount)
 
     changeset
     |> put_change(:base_amount, base_amount)
@@ -97,12 +109,7 @@ defmodule Siwapp.Invoices.Item do
 
       taxes ->
         net_amount = get_field(changeset, :net_amount)
-
-        taxes_amounts =
-          for tax <- taxes, into: %{} do
-            tax_val = Decimal.new("#{tax.value / 100}")
-            {tax.name, Decimal.mult(net_amount, tax_val)}
-          end
+        taxes_amounts = get_taxes_amount(taxes, net_amount)
 
         put_change(changeset, :taxes_amount, taxes_amounts)
     end

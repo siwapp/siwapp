@@ -36,7 +36,6 @@ defmodule Siwapp.Invoices do
   @doc """
   Creates an invoice
   """
-
   @spec create(map()) :: {:ok, Invoice.t()} | {:error, Ecto.Changeset.t()}
   def create(attrs \\ %{}) do
     %Invoice{}
@@ -49,7 +48,6 @@ defmodule Siwapp.Invoices do
   @doc """
   Update an invoice
   """
-
   @spec update(Invoice.t(), map()) :: {:ok, Invoice.t()} | {:error, Ecto.Changeset.t()}
   def update(%Invoice{} = invoice, attrs) do
     invoice
@@ -62,7 +60,6 @@ defmodule Siwapp.Invoices do
   @doc """
   Delete an invoice
   """
-
   @spec delete(Invoice.t()) :: {:ok, Invoice.t()} | {:error, Ecto.Changeset.t()}
   def delete(%Invoice{} = invoice) do
     __MODULE__.update(invoice, %{deleted_at: DateTime.utc_now()})
@@ -101,6 +98,18 @@ defmodule Siwapp.Invoices do
     end
   end
 
+  def set_items_virtuals(invoice) do
+    items = Enum.map(invoice.items, fn item ->
+      {base_amount, net_amount} = Item.get_amounts(item.quantity, item.unitary_cost, item.discount)
+      taxes = Item.get_taxes_amount(item.taxes, net_amount)
+      item
+      |> Map.put(:taxes_amount, taxes)
+      |> Map.put(:base_amount, base_amount)
+      |> Map.put(:net_amount, net_amount)
+    end)
+    Map.put(invoice, :items, items)
+  end
+
   @spec mailer_options(nil | binary) :: [] | [adapter: atom]
   defp mailer_options(nil), do: []
   defp mailer_options(mailer), do: [adapter: String.to_atom("Elixir.Swoosh.Adapters.#{mailer}")]
@@ -131,7 +140,6 @@ defmodule Siwapp.Invoices do
   @doc """
   Gets an invoice by id
   """
-
   @spec get!(pos_integer() | binary()) :: Invoice.t()
   def get!(id) do
     query = Query.not_deleted(Invoice)
@@ -174,6 +182,7 @@ defmodule Siwapp.Invoices do
 
     invoice
     |> with_virtual_fields()
+    |> set_items_virtuals()
     |> Invoice.changeset(attrs)
   end
 
