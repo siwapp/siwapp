@@ -122,7 +122,7 @@ defmodule Siwapp.RecurringInvoices.RecurringInvoice do
     #|> validate_items()
     #|> apply_changes_items()
     |> cast_embed(:items, with: &Item.changeset_for_recurring/2, sort_param: :items_sort, drop_param: :items_drop)
-    |> calculate()
+    |> Invoice.calculate()
     #|> unapply_changes_items()
     |> validate_required([:starting_date, :period, :period_type])
     |> foreign_key_constraint(:series_id)

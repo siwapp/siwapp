@@ -7,6 +7,7 @@ defmodule Siwapp.Invoices do
   alias Siwapp.InvoiceHelper
   alias Siwapp.Invoices.AmountHelper
   alias Siwapp.Invoices.Invoice
+  alias Siwapp.InvoiceHelper
   alias Siwapp.Invoices.InvoiceQuery
   alias Siwapp.Invoices.Item
   alias Siwapp.Invoices.Payment
@@ -66,16 +67,6 @@ defmodule Siwapp.Invoices do
   end
 
   @doc """
-  Adds virtual fields to invoice struct
-  """
-  @spec with_virtual_fields(Invoice.t()) :: Invoice.t()
-  def with_virtual_fields(invoice) do
-    invoice
-    |> AmountHelper.set_virtual_amounts(:payments, :virtual_amount, :amount)
-    |> AmountHelper.set_virtual_amounts(:items, :virtual_unitary_cost, :unitary_cost)
-  end
-
-  @doc """
   Sends email with email_default template as email_body, attaching
   pdf made with print_default template using invoice data and if
   operation successes, updates invoice sent_by_email field to true
@@ -96,18 +87,6 @@ defmodule Siwapp.Invoices do
             {:error, msg}
         end
     end
-  end
-
-  def set_items_virtuals(invoice) do
-    items = Enum.map(invoice.items, fn item ->
-      {base_amount, net_amount} = Item.get_amounts(item.quantity, item.unitary_cost, item.discount)
-      taxes = Item.get_taxes_amount(item.taxes, net_amount)
-      item
-      |> Map.put(:taxes_amount, taxes)
-      |> Map.put(:base_amount, base_amount)
-      |> Map.put(:net_amount, net_amount)
-    end)
-    Map.put(invoice, :items, items)
   end
 
   @spec mailer_options(nil | binary) :: [] | [adapter: atom]
@@ -135,6 +114,7 @@ defmodule Siwapp.Invoices do
     |> Query.not_deleted()
     |> Repo.get(id)
     |> Repo.preload(list)
+    |> InvoiceHelper.calculate_invoice()
   end
 
   @doc """
@@ -153,6 +133,7 @@ defmodule Siwapp.Invoices do
     id
     |> get!()
     |> Repo.preload(list)
+    |> InvoiceHelper.calculate_invoice()
   end
 
   @doc """
@@ -180,10 +161,7 @@ defmodule Siwapp.Invoices do
         invoice.currency
       )
 
-    invoice
-    |> with_virtual_fields()
-    |> set_items_virtuals()
-    |> Invoice.changeset(attrs)
+    Invoice.changeset(invoice, attrs)
   end
 
   @spec status(Invoice.t()) :: :draft | :failed | :paid | :pending | :past_due

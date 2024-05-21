@@ -109,9 +109,9 @@ defmodule Siwapp.Invoices.Item do
 
       taxes ->
         net_amount = get_field(changeset, :net_amount)
-        taxes_amounts = get_taxes_amount(taxes, net_amount)
+        taxes_amount = get_taxes_amount(taxes, net_amount)
 
-        put_change(changeset, :taxes_amount, taxes_amounts)
+        put_change(changeset, :taxes_amount, taxes_amount)
     end
   end
 
