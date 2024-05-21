@@ -81,7 +81,7 @@ defmodule SiwappWeb.InvoicesLive.Edit do
   end
 
   def handle_event("send_email", %{"id" => id}, socket) do
-    invoice = Invoices.get!(id, preload: [{:items, :taxes}, :series, :payments])
+    invoice = Invoices.get!(id)
 
     socket =
       case Invoices.send_email(invoice) do
@@ -105,7 +105,7 @@ defmodule SiwappWeb.InvoicesLive.Edit do
   @spec apply_action(Phoenix.LiveView.Socket.t(), :new | :edit, map()) ::
           Phoenix.LiveView.Socket.t()
   defp apply_action(socket, :new, %{"id" => id}) do
-    invoice = Invoices.get!(id, preload: [{:items, :taxes}, :payments, :series, :customer])
+    invoice = Invoices.get!(id)
 
     socket
     |> assign(:action, :new)
@@ -124,7 +124,7 @@ defmodule SiwappWeb.InvoicesLive.Edit do
   end
 
   defp apply_action(socket, :edit, %{"id" => id}) do
-    invoice = Invoices.get!(id, preload: [{:items, :taxes}, :payments, :series, :customer])
+    invoice = Invoices.get!(id)
 
     socket
     |> assign(:action, :edit)

@@ -10,7 +10,7 @@ defmodule SiwappWeb.Resolvers.Invoice do
 
   @spec get(map, Absinthe.Resolution.t()) :: {:ok, map} | {:error, binary}
   def get(%{id: id}, _resolution) do
-    case Invoices.get(id, preload: [{:items, :taxes}, :payments, :series]) do
+    case Invoices.get(id) do
       nil -> {:error, "Invoice with id #{id} not found."}
       invoice -> {:ok, set_reference(invoice)}
     end
@@ -54,7 +54,7 @@ defmodule SiwappWeb.Resolvers.Invoice do
 
   @spec update(map(), Absinthe.Resolution.t()) :: {:error, map()} | {:ok, Invoices.Invoice.t()}
   def update(%{id: id} = params, _resolution) do
-    invoice = Invoices.get(id, preload: [:customer, {:items, :taxes}, :payments, :series])
+    invoice = Invoices.get(id)
 
     params = Helpers.maybe_change_meta_attributes(params)
 
@@ -73,7 +73,7 @@ defmodule SiwappWeb.Resolvers.Invoice do
 
   @spec delete(map(), Absinthe.Resolution.t()) :: {:error, map()} | {:ok, Invoices.Invoice.t()}
   def delete(%{id: id}, _resolution) do
-    invoice = Invoices.get(id, preload: [{:items, :taxes}, :payments])
+    invoice = Invoices.get(id)
 
     if is_nil(invoice) do
       {:error, message: "Failed!", details: "Invoice not found"}

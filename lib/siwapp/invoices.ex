@@ -101,49 +101,29 @@ defmodule Siwapp.Invoices do
     __MODULE__.update(invoice, %{payments: payments_attrs})
   end
 
-  @spec get(pos_integer()) :: Invoice.t() | nil
-  def get(id) do
-    Invoice
-    |> Query.not_deleted()
-    |> Repo.get(id)
-  end
-
-  @spec get(pos_integer(), keyword()) :: Invoice.t() | nil
-  def get(id, preload: list) do
-    Invoice
-    |> Query.not_deleted()
-    |> Repo.get(id)
-    |> Repo.preload(list)
-    |> InvoiceHelper.calculate_invoice()
-  end
-
   @doc """
   Gets an invoice by id
   """
-  @spec get!(pos_integer() | binary()) :: Invoice.t()
-  def get!(id) do
-    query = Query.not_deleted(Invoice)
-
-    with nil <- Repo.get(query, id),
-         do: raise(Siwapp.Error.NotFoundError, id: id, type: "invoice")
-  end
-
-  @spec get!(pos_integer(), keyword()) :: Invoice.t()
-  def get!(id, preload: list) do
-    id
-    |> get!()
-    |> Repo.preload(list)
+  @spec get(pos_integer()) :: Invoice.t() | nil
+  def get(id) do
+    items_query = from i in Item, order_by: i.id
+    Invoice
+    |> Query.not_deleted()
+    |> Repo.get(id)
+    |> Repo.preload([items: {items_query, [:taxes]}])
+    |> Repo.preload([:payments, :series, :customer])
     |> InvoiceHelper.calculate_invoice()
   end
 
-  @doc """
-  Get a single invoice by the params
-  """
-  @spec get_by!(atom(), any()) :: Invoice.t()
-  def get_by!(key, value) do
+  @spec get!(pos_integer()) :: Invoice.t()
+  def get!(id) do
+    items_query = from i in Item, order_by: i.id
     Invoice
     |> Query.not_deleted()
-    |> Repo.get_by!(%{key => value})
+    |> Repo.get!(id)
+    |> Repo.preload([items: {items_query, [:taxes]}])
+    |> Repo.preload([:payments, :series, :customer])
+    |> InvoiceHelper.calculate_invoice()
   end
 
   @doc """
