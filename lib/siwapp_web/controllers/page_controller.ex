@@ -33,7 +33,7 @@ defmodule SiwappWeb.PageController do
   def download(conn, %{"ids" => ids}) do
     {pdf_content, pdf_name} =
       ids
-      |> Enum.map(&Invoices.get!(&1))
+      |> Enum.map(&Invoices.get!/1)
       |> Templates.pdf_content_and_name()
 
     send_download(conn, {:binary, pdf_content}, filename: pdf_name)

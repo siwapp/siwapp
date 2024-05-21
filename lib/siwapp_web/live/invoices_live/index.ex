@@ -87,8 +87,8 @@ defmodule SiwappWeb.InvoicesLive.Index do
     socket.assigns.checked
     |> MapSet.to_list()
     |> Enum.reject(&(&1 == 0))
-    |> Enum.map(&Invoices.get!(&1))
-    |> Enum.each(&Invoices.delete(&1))
+    |> Enum.map(&Invoices.get!/1)
+    |> Enum.each(&Invoices.delete/1)
 
     socket =
       socket
@@ -110,8 +110,8 @@ defmodule SiwappWeb.InvoicesLive.Index do
     socket.assigns.checked
     |> MapSet.to_list()
     |> Enum.reject(&(&1 == 0))
-    |> Enum.map(&Invoices.get!(&1))
-    |> Enum.each(&Invoices.send_email(&1))
+    |> Enum.map(&Invoices.get!/1)
+    |> Enum.each(&Invoices.send_email/1)
 
     socket =
       socket
@@ -125,9 +125,9 @@ defmodule SiwappWeb.InvoicesLive.Index do
     socket.assigns.checked
     |> MapSet.to_list()
     |> List.delete(0)
-    |> Enum.map(&Invoices.get!(&1))
+    |> Enum.map(&Invoices.get!/1)
     |> Enum.filter(&(!&1.paid))
-    |> Enum.each(&Invoices.set_paid(&1))
+    |> Enum.each(&Invoices.set_paid/1)
 
     socket =
       socket

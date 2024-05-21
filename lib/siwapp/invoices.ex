@@ -107,10 +107,11 @@ defmodule Siwapp.Invoices do
   @spec get(pos_integer()) :: Invoice.t() | nil
   def get(id) do
     items_query = from i in Item, order_by: i.id
+
     Invoice
     |> Query.not_deleted()
     |> Repo.get(id)
-    |> Repo.preload([items: {items_query, [:taxes]}])
+    |> Repo.preload(items: {items_query, [:taxes]})
     |> Repo.preload([:payments, :series, :customer])
     |> InvoiceHelper.calculate_invoice()
   end
@@ -118,10 +119,11 @@ defmodule Siwapp.Invoices do
   @spec get!(pos_integer()) :: Invoice.t()
   def get!(id) do
     items_query = from i in Item, order_by: i.id
+
     Invoice
     |> Query.not_deleted()
     |> Repo.get!(id)
-    |> Repo.preload([items: {items_query, [:taxes]}])
+    |> Repo.preload(items: {items_query, [:taxes]})
     |> Repo.preload([:payments, :series, :customer])
     |> InvoiceHelper.calculate_invoice()
   end
