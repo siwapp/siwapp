@@ -53,14 +53,19 @@ defmodule Siwapp.InvoiceHelper do
   end
 
   defp set_items_virtuals(invoice) do
-    items = Enum.map(invoice.items, fn item ->
-      {base_amount, net_amount} = Item.get_amounts(item.quantity, item.unitary_cost, item.discount)
-      taxes = Item.get_taxes_amount(item.taxes, net_amount)
-      item
-      |> Map.put(:taxes_amount, taxes)
-      |> Map.put(:base_amount, base_amount)
-      |> Map.put(:net_amount, net_amount)
-    end)
+    items =
+      Enum.map(invoice.items, fn item ->
+        {base_amount, net_amount} =
+          Item.get_amounts(item.quantity, item.unitary_cost, item.discount)
+
+        taxes = Item.get_taxes_amount(item.taxes, net_amount)
+
+        item
+        |> Map.put(:taxes_amount, taxes)
+        |> Map.put(:base_amount, base_amount)
+        |> Map.put(:net_amount, net_amount)
+      end)
+
     Map.put(invoice, :items, items)
   end
 
@@ -104,7 +109,9 @@ defmodule Siwapp.InvoiceHelper do
 
   defp set_net_amount_invoice(invoice) do
     case Map.get(invoice, :items) do
-      nil -> invoice
+      nil ->
+        invoice
+
       items ->
         total_net_amount =
           items
@@ -117,7 +124,9 @@ defmodule Siwapp.InvoiceHelper do
 
   defp set_taxes_amounts_invoice(invoice) do
     case Map.get(invoice, :items) do
-      nil -> invoice
+      nil ->
+        invoice
+
       items ->
         total_taxes_amounts =
           items
@@ -132,17 +141,18 @@ defmodule Siwapp.InvoiceHelper do
 
   defp set_gross_amount_invoice(invoice) do
     case Map.get(invoice, :items) do
-      nil -> invoice
+      nil ->
+        invoice
+
       _items ->
         taxes_amount =
           invoice.taxes_amounts
           |> Map.values()
           |> Enum.sum()
 
-      gross_amount = invoice.net_amount + taxes_amount
+        gross_amount = invoice.net_amount + taxes_amount
 
-      Map.put(invoice, :gross_amount, gross_amount)
+        Map.put(invoice, :gross_amount, gross_amount)
     end
   end
-
 end

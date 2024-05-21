@@ -59,11 +59,12 @@ defmodule Siwapp.Invoices.Item do
   def changeset_for_recurring(item, attrs \\ %{}) do
     item
     |> cast(attrs, [:description, :quantity, :discount, :unitary_cost, :virtual_unitary_cost])
-    #|> assoc_taxes(attrs)
+    # |> assoc_taxes(attrs)
     |> validate_length(:description, max: 20_000)
     |> validate_number(:quantity, greater_than_or_equal_to: 0)
     |> validate_number(:discount, greater_than_or_equal_to: 0, less_than_or_equal_to: 100)
-    #|> calculate()
+
+    # |> calculate()
   end
 
   @doc """

@@ -112,5 +112,4 @@ defmodule SiwappWeb.RecurringInvoicesLive.Edit do
   defp put_items_if_empty(params) do
     if Map.has_key?(params, "items"), do: params, else: Map.put(params, "items", %{})
   end
-
 end

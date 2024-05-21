@@ -98,6 +98,7 @@ defmodule Siwapp.RecurringInvoices.RecurringInvoice do
     belongs_to :customer, Customer, on_replace: :nilify
     belongs_to :series, Series
     has_many :invoices, Invoice, on_replace: :delete
+
     embeds_many :items, Item, on_replace: :delete, primary_key: false do
       field :quantity, :integer, default: 1
       field :discount, :integer, default: 0
@@ -118,12 +119,16 @@ defmodule Siwapp.RecurringInvoices.RecurringInvoice do
     recurring_invoice
     |> cast(attrs, @fields)
     |> assign_currency()
-    #|> transform_items()
-    #|> validate_items()
-    #|> apply_changes_items()
-    |> cast_embed(:items, with: &Item.changeset_for_recurring/2, sort_param: :items_sort, drop_param: :items_drop)
+    # |> transform_items()
+    # |> validate_items()
+    # |> apply_changes_items()
+    |> cast_embed(:items,
+      with: &Item.changeset_for_recurring/2,
+      sort_param: :items_sort,
+      drop_param: :items_drop
+    )
     |> Invoice.calculate()
-    #|> unapply_changes_items()
+    # |> unapply_changes_items()
     |> validate_required([:starting_date, :period, :period_type])
     |> foreign_key_constraint(:series_id)
     |> foreign_key_constraint(:customer_id)
@@ -136,5 +141,4 @@ defmodule Siwapp.RecurringInvoices.RecurringInvoice do
     |> validate_length(:contact_person, max: 100)
     |> validate_length(:currency, max: 3)
   end
-
 end
