@@ -109,6 +109,7 @@ defmodule Siwapp.RecurringInvoices.RecurringInvoice do
       field :taxes_amount, :map, virtual: true, default: %{}
       field :virtual_unitary_cost, :decimal, virtual: true
       field :taxes, {:array, :string}, default: []
+      field :id, :integer, virtual: true, default: 0
     end
 
     timestamps()

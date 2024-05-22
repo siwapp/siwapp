@@ -15,7 +15,7 @@ defmodule SiwappWeb.TaxesComponent do
       changeset
       |> Ecto.Changeset.get_field(:items)
       |> Enum.at(String.to_integer(index))
-      |> Map.get(:taxes, [])
+      |> get_taxes()
       |> Enum.map(&{&1.name, &1.id})
       |> MapSet.new()
 
@@ -94,6 +94,7 @@ defmodule SiwappWeb.TaxesComponent do
         Enum.map(selected, fn {k, _v} -> k end)
       )
 
+
     send(self(), {:params_updated, params})
 
     {:noreply, socket}
@@ -102,6 +103,17 @@ defmodule SiwappWeb.TaxesComponent do
   @spec not_selected(MapSet.t(), MapSet.t()) :: MapSet.t()
   defp not_selected(options, selected) do
     MapSet.difference(options, selected)
+  end
+
+  defp get_taxes(item) do
+    if is_struct(item, Siwapp.Invoices.Item) do
+      Map.get(item, :taxes)
+    else
+      # For recurring_invoices
+      item
+      |> Map.get(:taxes, [])
+      |> Enum.map(&%{name: &1, id: 0})
+    end
   end
 
   defp get_params(form) do
@@ -114,7 +126,6 @@ defmodule SiwappWeb.TaxesComponent do
           |> Map.new()
 
         %{"items" => items}
-
       _ ->
         form.params
     end
@@ -128,8 +139,11 @@ defmodule SiwappWeb.TaxesComponent do
        "discount" => item.discount,
        "id" => item.id,
        "quantity" => item.quantity,
-       "taxes" => Enum.map(item.taxes, fn t -> t.name end),
+       "taxes" => Enum.map(item.taxes, &convert_taxes/1),
        "virtual_unitary_cost" => item.virtual_unitary_cost
      }}
   end
+
+  defp convert_taxes(%Siwapp.Commons.Tax{} = tax), do: tax.name
+  defp convert_taxes(tax), do: tax
 end
