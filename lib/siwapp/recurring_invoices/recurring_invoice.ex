@@ -108,7 +108,7 @@ defmodule Siwapp.RecurringInvoices.RecurringInvoice do
       field :net_amount, :integer, virtual: true, default: 0
       field :taxes_amount, :map, virtual: true, default: %{}
       field :virtual_unitary_cost, :decimal, virtual: true
-      field :taxes, {:array, :string}
+      field :taxes, {:array, :string}, default: []
     end
 
     timestamps()
@@ -119,16 +119,12 @@ defmodule Siwapp.RecurringInvoices.RecurringInvoice do
     recurring_invoice
     |> cast(attrs, @fields)
     |> assign_currency()
-    # |> transform_items()
-    # |> validate_items()
-    # |> apply_changes_items()
     |> cast_embed(:items,
       with: &Item.changeset_for_recurring/2,
       sort_param: :items_sort,
       drop_param: :items_drop
     )
     |> Invoice.calculate()
-    # |> unapply_changes_items()
     |> validate_required([:starting_date, :period, :period_type])
     |> foreign_key_constraint(:series_id)
     |> foreign_key_constraint(:customer_id)

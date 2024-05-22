@@ -15,7 +15,7 @@ defmodule SiwappWeb.TaxesComponent do
       changeset
       |> Ecto.Changeset.get_field(:items)
       |> Enum.at(String.to_integer(index))
-      |> get_taxes()
+      |> Map.get(:taxes, [])
       |> Enum.map(&{&1.name, &1.id})
       |> MapSet.new()
 
@@ -102,15 +102,6 @@ defmodule SiwappWeb.TaxesComponent do
   @spec not_selected(MapSet.t(), MapSet.t()) :: MapSet.t()
   defp not_selected(options, selected) do
     MapSet.difference(options, selected)
-  end
-
-  @spec get_taxes(Siwapp.Invoices.Item.t() | Ecto.Changeset.t()) :: [Siwapp.Commons.Tax.t()]
-  defp get_taxes(item) do
-    if is_struct(item, Siwapp.Invoices.Item) do
-      Map.get(item, :taxes)
-    else
-      Map.get(item.data, :taxes)
-    end
   end
 
   defp get_params(form) do

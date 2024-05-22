@@ -63,8 +63,7 @@ defmodule Siwapp.Invoices.Item do
     |> validate_length(:description, max: 20_000)
     |> validate_number(:quantity, greater_than_or_equal_to: 0)
     |> validate_number(:discount, greater_than_or_equal_to: 0, less_than_or_equal_to: 100)
-
-    # |> calculate()
+    |> calculate()
   end
 
   @doc """
