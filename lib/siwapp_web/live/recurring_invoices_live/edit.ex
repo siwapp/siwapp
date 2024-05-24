@@ -95,11 +95,14 @@ defmodule SiwappWeb.RecurringInvoicesLive.Edit do
     |> assign(:action, :new)
     |> assign(:page_title, "New Recurring Invoice")
     |> assign(:recurring_invoice, %RecurringInvoice{})
-    |> assign(:changeset, RecurringInvoices.change(%RecurringInvoice{}, %{}))
+    |> assign(:changeset, RecurringInvoices.change(%RecurringInvoice{}))
   end
 
   defp apply_action(socket, :edit, %{"id" => id}) do
-    recurring_invoice = RecurringInvoices.get!(String.to_integer(id), :preload)
+    recurring_invoice =
+      id
+      |> String.to_integer()
+      |> RecurringInvoices.get!()
 
     socket
     |> assign(:action, :edit)

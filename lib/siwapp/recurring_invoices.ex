@@ -33,17 +33,10 @@ defmodule Siwapp.RecurringInvoices do
   @doc """
   Gets a recurring invoice by id
   """
-
-  @spec get!(pos_integer | binary) :: RecurringInvoice.t()
+  @spec get!(pos_integer) :: RecurringInvoice.t()
   def get!(id) do
-    with nil <- Repo.get(RecurringInvoice, id),
-         do: raise(Siwapp.Error.NotFoundError, id: id, type: "recurring invoice")
-  end
-
-  @spec get!(pos_integer, :preload) :: RecurringInvoice.t()
-  def get!(id, :preload) do
-    id
-    |> get!()
+    RecurringInvoice
+    |> Repo.get!(id)
     |> Repo.preload([:customer, :series])
   end
 
