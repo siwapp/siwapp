@@ -6,7 +6,6 @@ defmodule Siwapp.Invoices do
 
   alias Siwapp.InvoiceHelper
   alias Siwapp.Invoices.Invoice
-  alias Siwapp.InvoiceHelper
   alias Siwapp.Invoices.InvoiceQuery
   alias Siwapp.Invoices.Item
   alias Siwapp.Invoices.Payment

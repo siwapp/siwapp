@@ -77,8 +77,21 @@ defmodule Siwapp.Invoices.Item do
 
   def get_taxes_amount(taxes, net_amount) do
     for tax <- taxes, into: %{} do
-      tax_val = Decimal.new("#{tax.value / 100}")
-      {tax.name, Decimal.mult(net_amount, tax_val)}
+      if is_struct(tax, Siwapp.Commons.Tax) do
+        tax_val = Decimal.new("#{tax.value / 100}")
+        {tax.name, Decimal.mult(net_amount, tax_val)}
+      else
+        # here for RecurringInvoices tax is just something like "VAT 21%"
+        tax_val =
+          :cache
+          |> Commons.list_taxes()
+          |> Enum.find(& &1.name == tax)
+          |> Map.get(:value)
+          |> Kernel./(100)
+          |> Float.to_string()
+          |> Decimal.new()
+        {tax, Decimal.mult(net_amount, tax_val)}
+      end
     end
   end
 
@@ -117,7 +130,7 @@ defmodule Siwapp.Invoices.Item do
   @spec assoc_taxes(Ecto.Changeset.t(), map()) :: Ecto.Changeset.t()
   defp assoc_taxes(changeset, attrs) do
     changeset_taxes_names =
-      Enum.map(get_field(changeset, :taxes), fn tax -> String.upcase(tax.name) end)
+      Enum.map(get_field(changeset, :taxes), & String.upcase(&1.name))
 
     attr_taxes_names = MapSet.new(get(attrs, :taxes) || changeset_taxes_names, &String.upcase/1)
 

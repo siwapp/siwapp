@@ -38,6 +38,7 @@ defmodule Siwapp.RecurringInvoices do
     RecurringInvoice
     |> Repo.get!(id)
     |> Repo.preload([:customer, :series])
+    |> InvoiceHelper.calculate_invoice()
   end
 
   @spec create(map) :: {:ok, RecurringInvoice.t()} | {:error, Ecto.Changeset.t()}
