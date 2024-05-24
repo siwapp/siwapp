@@ -10,6 +10,7 @@ defmodule Siwapp.Invoices.Invoice do
   alias Siwapp.Commons
   alias Siwapp.Commons.Series
   alias Siwapp.Customers.Customer
+  alias Siwapp.Invoices.AmountHelper
   alias Siwapp.Invoices.InvoiceQuery
   alias Siwapp.Invoices.Item
   alias Siwapp.Invoices.Payment
@@ -116,6 +117,16 @@ defmodule Siwapp.Invoices.Invoice do
 
   @spec changeset(t(), map) :: Ecto.Changeset.t()
   def changeset(invoice, attrs \\ %{}) do
+    attrs =
+      attrs
+      |> AmountHelper.process_attrs("payments", "virtual_amount", "amount", invoice.currency)
+      |> AmountHelper.process_attrs(
+        "items",
+        "virtual_unitary_cost",
+        "unitary_cost",
+        invoice.currency
+      )
+
     invoice
     |> cast(attrs, @fields)
     |> cast_series_id_by_code(attrs)

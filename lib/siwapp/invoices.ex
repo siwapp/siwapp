@@ -5,7 +5,6 @@ defmodule Siwapp.Invoices do
   import Ecto.Query, warn: false
 
   alias Siwapp.InvoiceHelper
-  alias Siwapp.Invoices.AmountHelper
   alias Siwapp.Invoices.Invoice
   alias Siwapp.InvoiceHelper
   alias Siwapp.Invoices.InvoiceQuery
@@ -133,16 +132,6 @@ defmodule Siwapp.Invoices do
   """
   @spec change(Invoice.t(), map) :: Ecto.Changeset.t()
   def change(%Invoice{} = invoice, attrs \\ %{}) do
-    attrs =
-      attrs
-      |> AmountHelper.process_attrs("payments", "virtual_amount", "amount", invoice.currency)
-      |> AmountHelper.process_attrs(
-        "items",
-        "virtual_unitary_cost",
-        "unitary_cost",
-        invoice.currency
-      )
-
     Invoice.changeset(invoice, attrs)
   end
 

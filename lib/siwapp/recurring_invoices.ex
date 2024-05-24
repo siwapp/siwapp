@@ -6,7 +6,6 @@ defmodule Siwapp.RecurringInvoices do
 
   alias Siwapp.InvoiceHelper
   alias Siwapp.Invoices
-  alias Siwapp.Invoices.AmountHelper
   alias Siwapp.Invoices.Invoice
   alias Siwapp.Invoices.InvoiceQuery
   alias Siwapp.Query
@@ -58,16 +57,6 @@ defmodule Siwapp.RecurringInvoices do
 
   @spec change(RecurringInvoice.t(), map) :: Ecto.Changeset.t()
   def change(%RecurringInvoice{} = recurring_invoice, attrs \\ %{}) do
-    attrs =
-      attrs
-      |> AmountHelper.process_attrs("payments", "virtual_amount", "amount", recurring_invoice.currency)
-      |> AmountHelper.process_attrs(
-        "items",
-        "virtual_unitary_cost",
-        "unitary_cost",
-        recurring_invoice.currency
-      )
-
     RecurringInvoice.changeset(recurring_invoice, attrs)
   end
 

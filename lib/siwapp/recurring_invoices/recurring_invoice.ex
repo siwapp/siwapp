@@ -10,6 +10,7 @@ defmodule Siwapp.RecurringInvoices.RecurringInvoice do
 
   alias Siwapp.Commons.Series
   alias Siwapp.Customers.Customer
+  alias Siwapp.Invoices.AmountHelper
   alias Siwapp.Invoices.Invoice
   alias Siwapp.Invoices.Item
 
@@ -117,6 +118,14 @@ defmodule Siwapp.RecurringInvoices.RecurringInvoice do
 
   @spec changeset(t, map) :: Ecto.Changeset.t()
   def changeset(recurring_invoice, attrs) do
+    attrs =
+      attrs
+      |> AmountHelper.process_attrs(
+        "items",
+        "virtual_unitary_cost",
+        "unitary_cost",
+        recurring_invoice.currency
+      )
     recurring_invoice
     |> cast(attrs, @fields)
     |> assign_currency()

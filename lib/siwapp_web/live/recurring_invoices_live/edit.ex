@@ -29,7 +29,7 @@ defmodule SiwappWeb.RecurringInvoicesLive.Edit do
           RecurringInvoices.create(params)
 
         :edit ->
-          RecurringInvoices.update(socket.assigns.recurring_invoice, put_items_if_empty(params))
+          RecurringInvoices.update(socket.assigns.recurring_invoice, params)
       end
 
     case result do
@@ -106,10 +106,5 @@ defmodule SiwappWeb.RecurringInvoicesLive.Edit do
     |> assign(:page_title, recurring_invoice.name)
     |> assign(:recurring_invoice, recurring_invoice)
     |> assign(:changeset, RecurringInvoices.change(recurring_invoice))
-  end
-
-  @spec put_items_if_empty(map()) :: map()
-  defp put_items_if_empty(params) do
-    if Map.has_key?(params, "items"), do: params, else: Map.put(params, "items", %{})
   end
 end
