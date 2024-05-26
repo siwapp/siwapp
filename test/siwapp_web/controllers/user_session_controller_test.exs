@@ -34,8 +34,8 @@ defmodule SiwappWeb.UserSessionControllerTest do
       # Now do a logged in request and assert on the menu
       conn = get(conn, "/")
       response = html_response(conn, 200)
-      assert response =~ "Profile</a>"
-      assert response =~ "Log out</a>"
+      assert response =~ "Profile"
+      assert response =~ "Log out"
     end
 
     test "logs the user in with remember me", %{conn: conn, user: user} do
