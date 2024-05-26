@@ -44,14 +44,12 @@ defmodule SiwappWeb.LayoutView do
 
     if socket.view in views_with_search do
       view = which_view(socket.view)
-      live_component(SiwappWeb.SearchLive.SearchComponent, id: "search", view: view)
+      live_component(%{module: SiwappWeb.SearchLive.SearchComponent, id: "search", view: view})
     end
   end
 
   @spec render_search_live(Plug.Conn.t()) :: nil
-  def render_search_live(%Plug.Conn{}) do
-    nil
-  end
+  def render_search_live(%Plug.Conn{}), do: nil
 
   @spec new_button(binary, binary) :: any()
   defp new_button(text, to) do

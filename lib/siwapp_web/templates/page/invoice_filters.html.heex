@@ -72,7 +72,7 @@
 <label class="label px-3">
   CSV META ATTRIBUTES
 </label>
-<%= for ma_f <- inputs_for(@f, :csv_meta_attributes) do %>
+<.inputs_for :let={ma_f} field={@f[:csv_meta_attributes]}>
   <div class="columns">
     <div class="column pb-0">
       <%= text_input(ma_f, :key, class: "input") %>
@@ -89,7 +89,7 @@
       </button>
     </div>
   </div>
-<% end %>
+</.inputs_for>
 <button class="button" type="button" phx-click="add_meta_attribute" phx-target={@target}>
   Add Meta Attribute
 </button>
