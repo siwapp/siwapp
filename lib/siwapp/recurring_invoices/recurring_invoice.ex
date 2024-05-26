@@ -60,7 +60,7 @@ defmodule Siwapp.RecurringInvoices.RecurringInvoice do
           series_id: nil | pos_integer(),
           currency: nil | <<_::24>>,
           days_to_due: nil | integer,
-          items: nil | map,
+          items: nil | list,
           send_by_email: boolean,
           max_ocurrences: nil | pos_integer(),
           period: nil | pos_integer,
