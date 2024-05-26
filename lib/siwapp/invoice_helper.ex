@@ -35,6 +35,9 @@ defmodule Siwapp.InvoiceHelper do
   @doc """
   Performs the totals calculations for net_amount, taxes_amounts and gross_amount fields.
   """
+  @spec calculate_invoice(Invoice.t() | nil) :: Invoice.t() | nil
+  def calculate_invoice(nil), do: nil
+
   def calculate_invoice(invoice) do
     invoice
     |> with_virtual_fields()

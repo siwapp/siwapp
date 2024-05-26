@@ -5,13 +5,13 @@ defmodule Siwapp.Sentry do
 
   defmodule EventFilter do
     @moduledoc """
-    Module for filtering events sending to Sentry
+    Module for filtering events sent to Sentry
     """
 
     @behaviour Sentry.EventFilter
 
     @spec exclude_exception?(struct, atom) :: boolean
-    def exclude_exception?(%Siwapp.Error.NotFoundError{}, _), do: true
+    def exclude_exception?(%Ecto.NoResultsError{}, _), do: true
     def exclude_exception?(%Phoenix.Router.NoRouteError{}, _), do: true
     def exclude_exception?(_exception, _source), do: false
   end
