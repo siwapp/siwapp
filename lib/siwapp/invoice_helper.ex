@@ -10,6 +10,7 @@ defmodule Siwapp.InvoiceHelper do
   alias Siwapp.Invoices.AmountHelper
   alias Siwapp.Invoices.Invoice
   alias Siwapp.Invoices.Item
+  alias Siwapp.RecurringInvoices.RecurringInvoice
 
   @spec maybe_find_customer_or_new(Ecto.Changeset.t()) :: Ecto.Changeset.t()
   def maybe_find_customer_or_new(changeset) do
@@ -36,7 +37,7 @@ defmodule Siwapp.InvoiceHelper do
   @doc """
   Performs the totals calculations for net_amount, taxes_amounts and gross_amount fields.
   """
-  @spec calculate_invoice(Invoice.t() | nil) :: Invoice.t() | nil
+  @spec calculate_invoice(Invoice.t() | RecurringInvoice.t() | nil) :: Invoice.t() | RecurringInvoice.t() | nil
   def calculate_invoice(nil), do: nil
 
   def calculate_invoice(invoice) do

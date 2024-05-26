@@ -77,7 +77,7 @@ defmodule Siwapp.Invoices.Item do
     |> common_validations()
   end
 
-  @spec common_validations(t()) :: Ecto.Changeset.t()
+  @spec common_validations(Ecto.Changeset.t()) :: Ecto.Changeset.t()
   defp common_validations(changeset) do
     changeset
     |> validate_length(:description, max: 20_000)

@@ -116,7 +116,7 @@ defmodule Siwapp.RecurringInvoices.RecurringInvoice do
     timestamps()
   end
 
-  @spec changeset(t, map) :: Ecto.Changeset.t()
+  @spec changeset(t(), map) :: Ecto.Changeset.t()
   def changeset(recurring_invoice, attrs) do
     attrs =
       AmountHelper.process_attrs(
