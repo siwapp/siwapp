@@ -70,14 +70,14 @@ defmodule Siwapp.Invoices.Item do
   @doc """
   Changeset for the recurring invoice items
   """
-  @spec changeset(t(), map) :: Ecto.Changeset.t()
+  @spec changeset_for_recurring(t(), map) :: Ecto.Changeset.t()
   def changeset_for_recurring(item, attrs \\ %{}) do
     item
     |> cast(attrs, [:taxes | @fields])
     |> common_validations()
   end
 
-  @spec changeset(t()) :: Ecto.Changeset.t()
+  @spec common_validations(t()) :: Ecto.Changeset.t()
   defp common_validations(changeset) do
     changeset
     |> validate_length(:description, max: 20_000)
@@ -93,6 +93,7 @@ defmodule Siwapp.Invoices.Item do
   Since `taxes` are different data structures for Invoices and RecurringInvoices
   this function deals with both of them.
   """
+  @spec get_taxes_amount(list, integer) :: map
   def get_taxes_amount(taxes, net_amount) do
     for tax <- taxes, into: %{} do
       if is_struct(tax, Siwapp.Commons.Tax) do

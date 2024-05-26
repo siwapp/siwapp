@@ -104,6 +104,7 @@ defmodule SiwappWeb.TaxesComponent do
     MapSet.difference(options, selected)
   end
 
+  @spec get_taxes(map) :: map
   defp get_taxes(item) do
     if is_struct(item, Siwapp.Invoices.Item) do
       Map.get(item, :taxes)
@@ -115,6 +116,7 @@ defmodule SiwappWeb.TaxesComponent do
     end
   end
 
+  @spec get_params(map) :: map
   defp get_params(form) do
     case Map.keys(form.params) do
       [] ->
@@ -131,6 +133,7 @@ defmodule SiwappWeb.TaxesComponent do
     end
   end
 
+  @spec convert_item({integer, map}) :: {binary, map}
   defp convert_item({index, item}) do
     {"#{index}",
      %{
@@ -144,6 +147,7 @@ defmodule SiwappWeb.TaxesComponent do
      }}
   end
 
+  @spec convert_taxes(map) :: binary
   defp convert_taxes(%Siwapp.Commons.Tax{} = tax), do: tax.name
   defp convert_taxes(tax), do: tax
 end

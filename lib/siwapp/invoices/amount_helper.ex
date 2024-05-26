@@ -53,6 +53,7 @@ defmodule Siwapp.Invoices.AmountHelper do
     end
   end
 
+  @spec get_amount(nil | binary, binary | atom) :: integer
   defp get_amount(nil, _currency), do: 0
 
   defp get_amount(virtual_amount, currency) do
@@ -65,6 +66,7 @@ defmodule Siwapp.Invoices.AmountHelper do
     end
   end
 
+  @spec get_virtual_amount(integer, binary | atom) :: Decimal.t()
   defp get_virtual_amount(amount, currency) do
     amount
     |> Money.new(currency)

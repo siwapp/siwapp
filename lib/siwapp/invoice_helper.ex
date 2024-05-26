@@ -5,10 +5,10 @@ defmodule Siwapp.InvoiceHelper do
 
   import Ecto.Changeset
 
-  alias Siwapp.Invoices.AmountHelper
-  alias Siwapp.Invoices.Invoice
   alias Siwapp.Customers
   alias Siwapp.Customers.Customer
+  alias Siwapp.Invoices.AmountHelper
+  alias Siwapp.Invoices.Invoice
   alias Siwapp.Invoices.Item
 
   @spec maybe_find_customer_or_new(Ecto.Changeset.t()) :: Ecto.Changeset.t()
@@ -56,6 +56,7 @@ defmodule Siwapp.InvoiceHelper do
     |> AmountHelper.set_virtual_amounts(:items, :virtual_unitary_cost, :unitary_cost)
   end
 
+  @spec set_items_virtuals(Invoice.t()) :: Invoice.t()
   defp set_items_virtuals(invoice) do
     items =
       Enum.map(invoice.items, fn item ->
@@ -111,6 +112,7 @@ defmodule Siwapp.InvoiceHelper do
   defp add_error(changeset, {key, [{message, opts}]}),
     do: add_error(changeset, key, message, opts)
 
+  @spec set_net_amount_invoice(Invoice.t()) :: Invoice.t()
   defp set_net_amount_invoice(invoice) do
     case Map.get(invoice, :items) do
       nil ->
@@ -126,6 +128,7 @@ defmodule Siwapp.InvoiceHelper do
     end
   end
 
+  @spec set_taxes_amounts_invoice(Invoice.t()) :: Invoice.t()
   defp set_taxes_amounts_invoice(invoice) do
     case Map.get(invoice, :items) do
       nil ->
@@ -143,6 +146,7 @@ defmodule Siwapp.InvoiceHelper do
     end
   end
 
+  @spec set_gross_amount_invoice(Invoice.t()) :: Invoice.t()
   defp set_gross_amount_invoice(invoice) do
     case Map.get(invoice, :items) do
       nil ->

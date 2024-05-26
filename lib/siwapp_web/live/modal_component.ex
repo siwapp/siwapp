@@ -18,6 +18,7 @@ defmodule SiwappWeb.ModalComponent do
       end
 
   """
+  @spec modal(map) :: Phoenix.LiveView.Rendered.t()
   def modal(assigns) do
     ~H"""
     <div
