@@ -185,6 +185,7 @@ defmodule Siwapp.Invoices do
       :discount,
       :quantity,
       :unitary_cost,
+      :virtual_unitary_cost,
       :taxes
     ]
 

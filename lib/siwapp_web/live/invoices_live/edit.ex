@@ -105,6 +105,7 @@ defmodule SiwappWeb.InvoicesLive.Edit do
   @spec apply_action(Phoenix.LiveView.Socket.t(), :new | :edit, map()) ::
           Phoenix.LiveView.Socket.t()
   defp apply_action(socket, :new, %{"id" => id}) do
+    # this is used in the duplication
     invoice = Invoices.get!(id)
 
     socket
