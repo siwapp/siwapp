@@ -154,7 +154,7 @@ defmodule Siwapp.Invoices.Invoice do
 
   # if the attrs have the key "code"
   @spec cast_series_id_by_code(Ecto.Changeset.t(), map) :: Ecto.Changeset.t()
-  def cast_series_id_by_code(changeset, attrs) do
+  defp cast_series_id_by_code(changeset, attrs) do
     if Map.has_key?(attrs, :series_code) do
       case Commons.series_id_by_code(attrs.series_code) do
         nil -> add_error(changeset, :series_code, "series code not found")
@@ -166,7 +166,7 @@ defmodule Siwapp.Invoices.Invoice do
   end
 
   @spec cast_items(Ecto.Changeset.t()) :: Ecto.Changeset.t()
-  def cast_items(changeset) do
+  defp cast_items(changeset) do
     cast_assoc(changeset, :items,
       with: &Item.changeset/2,
       sort_param: :items_sort,
@@ -175,7 +175,7 @@ defmodule Siwapp.Invoices.Invoice do
   end
 
   @spec cast_payments(Ecto.Changeset.t()) :: Ecto.Changeset.t()
-  def cast_payments(changeset) do
+  defp cast_payments(changeset) do
     cast_assoc(changeset, :payments,
       with: &Payment.changeset/2,
       sort_param: :payments_sort,
