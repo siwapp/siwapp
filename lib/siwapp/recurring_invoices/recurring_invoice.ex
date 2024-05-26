@@ -119,8 +119,8 @@ defmodule Siwapp.RecurringInvoices.RecurringInvoice do
   @spec changeset(t, map) :: Ecto.Changeset.t()
   def changeset(recurring_invoice, attrs) do
     attrs =
-      attrs
-      |> AmountHelper.process_attrs(
+      AmountHelper.process_attrs(
+        attrs,
         "items",
         "virtual_unitary_cost",
         "unitary_cost",

@@ -6,6 +6,7 @@ defmodule Siwapp.InvoiceHelper do
   import Ecto.Changeset
 
   alias Siwapp.Invoices.AmountHelper
+  alias Siwapp.Invoices.Invoice
   alias Siwapp.Customers
   alias Siwapp.Customers.Customer
   alias Siwapp.Invoices.Item

@@ -33,7 +33,7 @@ defmodule Siwapp.RecurringInvoices do
   @doc """
   Gets a recurring invoice by id
   """
-  @spec get!(pos_integer) :: RecurringInvoice.t()
+  @spec get!(pos_integer) :: RecurringInvoice.t() | no_return()
   def get!(id) do
     RecurringInvoice
     |> Repo.get!(id)

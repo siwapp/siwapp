@@ -3,10 +3,13 @@ defmodule Siwapp.Invoices.AmountHelper do
   Helper functions for Item and Payments schemas when handling with amounts
   """
 
+  alias Siwapp.Invoices.Invoice
+
   @doc """
   Given an invoice it sets the virtual amounts from the real amounts
   of the payments and items in order to show them correctly in the forms.
   """
+  @spec set_virtual_amounts(Invoice.t(), atom, atom, atom) :: Invoice.t()
   def set_virtual_amounts(invoice, key, virtual_field, field) do
     items = Map.get(invoice, key)
 
@@ -27,6 +30,7 @@ defmodule Siwapp.Invoices.AmountHelper do
   Modifies the payments and item attrs getting the value from the virtual fields
   and setting the right amounts in the real fields.
   """
+  @spec process_attrs(map, binary, binary, binary, binary | atom) :: map
   def process_attrs(attrs, key, virtual_field, field, currency) do
     case Map.get(attrs, key) do
       nil ->
@@ -34,15 +38,16 @@ defmodule Siwapp.Invoices.AmountHelper do
 
       items ->
         new_items =
-          Enum.map(items, fn {k, v} ->
-            amount =
-              v
-              |> Map.get(virtual_field)
-              |> get_amount(currency)
+          Map.new(
+            Enum.map(items, fn {k, v} ->
+              amount =
+                v
+                |> Map.get(virtual_field)
+                |> get_amount(currency)
 
-            {k, Map.put(v, field, "#{amount}")}
-          end)
-          |> Map.new()
+              {k, Map.put(v, field, "#{amount}")}
+            end)
+          )
 
         Map.put(attrs, key, new_items)
     end
