@@ -74,10 +74,10 @@ defmodule Siwapp.Customers do
   @doc """
   Gets a customer by id
   """
-  @spec get!(binary) :: Customer.t()
+  @spec get!(pos_integer) :: Customer.t()
   def get!(id), do: Repo.get!(Customer, id)
 
-  @spec get(binary) :: Customer.t() | nil
+  @spec get(pos_integer) :: Customer.t() | nil
   def get(id), do: Repo.get(Customer, id)
 
   @doc """
