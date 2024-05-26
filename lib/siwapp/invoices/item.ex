@@ -1,6 +1,21 @@
 defmodule Siwapp.Invoices.Item do
   @moduledoc """
-  Item
+  The Item schema has multiple virtual fields:
+
+    - `virtual_unitary_cost` is just a human representation of the `unitary_cost`,
+      because `unitary_cost` is always in cents like 12900, the `virtual_unitary_cost`
+      would be 129.00
+
+    - `base_amount` is the `quantity` * `unitary_cost`.
+
+    - `net_amount` is the `base_amount` with the `discount` applied.
+
+    - `taxes_amount` is a map containing something like:
+          %{
+            "VAT 0%" => Decimal.new("0.0"),
+            "VAT 21%" => Decimal.new("2562.00")
+          }
+      It contains the amounts for each tax applied to the item.
   """
   use Ecto.Schema
 
@@ -52,12 +67,17 @@ defmodule Siwapp.Invoices.Item do
     |> common_validations()
   end
 
+  @doc """
+  Changeset for the recurring invoice items
+  """
+  @spec changeset(t(), map) :: Ecto.Changeset.t()
   def changeset_for_recurring(item, attrs \\ %{}) do
     item
     |> cast(attrs, [:taxes | @fields])
     |> common_validations()
   end
 
+  @spec changeset(t()) :: Ecto.Changeset.t()
   defp common_validations(changeset) do
     changeset
     |> validate_length(:description, max: 20_000)
@@ -67,6 +87,12 @@ defmodule Siwapp.Invoices.Item do
     |> set_taxes_amount()
   end
 
+  @doc """
+  Builds the map for the `taxes_amount` field.
+
+  Since `taxes` are different data structures for Invoices and RecurringInvoices
+  this function deals with both of them.
+  """
   def get_taxes_amount(taxes, net_amount) do
     for tax <- taxes, into: %{} do
       if is_struct(tax, Siwapp.Commons.Tax) do
@@ -88,6 +114,10 @@ defmodule Siwapp.Invoices.Item do
     end
   end
 
+  @doc """
+  Makes the calculations for `base_amount` and `net_amount`
+  """
+  @spec get_amounts(integer, integer, integer) :: {integer, integer}
   def get_amounts(quantity, unitary_cost, discount) do
     base_amount = quantity * unitary_cost
     net_amount = round(base_amount * (1 - discount / 100))
