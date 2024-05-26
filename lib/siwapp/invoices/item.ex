@@ -15,7 +15,6 @@ defmodule Siwapp.Invoices.Item do
     :discount,
     :description,
     :unitary_cost,
-    :invoice_id,
     :virtual_unitary_cost
   ]
 
@@ -47,30 +46,23 @@ defmodule Siwapp.Invoices.Item do
   @spec changeset(t(), map) :: Ecto.Changeset.t()
   def changeset(item, attrs \\ %{}) do
     item
-    |> cast(attrs, @fields)
+    |> cast(attrs, [:invoice_id | @fields])
     |> assoc_taxes(attrs)
     |> foreign_key_constraint(:invoice_id)
-    |> validate_length(:description, max: 20_000)
-    |> validate_number(:quantity, greater_than_or_equal_to: 0)
-    |> validate_number(:discount, greater_than_or_equal_to: 0, less_than_or_equal_to: 100)
-    |> calculate()
+    |> common_validations()
   end
 
   def changeset_for_recurring(item, attrs \\ %{}) do
     item
-    |> cast(attrs, [:description, :quantity, :discount, :unitary_cost, :virtual_unitary_cost, :taxes])
+    |> cast(attrs, [:taxes | @fields])
+    |> common_validations()
+  end
+
+  defp common_validations(changeset) do
+    changeset
     |> validate_length(:description, max: 20_000)
     |> validate_number(:quantity, greater_than_or_equal_to: 0)
     |> validate_number(:discount, greater_than_or_equal_to: 0, less_than_or_equal_to: 100)
-    |> set_amounts()
-  end
-
-  @doc """
-  Performs the totals calculations for base_amount, net_amount and taxes_amount fields.
-  """
-  @spec calculate(Ecto.Changeset.t()) :: Ecto.Changeset.t()
-  def calculate(changeset) do
-    changeset
     |> set_amounts()
     |> set_taxes_amount()
   end
@@ -85,11 +77,12 @@ defmodule Siwapp.Invoices.Item do
         tax_val =
           :cache
           |> Commons.list_taxes()
-          |> Enum.find(& &1.name == tax)
+          |> Enum.find(&(&1.name == tax))
           |> Map.get(:value)
           |> Kernel./(100)
           |> Float.to_string()
           |> Decimal.new()
+
         {tax, Decimal.mult(net_amount, tax_val)}
       end
     end
@@ -130,12 +123,10 @@ defmodule Siwapp.Invoices.Item do
   @spec assoc_taxes(Ecto.Changeset.t(), map()) :: Ecto.Changeset.t()
   defp assoc_taxes(changeset, attrs) do
     changeset_taxes_names =
-      Enum.map(get_field(changeset, :taxes), & String.upcase(&1.name))
+      Enum.map(get_field(changeset, :taxes), &String.upcase(&1.name))
 
     attr_taxes_names = MapSet.new(get(attrs, :taxes) || changeset_taxes_names, &String.upcase/1)
-
     all_taxes = Commons.list_taxes(:cache)
-
     all_taxes_names = MapSet.new(all_taxes, & &1.name)
 
     changeset =

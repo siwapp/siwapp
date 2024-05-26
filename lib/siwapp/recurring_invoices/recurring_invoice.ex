@@ -126,6 +126,7 @@ defmodule Siwapp.RecurringInvoices.RecurringInvoice do
         "unitary_cost",
         recurring_invoice.currency
       )
+
     recurring_invoice
     |> cast(attrs, @fields)
     |> assign_currency()

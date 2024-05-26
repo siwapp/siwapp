@@ -94,7 +94,6 @@ defmodule SiwappWeb.TaxesComponent do
         Enum.map(selected, fn {k, _v} -> k end)
       )
 
-
     send(self(), {:params_updated, params})
 
     {:noreply, socket}
@@ -126,6 +125,7 @@ defmodule SiwappWeb.TaxesComponent do
           |> Map.new()
 
         %{"items" => items}
+
       _ ->
         form.params
     end
