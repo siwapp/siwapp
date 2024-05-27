@@ -10,7 +10,8 @@ defmodule Siwapp.Invoices.AmountHelper do
   Given an invoice it sets the virtual amounts from the real amounts
   of the payments and items in order to show them correctly in the forms.
   """
-  @spec set_virtual_amounts(Invoice.t() | RecurringInvoice.t(), atom, atom, atom) :: Invoice.t() | RecurringInvoice.t()
+  @spec set_virtual_amounts(Invoice.t() | RecurringInvoice.t(), atom, atom, atom) ::
+          Invoice.t() | RecurringInvoice.t()
   def set_virtual_amounts(invoice, key, virtual_field, field) do
     items = Map.get(invoice, key)
 
