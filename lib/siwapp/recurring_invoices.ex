@@ -110,7 +110,7 @@ defmodule Siwapp.RecurringInvoices do
     |> Map.from_struct()
     |> Map.put(:recurring_invoice_id, rec_inv.id)
     |> maybe_add_due_date(rec_inv.days_to_due)
-    |> Map.put(:items, rec_inv.items)
+    |> Map.put(:items, Enum.map(rec_inv.items, &Map.from_struct/1))
   end
 
   @spec maybe_add_due_date(map, integer) :: map
