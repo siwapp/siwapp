@@ -37,9 +37,8 @@ defmodule Siwapp.InvoiceHelper do
   @doc """
   Performs the totals calculations for net_amount, taxes_amounts and gross_amount fields.
   """
-  @spec calculate_invoice(Invoice.t() | RecurringInvoice.t() | nil) :: Invoice.t() | RecurringInvoice.t() | nil
-  def calculate_invoice(nil), do: nil
-
+  @spec calculate_invoice(Invoice.t() | RecurringInvoice.t()) ::
+          Invoice.t() | RecurringInvoice.t()
   def calculate_invoice(invoice) do
     invoice
     |> with_virtual_fields()
@@ -50,14 +49,16 @@ defmodule Siwapp.InvoiceHelper do
   end
 
   # Sets virtual fields to payments and items
-  @spec with_virtual_fields(Invoice.t()) :: Invoice.t()
+  @spec with_virtual_fields(Invoice.t() | RecurringInvoice.t()) ::
+          Invoice.t() | RecurringInvoice.t()
   defp with_virtual_fields(invoice) do
     invoice
     |> AmountHelper.set_virtual_amounts(:payments, :virtual_amount, :amount)
     |> AmountHelper.set_virtual_amounts(:items, :virtual_unitary_cost, :unitary_cost)
   end
 
-  @spec set_items_virtuals(Invoice.t()) :: Invoice.t()
+  @spec set_items_virtuals(Invoice.t() | RecurringInvoice.t()) ::
+          Invoice.t() | RecurringInvoice.t()
   defp set_items_virtuals(invoice) do
     items =
       Enum.map(invoice.items, fn item ->
@@ -113,7 +114,8 @@ defmodule Siwapp.InvoiceHelper do
   defp add_error(changeset, {key, [{message, opts}]}),
     do: add_error(changeset, key, message, opts)
 
-  @spec set_net_amount_invoice(Invoice.t()) :: Invoice.t()
+  @spec set_net_amount_invoice(Invoice.t() | RecurringInvoice.t()) ::
+          Invoice.t() | RecurringInvoice.t()
   defp set_net_amount_invoice(invoice) do
     case Map.get(invoice, :items) do
       nil ->
@@ -129,7 +131,8 @@ defmodule Siwapp.InvoiceHelper do
     end
   end
 
-  @spec set_taxes_amounts_invoice(Invoice.t()) :: Invoice.t()
+  @spec set_taxes_amounts_invoice(Invoice.t() | RecurringInvoice.t()) ::
+          Invoice.t() | RecurringInvoice.t()
   defp set_taxes_amounts_invoice(invoice) do
     case Map.get(invoice, :items) do
       nil ->
@@ -147,7 +150,8 @@ defmodule Siwapp.InvoiceHelper do
     end
   end
 
-  @spec set_gross_amount_invoice(Invoice.t()) :: Invoice.t()
+  @spec set_gross_amount_invoice(Invoice.t() | RecurringInvoice.t()) ::
+          Invoice.t() | RecurringInvoice.t()
   defp set_gross_amount_invoice(invoice) do
     case Map.get(invoice, :items) do
       nil ->

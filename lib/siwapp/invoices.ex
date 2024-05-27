@@ -106,15 +106,21 @@ defmodule Siwapp.Invoices do
   def get(id) do
     items_query = from i in Item, order_by: i.id
 
-    Invoice
-    |> Query.not_deleted()
-    |> Repo.get(id)
-    |> Repo.preload(items: {items_query, [:taxes]})
-    |> Repo.preload([:payments, :series, :customer])
-    |> InvoiceHelper.calculate_invoice()
+    invoice =
+      Invoice
+      |> Query.not_deleted()
+      |> Repo.get(id)
+      |> Repo.preload(items: {items_query, [:taxes]})
+      |> Repo.preload([:payments, :series, :customer])
+
+    if is_nil(invoice) do
+      nil
+    else
+      InvoiceHelper.calculate_invoice(invoice)
+    end
   end
 
-  @spec get!(pos_integer()) :: Invoice.t()
+  @spec get!(pos_integer()) :: Invoice.t() | no_return()
   def get!(id) do
     items_query = from i in Item, order_by: i.id
 

@@ -185,7 +185,7 @@ defmodule SiwappWeb.InvoicesLive.Index do
        |> Enum.reduce("", fn id, acc -> acc <> "/#{id}" end))
   end
 
-  @spec push_redirect_by_invoice_status(atom, Phoenix.LiveView.Socket.t(), binary, map) ::
+  @spec push_redirect_by_invoice_status(atom, Phoenix.LiveView.Socket.t(), any, map) ::
           {:noreply, Phoenix.LiveView.Socket.t()}
   defp push_redirect_by_invoice_status(:paid, socket, id, params) do
     {:noreply,
