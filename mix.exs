@@ -11,6 +11,12 @@ defmodule Siwapp.MixProject do
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps(),
+      releases: [
+        siwapp: [
+          include_erts: false,
+          include_executables_for: [:unix]
+        ]
+      ],
       docs: [
         groups_for_modules: [
           Context: [
