@@ -25,7 +25,7 @@ database_url =
     """
 
 config :siwapp, Siwapp.Repo,
-  ssl: true,
+  ssl: false,
   # socket_options: [:inet6],
   url: database_url,
   database: "siwapp_prod",
