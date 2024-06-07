@@ -13,8 +13,7 @@ config :siwapp,
 # which you should run after static files are built and
 # before starting your production server.
 config :siwapp, SiwappWeb.Endpoint,
-  url: [scheme: "https", host: System.get_env("APP_HOST"), port: 443],
-  force_ssl: [rewrite_on: [:x_forwarded_proto]],
+  url: [host: System.get_env("APP_HOST"), port: System.get_env("PORT") || "4000"],
   cache_static_manifest: "priv/static/cache_manifest.json"
 
 database_url =
@@ -25,12 +24,10 @@ database_url =
     """
 
 config :siwapp, Siwapp.Repo,
-  ssl: true,
   # socket_options: [:inet6],
   url: database_url,
   database: "siwapp_prod",
-  timeout: 30_000,
-  show_sensitive_data_on_connection_error: true
+  timeout: 30_000
 
 # Do not print debug messages in production
 config :logger, level: :info
@@ -43,8 +40,7 @@ config :sentry,
   root_source_code_path: File.cwd!(),
   tags: %{
     env: "production"
-  },
-  included_environments: [:prod]
+  }
 
 # ## SSL Support
 #

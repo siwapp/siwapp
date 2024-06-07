@@ -9,6 +9,8 @@ services:
       timeout: 25s
       retries: 5
       start_period: 5s
+    ports:
+      - "5432:5432"
 
   siwapp:
     build:
@@ -28,4 +30,3 @@ services:
       - "4010:4010"
     volumes:
       - ${PWD}:/app
-version: '3'

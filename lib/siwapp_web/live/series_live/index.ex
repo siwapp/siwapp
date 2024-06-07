@@ -25,7 +25,11 @@ defmodule SiwappWeb.SeriesLive.Index do
   end
 
   def handle_event("edit", %{"id" => id}, socket) do
-    {:noreply, push_redirect(socket, to: Routes.series_index_path(socket, :edit, id))}
+    {:noreply, push_patch(socket, to: Routes.series_index_path(socket, :edit, id))}
+  end
+
+  def handle_event("close", _, socket) do
+    {:noreply, push_patch(socket, to: Routes.series_index_path(socket, :index))}
   end
 
   @spec apply_action(Phoenix.LiveView.Socket.t(), :new | :edit | :index, map()) ::

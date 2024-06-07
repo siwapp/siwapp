@@ -7,6 +7,10 @@ defmodule Siwapp.InvoiceHelper do
 
   alias Siwapp.Customers
   alias Siwapp.Customers.Customer
+  alias Siwapp.Invoices.AmountHelper
+  alias Siwapp.Invoices.Invoice
+  alias Siwapp.Invoices.Item
+  alias Siwapp.RecurringInvoices.RecurringInvoice
 
   @spec maybe_find_customer_or_new(Ecto.Changeset.t()) :: Ecto.Changeset.t()
   def maybe_find_customer_or_new(changeset) do
@@ -33,12 +37,43 @@ defmodule Siwapp.InvoiceHelper do
   @doc """
   Performs the totals calculations for net_amount, taxes_amounts and gross_amount fields.
   """
-  @spec calculate(Ecto.Changeset.t()) :: Ecto.Changeset.t()
-  def calculate(changeset) do
-    changeset
-    |> set_net_amount()
-    |> set_taxes_amounts()
-    |> set_gross_amount()
+  @spec calculate_invoice(Invoice.t() | RecurringInvoice.t()) ::
+          Invoice.t() | RecurringInvoice.t()
+  def calculate_invoice(invoice) do
+    invoice
+    |> with_virtual_fields()
+    |> set_items_virtuals()
+    |> set_net_amount_invoice()
+    |> set_taxes_amounts_invoice()
+    |> set_gross_amount_invoice()
+  end
+
+  # Sets virtual fields to payments and items
+  @spec with_virtual_fields(Invoice.t() | RecurringInvoice.t()) ::
+          Invoice.t() | RecurringInvoice.t()
+  defp with_virtual_fields(invoice) do
+    invoice
+    |> AmountHelper.set_virtual_amounts(:payments, :virtual_amount, :amount)
+    |> AmountHelper.set_virtual_amounts(:items, :virtual_unitary_cost, :unitary_cost)
+  end
+
+  @spec set_items_virtuals(Invoice.t() | RecurringInvoice.t()) ::
+          Invoice.t() | RecurringInvoice.t()
+  defp set_items_virtuals(invoice) do
+    items =
+      Enum.map(invoice.items, fn item ->
+        {base_amount, net_amount} =
+          Item.get_amounts(item.quantity, item.unitary_cost, item.discount)
+
+        taxes = Item.get_taxes_amount(item.taxes, net_amount)
+
+        item
+        |> Map.put(:taxes_amount, taxes)
+        |> Map.put(:base_amount, base_amount)
+        |> Map.put(:net_amount, net_amount)
+      end)
+
+    Map.put(invoice, :items, items)
   end
 
   @spec find_customer_or_new(Ecto.Changeset.t()) :: Ecto.Changeset.t()
@@ -79,52 +114,58 @@ defmodule Siwapp.InvoiceHelper do
   defp add_error(changeset, {key, [{message, opts}]}),
     do: add_error(changeset, key, message, opts)
 
-  @spec set_net_amount(Ecto.Changeset.t()) :: Ecto.Changeset.t()
-  defp set_net_amount(changeset) do
-    if is_nil(get_change(changeset, :items)) do
-      changeset
-    else
-      total_net_amount =
-        changeset
-        |> get_field(:items)
-        |> Enum.map(& &1.net_amount)
-        |> Enum.sum()
+  @spec set_net_amount_invoice(Invoice.t() | RecurringInvoice.t()) ::
+          Invoice.t() | RecurringInvoice.t()
+  defp set_net_amount_invoice(invoice) do
+    case Map.get(invoice, :items) do
+      nil ->
+        invoice
 
-      put_change(changeset, :net_amount, total_net_amount)
+      items ->
+        total_net_amount =
+          items
+          |> Enum.map(& &1.net_amount)
+          |> Enum.sum()
+
+        Map.put(invoice, :net_amount, total_net_amount)
     end
   end
 
-  @spec set_taxes_amounts(Ecto.Changeset.t()) :: Ecto.Changeset.t()
-  defp set_taxes_amounts(changeset) do
-    if is_nil(get_field(changeset, :items)) do
-      changeset
-    else
-      total_taxes_amounts =
-        changeset
-        |> get_field(:items)
-        |> Enum.map(& &1.taxes_amount)
-        |> Enum.reduce(%{}, &Map.merge(&1, &2, fn _, v1, v2 -> Decimal.add(v1, v2) end))
-        |> Enum.map(fn {k, v} -> {k, v |> Decimal.round() |> Decimal.to_integer()} end)
-        |> Map.new()
+  @spec set_taxes_amounts_invoice(Invoice.t() | RecurringInvoice.t()) ::
+          Invoice.t() | RecurringInvoice.t()
+  defp set_taxes_amounts_invoice(invoice) do
+    case Map.get(invoice, :items) do
+      nil ->
+        invoice
 
-      put_change(changeset, :taxes_amounts, total_taxes_amounts)
+      items ->
+        total_taxes_amounts =
+          items
+          |> Enum.map(& &1.taxes_amount)
+          |> Enum.reduce(%{}, &Map.merge(&1, &2, fn _, v1, v2 -> Decimal.add(v1, v2) end))
+          |> Enum.map(fn {k, v} -> {k, v |> Decimal.round() |> Decimal.to_integer()} end)
+          |> Map.new()
+
+        Map.put(invoice, :taxes_amounts, total_taxes_amounts)
     end
   end
 
-  @spec set_gross_amount(Ecto.Changeset.t()) :: Ecto.Changeset.t()
-  defp set_gross_amount(changeset) do
-    if is_nil(get_change(changeset, :items)) do
-      changeset
-    else
-      taxes_amount =
-        changeset
-        |> get_field(:taxes_amounts)
-        |> Map.values()
-        |> Enum.sum()
+  @spec set_gross_amount_invoice(Invoice.t() | RecurringInvoice.t()) ::
+          Invoice.t() | RecurringInvoice.t()
+  defp set_gross_amount_invoice(invoice) do
+    case Map.get(invoice, :items) do
+      nil ->
+        invoice
 
-      gross_amount = get_field(changeset, :net_amount) + taxes_amount
+      _items ->
+        taxes_amount =
+          invoice.taxes_amounts
+          |> Map.values()
+          |> Enum.sum()
 
-      put_change(changeset, :gross_amount, gross_amount)
+        gross_amount = invoice.net_amount + taxes_amount
+
+        Map.put(invoice, :gross_amount, gross_amount)
     end
   end
 end

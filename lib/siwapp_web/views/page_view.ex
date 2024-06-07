@@ -12,6 +12,8 @@ defmodule SiwappWeb.PageView do
   def money_format(value, nil, options), do: money_format(value, "EUR", options)
 
   def money_format(value, currency, options) do
+    options = Keyword.merge([minus_sign_first: false], options)
+
     value
     |> Money.new(currency)
     |> Money.to_string(options)

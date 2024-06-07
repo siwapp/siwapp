@@ -35,7 +35,6 @@ defmodule Siwapp.Invoices do
   @doc """
   Creates an invoice
   """
-
   @spec create(map()) :: {:ok, Invoice.t()} | {:error, Ecto.Changeset.t()}
   def create(attrs \\ %{}) do
     %Invoice{}
@@ -48,7 +47,6 @@ defmodule Siwapp.Invoices do
   @doc """
   Update an invoice
   """
-
   @spec update(Invoice.t(), map()) :: {:ok, Invoice.t()} | {:error, Ecto.Changeset.t()}
   def update(%Invoice{} = invoice, attrs) do
     invoice
@@ -61,23 +59,9 @@ defmodule Siwapp.Invoices do
   @doc """
   Delete an invoice
   """
-
   @spec delete(Invoice.t()) :: {:ok, Invoice.t()} | {:error, Ecto.Changeset.t()}
   def delete(%Invoice{} = invoice) do
     __MODULE__.update(invoice, %{deleted_at: DateTime.utc_now()})
-  end
-
-  @doc """
-  Adds virtual fields to invoice struct
-  """
-  @spec with_virtual_fields(Invoice.t()) :: Invoice.t()
-  def with_virtual_fields(invoice) do
-    items_with_calculations =
-      Enum.map(invoice.items, &Ecto.Changeset.apply_changes(change_item(&1, invoice.currency)))
-
-    invoice = Map.put(invoice, :items, items_with_calculations)
-    changeset = change(invoice)
-    Ecto.Changeset.apply_changes(changeset)
   end
 
   @doc """
@@ -115,49 +99,37 @@ defmodule Siwapp.Invoices do
     __MODULE__.update(invoice, %{payments: payments_attrs})
   end
 
-  @spec get(pos_integer()) :: Invoice.t() | nil
-  def get(id) do
-    Invoice
-    |> Query.not_deleted()
-    |> Repo.get(id)
-  end
-
-  @spec get(pos_integer(), keyword()) :: Invoice.t() | nil
-  def get(id, preload: list) do
-    Invoice
-    |> Query.not_deleted()
-    |> Repo.get(id)
-    |> Repo.preload(list)
-  end
-
   @doc """
   Gets an invoice by id
   """
+  @spec get(pos_integer()) :: Invoice.t() | nil
+  def get(id) do
+    items_query = from i in Item, order_by: i.id
 
-  @spec get!(pos_integer() | binary()) :: Invoice.t()
+    invoice =
+      Invoice
+      |> Query.not_deleted()
+      |> Repo.get(id)
+      |> Repo.preload(items: {items_query, [:taxes]})
+      |> Repo.preload([:payments, :series, :customer])
+
+    if is_nil(invoice) do
+      nil
+    else
+      InvoiceHelper.calculate_invoice(invoice)
+    end
+  end
+
+  @spec get!(pos_integer()) :: Invoice.t() | no_return()
   def get!(id) do
-    query = Query.not_deleted(Invoice)
+    items_query = from i in Item, order_by: i.id
 
-    with nil <- Repo.get(query, id),
-         do: raise(Siwapp.Error.NotFoundError, id: id, type: "invoice")
-  end
-
-  @spec get!(pos_integer(), keyword()) :: Invoice.t()
-  def get!(id, preload: list) do
-    id
-    |> get!()
-    |> Repo.preload(list)
-  end
-
-  @doc """
-  Get a single invoice by the params
-  """
-
-  @spec get_by!(atom(), any()) :: Invoice.t()
-  def get_by!(key, value) do
     Invoice
     |> Query.not_deleted()
-    |> Repo.get_by!(%{key => value})
+    |> Repo.get!(id)
+    |> Repo.preload(items: {items_query, [:taxes]})
+    |> Repo.preload([:payments, :series, :customer])
+    |> InvoiceHelper.calculate_invoice()
   end
 
   @doc """
@@ -195,93 +167,6 @@ defmodule Siwapp.Invoices do
     end
   end
 
-  @doc """
-  Gets an item by id
-  """
-  @spec get_item_by_id!(pos_integer()) :: Item.t()
-  def get_item_by_id!(id), do: Repo.get!(Item, id)
-
-  @doc """
-  Creates an item associated to an invoice
-  """
-  @spec create_item(Invoice.t(), atom() | binary(), map()) ::
-          {:ok, Item.t()} | {:error, Ecto.Changeset.t()}
-  def create_item(%Invoice{} = invoice, currency, attrs \\ %{}) do
-    invoice
-    |> Ecto.build_assoc(:items)
-    |> Item.changeset(attrs, currency)
-    |> Repo.insert()
-  end
-
-  @doc """
-  Updates an item
-  """
-  @spec update_item(Item.t(), atom() | binary(), map()) ::
-          {:ok, Item.t()} | {:error, Ecto.Changeset.t()}
-  def update_item(%Item{} = item, currency, attrs) do
-    item
-    |> Repo.preload(:taxes)
-    |> Item.changeset(attrs, currency)
-    |> Repo.update()
-  end
-
-  @doc """
-  Deletes an item
-  """
-  @spec delete_item(Item.t()) :: {:ok, Item.t()} | {:error, Ecto.Changeset.t()}
-  def delete_item(%Item{} = item), do: Repo.delete(item)
-
-  @doc """
-  Change an item
-  """
-  @spec change_item(Item.t(), binary | atom, map) :: Ecto.Changeset.t()
-  def change_item(%Item{} = item, currency, attrs \\ %{}) do
-    Item.changeset(item, attrs, currency)
-  end
-
-  @doc """
-  Gets a payment by id
-  """
-  @spec get_payment_by_id!(pos_integer()) :: Payment.t()
-  def get_payment_by_id!(id), do: Repo.get!(Payment, id)
-
-  @doc """
-  Creates a payment associated to an invoice
-  """
-  @spec create_payment(Invoice.t(), atom() | binary(), map()) ::
-          {:ok, Payment.t()} | {:error, Ecto.Changeset.t()}
-  def create_payment(%Invoice{} = invoice, currency, attrs \\ %{}) do
-    invoice
-    |> Ecto.build_assoc(:payments)
-    |> Payment.changeset(attrs, currency)
-    |> Repo.insert()
-  end
-
-  @doc """
-  Updates a payment
-  """
-  @spec update_payment(Payment.t(), atom() | binary(), map()) ::
-          {:ok, Payment.t()} | {:error, Ecto.Changeset.t()}
-  def update_payment(%Payment{} = payment, currency, attrs) do
-    payment
-    |> Payment.changeset(attrs, currency)
-    |> Repo.update()
-  end
-
-  @doc """
-  Deletes a payment
-  """
-  @spec delete_payment(Payment.t()) :: {:ok, Payment.t()} | {:error, Ecto.Changeset.t()}
-  def delete_payment(%Payment{} = payment), do: Repo.delete(payment)
-
-  @doc """
-  Change a payment
-  """
-  @spec change_payment(Payment.t(), atom() | binary(), map) :: Ecto.Changeset.t()
-  def change_payment(%Payment{} = payment, currency, attrs \\ %{}) do
-    Payment.changeset(payment, attrs, currency)
-  end
-
   @spec duplicate(Invoice.t()) :: Ecto.Changeset.t()
   def duplicate(invoice) do
     params_keys =
@@ -306,6 +191,7 @@ defmodule Siwapp.Invoices do
       :discount,
       :quantity,
       :unitary_cost,
+      :virtual_unitary_cost,
       :taxes
     ]
 

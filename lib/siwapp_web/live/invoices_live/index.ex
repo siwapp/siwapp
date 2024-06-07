@@ -87,8 +87,8 @@ defmodule SiwappWeb.InvoicesLive.Index do
     socket.assigns.checked
     |> MapSet.to_list()
     |> Enum.reject(&(&1 == 0))
-    |> Enum.map(&Invoices.get!(&1, preload: [{:items, :taxes}, :payments]))
-    |> Enum.each(&Invoices.delete(&1))
+    |> Enum.map(&Invoices.get!/1)
+    |> Enum.each(&Invoices.delete/1)
 
     socket =
       socket
@@ -110,8 +110,8 @@ defmodule SiwappWeb.InvoicesLive.Index do
     socket.assigns.checked
     |> MapSet.to_list()
     |> Enum.reject(&(&1 == 0))
-    |> Enum.map(&Invoices.get!(&1, preload: [{:items, :taxes}, :series, :payments]))
-    |> Enum.each(&Invoices.send_email(&1))
+    |> Enum.map(&Invoices.get!/1)
+    |> Enum.each(&Invoices.send_email/1)
 
     socket =
       socket
@@ -125,9 +125,9 @@ defmodule SiwappWeb.InvoicesLive.Index do
     socket.assigns.checked
     |> MapSet.to_list()
     |> List.delete(0)
-    |> Enum.map(&Invoices.get!(&1, preload: [{:items, :taxes}, :payments]))
+    |> Enum.map(&Invoices.get!/1)
     |> Enum.filter(&(!&1.paid))
-    |> Enum.each(&Invoices.set_paid(&1))
+    |> Enum.each(&Invoices.set_paid/1)
 
     socket =
       socket
@@ -185,7 +185,7 @@ defmodule SiwappWeb.InvoicesLive.Index do
        |> Enum.reduce("", fn id, acc -> acc <> "/#{id}" end))
   end
 
-  @spec push_redirect_by_invoice_status(atom, Phoenix.LiveView.Socket.t(), binary, map) ::
+  @spec push_redirect_by_invoice_status(atom, Phoenix.LiveView.Socket.t(), any, map) ::
           {:noreply, Phoenix.LiveView.Socket.t()}
   defp push_redirect_by_invoice_status(:paid, socket, id, params) do
     {:noreply,

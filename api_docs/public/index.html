@@ -83,6 +83,7 @@
           <a href="#definition-Payment"> Payment </a>
           <a href="#definition-Payments"> Payments </a>
           <a href="#definition-String"> String </a>
+          <a href="#definition-Tax"> Tax </a>
         </nav>
       </div>
       <div id="docs" class="row collapse expanded drawer" data-drawer>
@@ -174,9 +175,11 @@ https://dev-server.com
     <span class="hljs-symbol">paid</span>
     <span class="hljs-symbol">paidAmount</span>
     <span class="hljs-symbol">recurringInvoice</span>
+    <span class="hljs-symbol">reference</span>
     <span class="hljs-symbol">sentByEmail</span>
     <span class="hljs-symbol">seriesId</span>
     <span class="hljs-symbol">shippingAddress</span>
+    <span class="hljs-symbol">status</span>
     <span class="hljs-symbol">terms</span>
     <span class="hljs-symbol">updatedAt</span>
   }</span></span>
@@ -194,7 +197,7 @@ https://dev-server.com
 </code></pre> </body>
                     </html>
                     <!-- </div> -->
-                    <a href="https://dev-server.com?query=query%20invoice(%24id%3A%20ID!)%7B%0A%20%20invoice(id%3A%20%24id)%7B%0A%20%20%20%20contactPerson%0A%20%20%20%20currency%0A%20%20%20%20customerId%0A%20%20%20%20draft%0A%20%20%20%20dueDate%0A%20%20%20%20email%0A%20%20%20%20failed%0A%20%20%20%20grossAmount%0A%20%20%20%20id%0A%20%20%20%20identification%0A%20%20%20%20insertedAt%0A%20%20%20%20invoicingAddress%0A%20%20%20%20issueDate%0A%20%20%20%20name%0A%20%20%20%20netAmount%0A%20%20%20%20notes%0A%20%20%20%20number%0A%20%20%20%20paid%0A%20%20%20%20paidAmount%0A%20%20%20%20recurringInvoice%0A%20%20%20%20sentByEmail%0A%20%20%20%20seriesId%0A%20%20%20%20shippingAddress%0A%20%20%20%20terms%0A%20%20%20%20updatedAt%0A%20%20%7D%0A%7D" target="_blank">Try it now</a>
+                    <a href="https://dev-server.com?query=query%20invoice(%24id%3A%20ID!)%7B%0A%20%20invoice(id%3A%20%24id)%7B%0A%20%20%20%20contactPerson%0A%20%20%20%20currency%0A%20%20%20%20customerId%0A%20%20%20%20draft%0A%20%20%20%20dueDate%0A%20%20%20%20email%0A%20%20%20%20failed%0A%20%20%20%20grossAmount%0A%20%20%20%20id%0A%20%20%20%20identification%0A%20%20%20%20insertedAt%0A%20%20%20%20invoicingAddress%0A%20%20%20%20issueDate%0A%20%20%20%20name%0A%20%20%20%20netAmount%0A%20%20%20%20notes%0A%20%20%20%20number%0A%20%20%20%20paid%0A%20%20%20%20paidAmount%0A%20%20%20%20recurringInvoice%0A%20%20%20%20reference%0A%20%20%20%20sentByEmail%0A%20%20%20%20seriesId%0A%20%20%20%20shippingAddress%0A%20%20%20%20status%0A%20%20%20%20terms%0A%20%20%20%20updatedAt%0A%20%20%7D%0A%7D" target="_blank">Try it now</a>
                 </section>
               </div>
             </div>
@@ -253,9 +256,11 @@ https://dev-server.com
       <span class="hljs-attr">&quot;paid&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
       <span class="hljs-attr">&quot;paidAmount&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
       <span class="hljs-attr">&quot;recurringInvoice&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;reference&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
       <span class="hljs-attr">&quot;sentByEmail&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
       <span class="hljs-attr">&quot;seriesId&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
       <span class="hljs-attr">&quot;shippingAddress&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;status&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
       <span class="hljs-attr">&quot;terms&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
     }
   }
@@ -452,9 +457,39 @@ https://dev-server.com
                   </div>
                   <div class="prop-row prop-group">
                     <div class="prop-name">
+                      <div class="prop-title">metaAttributes:
+                        <span class="prop-type">
+                          <div class="json-property-type">
+                            <div class="json-schema-ref-array">
+                              <a class="json-schema-ref" href="#/definitions/MetaAttributes">MetaAttributes</a>
+                            </div>
+                          </div>
+                          <span class="json-property-range" title="Value limits"></span>
+                        </span>
+                      </div>
+                    </div>
+                    <div class="prop-value">
+                      <p class="no-description">(no description)</p>
+                    </div>
+                  </div>
+                  <div class="prop-row prop-group">
+                    <div class="prop-name">
                       <div class="prop-title">offset:
                         <span class="prop-type">
                           <div class="json-property-type">integer</div>
+                          <span class="json-property-range" title="Value limits"></span>
+                        </span>
+                      </div>
+                    </div>
+                    <div class="prop-value">
+                      <p class="no-description">(no description)</p>
+                    </div>
+                  </div>
+                  <div class="prop-row prop-group">
+                    <div class="prop-name">
+                      <div class="prop-title">withStatus:
+                        <span class="prop-type">
+                          <div class="json-property-type">string</div>
                           <span class="json-property-range" title="Value limits"></span>
                         </span>
                       </div>
@@ -475,8 +510,8 @@ https://dev-server.com
                     <!-- <div class="hljs"> -->
                     <html>
                     <head></head>
-                    <body><pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">query</span> invoices<span class="hljs-tag">(<span class="hljs-code">$customerId</span>: ID, <span class="hljs-code">$limit</span>:<span class="hljs-type"> Int,</span> <span class="hljs-code">$offset</span>:<span class="hljs-type"> Int)</span>{
-  invoices(customerId: <span class="hljs-code">$customerId</span>, limit: <span class="hljs-code">$limit</span>, offset: <span class="hljs-code">$offset</span>)</span><span class="hljs-tag">{
+                    <body><pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">query</span> invoices<span class="hljs-tag">(<span class="hljs-code">$customerId</span>: ID, <span class="hljs-code">$limit</span>:<span class="hljs-type"> Int,</span> <span class="hljs-code">$metaAttributes</span>: <span class="hljs-type">[MetaAttributes]</span>, <span class="hljs-code">$offset</span>:<span class="hljs-type"> Int,</span> <span class="hljs-code">$withStatus</span>:<span class="hljs-type"> String)</span>{
+  invoices(customerId: <span class="hljs-code">$customerId</span>, limit: <span class="hljs-code">$limit</span>, metaAttributes: <span class="hljs-code">$metaAttributes</span>, offset: <span class="hljs-code">$offset</span>, withStatus: <span class="hljs-code">$withStatus</span>)</span><span class="hljs-tag">{
     <span class="hljs-symbol">contactPerson</span>
     <span class="hljs-symbol">currency</span>
     <span class="hljs-symbol">customerId</span>
@@ -497,9 +532,11 @@ https://dev-server.com
     <span class="hljs-symbol">paid</span>
     <span class="hljs-symbol">paidAmount</span>
     <span class="hljs-symbol">recurringInvoice</span>
+    <span class="hljs-symbol">reference</span>
     <span class="hljs-symbol">sentByEmail</span>
     <span class="hljs-symbol">seriesId</span>
     <span class="hljs-symbol">shippingAddress</span>
+    <span class="hljs-symbol">status</span>
     <span class="hljs-symbol">terms</span>
     <span class="hljs-symbol">updatedAt</span>
   }</span></span>
@@ -514,12 +551,19 @@ https://dev-server.com
                     <body><pre><code class="hljs language-json">{
   <span class="hljs-attr">&quot;customerId&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
   <span class="hljs-attr">&quot;limit&quot;</span>: <span class="hljs-string">&quot;integer&quot;</span>,
-  <span class="hljs-attr">&quot;offset&quot;</span>: <span class="hljs-string">&quot;integer&quot;</span>
+  <span class="hljs-attr">&quot;metaAttributes&quot;</span>: [
+    {
+      <span class="hljs-attr">&quot;key&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;value&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
+    }
+  ],
+  <span class="hljs-attr">&quot;offset&quot;</span>: <span class="hljs-string">&quot;integer&quot;</span>,
+  <span class="hljs-attr">&quot;withStatus&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
 }
 </code></pre> </body>
                     </html>
                     <!-- </div> -->
-                    <a href="https://dev-server.com?query=query%20invoices(%24customerId%3A%20ID%2C%20%24limit%3A%20Int%2C%20%24offset%3A%20Int)%7B%0A%20%20invoices(customerId%3A%20%24customerId%2C%20limit%3A%20%24limit%2C%20offset%3A%20%24offset)%7B%0A%20%20%20%20contactPerson%0A%20%20%20%20currency%0A%20%20%20%20customerId%0A%20%20%20%20draft%0A%20%20%20%20dueDate%0A%20%20%20%20email%0A%20%20%20%20failed%0A%20%20%20%20grossAmount%0A%20%20%20%20id%0A%20%20%20%20identification%0A%20%20%20%20insertedAt%0A%20%20%20%20invoicingAddress%0A%20%20%20%20issueDate%0A%20%20%20%20name%0A%20%20%20%20netAmount%0A%20%20%20%20notes%0A%20%20%20%20number%0A%20%20%20%20paid%0A%20%20%20%20paidAmount%0A%20%20%20%20recurringInvoice%0A%20%20%20%20sentByEmail%0A%20%20%20%20seriesId%0A%20%20%20%20shippingAddress%0A%20%20%20%20terms%0A%20%20%20%20updatedAt%0A%20%20%7D%0A%7D" target="_blank">Try it now</a>
+                    <a href="https://dev-server.com?query=query%20invoices(%24customerId%3A%20ID%2C%20%24limit%3A%20Int%2C%20%24metaAttributes%3A%20%5BMetaAttributes%5D%2C%20%24offset%3A%20Int%2C%20%24withStatus%3A%20String)%7B%0A%20%20invoices(customerId%3A%20%24customerId%2C%20limit%3A%20%24limit%2C%20metaAttributes%3A%20%24metaAttributes%2C%20offset%3A%20%24offset%2C%20withStatus%3A%20%24withStatus)%7B%0A%20%20%20%20contactPerson%0A%20%20%20%20currency%0A%20%20%20%20customerId%0A%20%20%20%20draft%0A%20%20%20%20dueDate%0A%20%20%20%20email%0A%20%20%20%20failed%0A%20%20%20%20grossAmount%0A%20%20%20%20id%0A%20%20%20%20identification%0A%20%20%20%20insertedAt%0A%20%20%20%20invoicingAddress%0A%20%20%20%20issueDate%0A%20%20%20%20name%0A%20%20%20%20netAmount%0A%20%20%20%20notes%0A%20%20%20%20number%0A%20%20%20%20paid%0A%20%20%20%20paidAmount%0A%20%20%20%20recurringInvoice%0A%20%20%20%20reference%0A%20%20%20%20sentByEmail%0A%20%20%20%20seriesId%0A%20%20%20%20shippingAddress%0A%20%20%20%20status%0A%20%20%20%20terms%0A%20%20%20%20updatedAt%0A%20%20%7D%0A%7D" target="_blank">Try it now</a>
                 </section>
               </div>
             </div>
@@ -579,9 +623,11 @@ https://dev-server.com
         <span class="hljs-attr">&quot;paid&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
         <span class="hljs-attr">&quot;paidAmount&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
         <span class="hljs-attr">&quot;recurringInvoice&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+        <span class="hljs-attr">&quot;reference&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
         <span class="hljs-attr">&quot;sentByEmail&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
         <span class="hljs-attr">&quot;seriesId&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
         <span class="hljs-attr">&quot;shippingAddress&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+        <span class="hljs-attr">&quot;status&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
         <span class="hljs-attr">&quot;terms&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
       }
     ]
@@ -1095,9 +1141,11 @@ https://dev-server.com
     <span class="hljs-symbol">paid</span>
     <span class="hljs-symbol">paidAmount</span>
     <span class="hljs-symbol">recurringInvoice</span>
+    <span class="hljs-symbol">reference</span>
     <span class="hljs-symbol">sentByEmail</span>
     <span class="hljs-symbol">seriesId</span>
     <span class="hljs-symbol">shippingAddress</span>
+    <span class="hljs-symbol">status</span>
     <span class="hljs-symbol">terms</span>
     <span class="hljs-symbol">updatedAt</span>
   }</span></span>
@@ -1152,7 +1200,7 @@ https://dev-server.com
 </code></pre> </body>
                     </html>
                     <!-- </div> -->
-                    <a href="https://dev-server.com?query=mutation%20createInvoice(%24contactPerson%3A%20String%2C%20%24currency%3A%20String%2C%20%24draft%3A%20Boolean%2C%20%24dueDate%3A%20Date%2C%20%24email%3A%20String%2C%20%24failed%3A%20Boolean%2C%20%24identification%3A%20String%2C%20%24invoicingAddress%3A%20String%2C%20%24issueDate%3A%20Date%2C%20%24items%3A%20%5BItems%5D%2C%20%24metaAttributes%3A%20%5BMetaAttributes%5D%2C%20%24name%3A%20String%2C%20%24notes%3A%20String%2C%20%24payments%3A%20%5BPayments%5D%2C%20%24seriesCode%3A%20String%2C%20%24shippingAddress%3A%20String%2C%20%24terms%3A%20String)%7B%0A%20%20createInvoice(contactPerson%3A%20%24contactPerson%2C%20currency%3A%20%24currency%2C%20draft%3A%20%24draft%2C%20dueDate%3A%20%24dueDate%2C%20email%3A%20%24email%2C%20failed%3A%20%24failed%2C%20identification%3A%20%24identification%2C%20invoicingAddress%3A%20%24invoicingAddress%2C%20issueDate%3A%20%24issueDate%2C%20items%3A%20%24items%2C%20metaAttributes%3A%20%24metaAttributes%2C%20name%3A%20%24name%2C%20notes%3A%20%24notes%2C%20payments%3A%20%24payments%2C%20seriesCode%3A%20%24seriesCode%2C%20shippingAddress%3A%20%24shippingAddress%2C%20terms%3A%20%24terms)%7B%0A%20%20%20%20contactPerson%0A%20%20%20%20currency%0A%20%20%20%20customerId%0A%20%20%20%20draft%0A%20%20%20%20dueDate%0A%20%20%20%20email%0A%20%20%20%20failed%0A%20%20%20%20grossAmount%0A%20%20%20%20id%0A%20%20%20%20identification%0A%20%20%20%20insertedAt%0A%20%20%20%20invoicingAddress%0A%20%20%20%20issueDate%0A%20%20%20%20name%0A%20%20%20%20netAmount%0A%20%20%20%20notes%0A%20%20%20%20number%0A%20%20%20%20paid%0A%20%20%20%20paidAmount%0A%20%20%20%20recurringInvoice%0A%20%20%20%20sentByEmail%0A%20%20%20%20seriesId%0A%20%20%20%20shippingAddress%0A%20%20%20%20terms%0A%20%20%20%20updatedAt%0A%20%20%7D%0A%7D" target="_blank">Try it now</a>
+                    <a href="https://dev-server.com?query=mutation%20createInvoice(%24contactPerson%3A%20String%2C%20%24currency%3A%20String%2C%20%24draft%3A%20Boolean%2C%20%24dueDate%3A%20Date%2C%20%24email%3A%20String%2C%20%24failed%3A%20Boolean%2C%20%24identification%3A%20String%2C%20%24invoicingAddress%3A%20String%2C%20%24issueDate%3A%20Date%2C%20%24items%3A%20%5BItems%5D%2C%20%24metaAttributes%3A%20%5BMetaAttributes%5D%2C%20%24name%3A%20String%2C%20%24notes%3A%20String%2C%20%24payments%3A%20%5BPayments%5D%2C%20%24seriesCode%3A%20String%2C%20%24shippingAddress%3A%20String%2C%20%24terms%3A%20String)%7B%0A%20%20createInvoice(contactPerson%3A%20%24contactPerson%2C%20currency%3A%20%24currency%2C%20draft%3A%20%24draft%2C%20dueDate%3A%20%24dueDate%2C%20email%3A%20%24email%2C%20failed%3A%20%24failed%2C%20identification%3A%20%24identification%2C%20invoicingAddress%3A%20%24invoicingAddress%2C%20issueDate%3A%20%24issueDate%2C%20items%3A%20%24items%2C%20metaAttributes%3A%20%24metaAttributes%2C%20name%3A%20%24name%2C%20notes%3A%20%24notes%2C%20payments%3A%20%24payments%2C%20seriesCode%3A%20%24seriesCode%2C%20shippingAddress%3A%20%24shippingAddress%2C%20terms%3A%20%24terms)%7B%0A%20%20%20%20contactPerson%0A%20%20%20%20currency%0A%20%20%20%20customerId%0A%20%20%20%20draft%0A%20%20%20%20dueDate%0A%20%20%20%20email%0A%20%20%20%20failed%0A%20%20%20%20grossAmount%0A%20%20%20%20id%0A%20%20%20%20identification%0A%20%20%20%20insertedAt%0A%20%20%20%20invoicingAddress%0A%20%20%20%20issueDate%0A%20%20%20%20name%0A%20%20%20%20netAmount%0A%20%20%20%20notes%0A%20%20%20%20number%0A%20%20%20%20paid%0A%20%20%20%20paidAmount%0A%20%20%20%20recurringInvoice%0A%20%20%20%20reference%0A%20%20%20%20sentByEmail%0A%20%20%20%20seriesId%0A%20%20%20%20shippingAddress%0A%20%20%20%20status%0A%20%20%20%20terms%0A%20%20%20%20updatedAt%0A%20%20%7D%0A%7D" target="_blank">Try it now</a>
                 </section>
               </div>
             </div>
@@ -1211,9 +1259,11 @@ https://dev-server.com
       <span class="hljs-attr">&quot;paid&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
       <span class="hljs-attr">&quot;paidAmount&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
       <span class="hljs-attr">&quot;recurringInvoice&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;reference&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
       <span class="hljs-attr">&quot;sentByEmail&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
       <span class="hljs-attr">&quot;seriesId&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
       <span class="hljs-attr">&quot;shippingAddress&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;status&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
       <span class="hljs-attr">&quot;terms&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
     }
   }
@@ -1413,9 +1463,11 @@ https://dev-server.com
     <span class="hljs-symbol">paid</span>
     <span class="hljs-symbol">paidAmount</span>
     <span class="hljs-symbol">recurringInvoice</span>
+    <span class="hljs-symbol">reference</span>
     <span class="hljs-symbol">sentByEmail</span>
     <span class="hljs-symbol">seriesId</span>
     <span class="hljs-symbol">shippingAddress</span>
+    <span class="hljs-symbol">status</span>
     <span class="hljs-symbol">terms</span>
     <span class="hljs-symbol">updatedAt</span>
   }</span></span>
@@ -1433,7 +1485,7 @@ https://dev-server.com
 </code></pre> </body>
                     </html>
                     <!-- </div> -->
-                    <a href="https://dev-server.com?query=mutation%20deleteInvoice(%24id%3A%20Int!)%7B%0A%20%20deleteInvoice(id%3A%20%24id)%7B%0A%20%20%20%20contactPerson%0A%20%20%20%20currency%0A%20%20%20%20customerId%0A%20%20%20%20draft%0A%20%20%20%20dueDate%0A%20%20%20%20email%0A%20%20%20%20failed%0A%20%20%20%20grossAmount%0A%20%20%20%20id%0A%20%20%20%20identification%0A%20%20%20%20insertedAt%0A%20%20%20%20invoicingAddress%0A%20%20%20%20issueDate%0A%20%20%20%20name%0A%20%20%20%20netAmount%0A%20%20%20%20notes%0A%20%20%20%20number%0A%20%20%20%20paid%0A%20%20%20%20paidAmount%0A%20%20%20%20recurringInvoice%0A%20%20%20%20sentByEmail%0A%20%20%20%20seriesId%0A%20%20%20%20shippingAddress%0A%20%20%20%20terms%0A%20%20%20%20updatedAt%0A%20%20%7D%0A%7D" target="_blank">Try it now</a>
+                    <a href="https://dev-server.com?query=mutation%20deleteInvoice(%24id%3A%20Int!)%7B%0A%20%20deleteInvoice(id%3A%20%24id)%7B%0A%20%20%20%20contactPerson%0A%20%20%20%20currency%0A%20%20%20%20customerId%0A%20%20%20%20draft%0A%20%20%20%20dueDate%0A%20%20%20%20email%0A%20%20%20%20failed%0A%20%20%20%20grossAmount%0A%20%20%20%20id%0A%20%20%20%20identification%0A%20%20%20%20insertedAt%0A%20%20%20%20invoicingAddress%0A%20%20%20%20issueDate%0A%20%20%20%20name%0A%20%20%20%20netAmount%0A%20%20%20%20notes%0A%20%20%20%20number%0A%20%20%20%20paid%0A%20%20%20%20paidAmount%0A%20%20%20%20recurringInvoice%0A%20%20%20%20reference%0A%20%20%20%20sentByEmail%0A%20%20%20%20seriesId%0A%20%20%20%20shippingAddress%0A%20%20%20%20status%0A%20%20%20%20terms%0A%20%20%20%20updatedAt%0A%20%20%7D%0A%7D" target="_blank">Try it now</a>
                 </section>
               </div>
             </div>
@@ -1492,9 +1544,11 @@ https://dev-server.com
       <span class="hljs-attr">&quot;paid&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
       <span class="hljs-attr">&quot;paidAmount&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
       <span class="hljs-attr">&quot;recurringInvoice&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;reference&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
       <span class="hljs-attr">&quot;sentByEmail&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
       <span class="hljs-attr">&quot;seriesId&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
       <span class="hljs-attr">&quot;shippingAddress&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;status&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
       <span class="hljs-attr">&quot;terms&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
     }
   }
@@ -1803,9 +1857,11 @@ https://dev-server.com
     <span class="hljs-symbol">paid</span>
     <span class="hljs-symbol">paidAmount</span>
     <span class="hljs-symbol">recurringInvoice</span>
+    <span class="hljs-symbol">reference</span>
     <span class="hljs-symbol">sentByEmail</span>
     <span class="hljs-symbol">seriesId</span>
     <span class="hljs-symbol">shippingAddress</span>
+    <span class="hljs-symbol">status</span>
     <span class="hljs-symbol">terms</span>
     <span class="hljs-symbol">updatedAt</span>
   }</span></span>
@@ -1861,7 +1917,7 @@ https://dev-server.com
 </code></pre> </body>
                     </html>
                     <!-- </div> -->
-                    <a href="https://dev-server.com?query=mutation%20updateInvoice(%24contactPerson%3A%20String%2C%20%24currency%3A%20String%2C%20%24draft%3A%20Boolean%2C%20%24dueDate%3A%20Date%2C%20%24email%3A%20String%2C%20%24failed%3A%20Boolean%2C%20%24id%3A%20Int!%2C%20%24identification%3A%20String%2C%20%24invoicingAddress%3A%20String%2C%20%24issueDate%3A%20Date%2C%20%24items%3A%20%5BItems%5D%2C%20%24metaAttributes%3A%20%5BMetaAttributes%5D%2C%20%24name%3A%20String%2C%20%24notes%3A%20String%2C%20%24payments%3A%20%5BPayments%5D%2C%20%24seriesCode%3A%20String%2C%20%24shippingAddress%3A%20String%2C%20%24terms%3A%20String)%7B%0A%20%20updateInvoice(contactPerson%3A%20%24contactPerson%2C%20currency%3A%20%24currency%2C%20draft%3A%20%24draft%2C%20dueDate%3A%20%24dueDate%2C%20email%3A%20%24email%2C%20failed%3A%20%24failed%2C%20id%3A%20%24id%2C%20identification%3A%20%24identification%2C%20invoicingAddress%3A%20%24invoicingAddress%2C%20issueDate%3A%20%24issueDate%2C%20items%3A%20%24items%2C%20metaAttributes%3A%20%24metaAttributes%2C%20name%3A%20%24name%2C%20notes%3A%20%24notes%2C%20payments%3A%20%24payments%2C%20seriesCode%3A%20%24seriesCode%2C%20shippingAddress%3A%20%24shippingAddress%2C%20terms%3A%20%24terms)%7B%0A%20%20%20%20contactPerson%0A%20%20%20%20currency%0A%20%20%20%20customerId%0A%20%20%20%20draft%0A%20%20%20%20dueDate%0A%20%20%20%20email%0A%20%20%20%20failed%0A%20%20%20%20grossAmount%0A%20%20%20%20id%0A%20%20%20%20identification%0A%20%20%20%20insertedAt%0A%20%20%20%20invoicingAddress%0A%20%20%20%20issueDate%0A%20%20%20%20name%0A%20%20%20%20netAmount%0A%20%20%20%20notes%0A%20%20%20%20number%0A%20%20%20%20paid%0A%20%20%20%20paidAmount%0A%20%20%20%20recurringInvoice%0A%20%20%20%20sentByEmail%0A%20%20%20%20seriesId%0A%20%20%20%20shippingAddress%0A%20%20%20%20terms%0A%20%20%20%20updatedAt%0A%20%20%7D%0A%7D" target="_blank">Try it now</a>
+                    <a href="https://dev-server.com?query=mutation%20updateInvoice(%24contactPerson%3A%20String%2C%20%24currency%3A%20String%2C%20%24draft%3A%20Boolean%2C%20%24dueDate%3A%20Date%2C%20%24email%3A%20String%2C%20%24failed%3A%20Boolean%2C%20%24id%3A%20Int!%2C%20%24identification%3A%20String%2C%20%24invoicingAddress%3A%20String%2C%20%24issueDate%3A%20Date%2C%20%24items%3A%20%5BItems%5D%2C%20%24metaAttributes%3A%20%5BMetaAttributes%5D%2C%20%24name%3A%20String%2C%20%24notes%3A%20String%2C%20%24payments%3A%20%5BPayments%5D%2C%20%24seriesCode%3A%20String%2C%20%24shippingAddress%3A%20String%2C%20%24terms%3A%20String)%7B%0A%20%20updateInvoice(contactPerson%3A%20%24contactPerson%2C%20currency%3A%20%24currency%2C%20draft%3A%20%24draft%2C%20dueDate%3A%20%24dueDate%2C%20email%3A%20%24email%2C%20failed%3A%20%24failed%2C%20id%3A%20%24id%2C%20identification%3A%20%24identification%2C%20invoicingAddress%3A%20%24invoicingAddress%2C%20issueDate%3A%20%24issueDate%2C%20items%3A%20%24items%2C%20metaAttributes%3A%20%24metaAttributes%2C%20name%3A%20%24name%2C%20notes%3A%20%24notes%2C%20payments%3A%20%24payments%2C%20seriesCode%3A%20%24seriesCode%2C%20shippingAddress%3A%20%24shippingAddress%2C%20terms%3A%20%24terms)%7B%0A%20%20%20%20contactPerson%0A%20%20%20%20currency%0A%20%20%20%20customerId%0A%20%20%20%20draft%0A%20%20%20%20dueDate%0A%20%20%20%20email%0A%20%20%20%20failed%0A%20%20%20%20grossAmount%0A%20%20%20%20id%0A%20%20%20%20identification%0A%20%20%20%20insertedAt%0A%20%20%20%20invoicingAddress%0A%20%20%20%20issueDate%0A%20%20%20%20name%0A%20%20%20%20netAmount%0A%20%20%20%20notes%0A%20%20%20%20number%0A%20%20%20%20paid%0A%20%20%20%20paidAmount%0A%20%20%20%20recurringInvoice%0A%20%20%20%20reference%0A%20%20%20%20sentByEmail%0A%20%20%20%20seriesId%0A%20%20%20%20shippingAddress%0A%20%20%20%20status%0A%20%20%20%20terms%0A%20%20%20%20updatedAt%0A%20%20%7D%0A%7D" target="_blank">Try it now</a>
                 </section>
               </div>
             </div>
@@ -1920,9 +1976,11 @@ https://dev-server.com
       <span class="hljs-attr">&quot;paid&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
       <span class="hljs-attr">&quot;paidAmount&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
       <span class="hljs-attr">&quot;recurringInvoice&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;reference&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
       <span class="hljs-attr">&quot;sentByEmail&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
       <span class="hljs-attr">&quot;seriesId&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
       <span class="hljs-attr">&quot;shippingAddress&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;status&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
       <span class="hljs-attr">&quot;terms&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
     }
   }
@@ -2348,8 +2406,8 @@ https://dev-server.com
             <div class="doc-row">
               <div class="doc-copy">
                 <section class="json-schema-description">
-                  <p>The <code>Int</code> scalar type represents non-fractional signed whole numeric values. Int can represent values between <code>-(2^53 - 1)</code> and <code>2^53 - 1</code> since it is represented in JSON as double-precision floating point numbers specified by
-                    <a href="http://en.wikipedia.org/wiki/IEEE_floating_point">IEEE 754</a>.</p>
+                  <p>The <code>Int</code> scalar type represents non-fractional signed whole numeric values. It is NOT compliant with the GraphQl spec, it can represent values between <code>-(2^53 - 1)</code> and <code>2^53 - 1</code> as specified by
+                    <a href="https://en.wikipedia.org/wiki/IEEE_754">IEEE 754</a>. It is kept here for backwards compatibility, prefer using the SpecCompliantInt.</p>
                 </section>
               </div>
               <div class="doc-examples">
@@ -3069,6 +3127,36 @@ https://dev-server.com
                         </dl>
                       </section>
                     </dt>
+                    <dt data-property-name="reference">
+                      <span class="json-property-name">reference:</span>
+                      <div class="json-property-type">object</div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                    <dt class="json-inner-schema">
+                      <section class="json-schema-properties">
+                        <dl>
+                          <dt data-property-name="return">
+                            <span class="json-property-name">return:</span>
+                            <div class="json-property-type">
+                              <div class="">
+                                <a class="json-schema-ref" href="#/definitions/String">String</a>
+                              </div>
+                            </div>
+                            <span class="json-property-range" title="Value limits"></span>
+                          </dt>
+                          <dt data-property-name="arguments">
+                            <span class="json-property-name">arguments:</span>
+                            <div class="json-property-type">object</div>
+                            <span class="json-property-range" title="Value limits"></span>
+                          </dt>
+                          <dt class="json-inner-schema">
+                            <section class="json-schema-properties">
+                              <dl> </dl>
+                            </section>
+                          </dt>
+                        </dl>
+                      </section>
+                    </dt>
                     <dt data-property-name="sentByEmail">
                       <span class="json-property-name">sentByEmail:</span>
                       <div class="json-property-type">object</div>
@@ -3131,6 +3219,36 @@ https://dev-server.com
                     </dt>
                     <dt data-property-name="shippingAddress">
                       <span class="json-property-name">shippingAddress:</span>
+                      <div class="json-property-type">object</div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                    <dt class="json-inner-schema">
+                      <section class="json-schema-properties">
+                        <dl>
+                          <dt data-property-name="return">
+                            <span class="json-property-name">return:</span>
+                            <div class="json-property-type">
+                              <div class="">
+                                <a class="json-schema-ref" href="#/definitions/String">String</a>
+                              </div>
+                            </div>
+                            <span class="json-property-range" title="Value limits"></span>
+                          </dt>
+                          <dt data-property-name="arguments">
+                            <span class="json-property-name">arguments:</span>
+                            <div class="json-property-type">object</div>
+                            <span class="json-property-range" title="Value limits"></span>
+                          </dt>
+                          <dt class="json-inner-schema">
+                            <section class="json-schema-properties">
+                              <dl> </dl>
+                            </section>
+                          </dt>
+                        </dl>
+                      </section>
+                    </dt>
+                    <dt data-property-name="status">
+                      <span class="json-property-name">status:</span>
                       <div class="json-property-type">object</div>
                       <span class="json-property-range" title="Value limits"></span>
                     </dt>
@@ -3485,6 +3603,36 @@ https://dev-server.com
                             <div class="json-property-type">
                               <div class="">
                                 <a class="json-schema-ref" href="#/definitions/Int">Int</a>
+                              </div>
+                            </div>
+                            <span class="json-property-range" title="Value limits"></span>
+                          </dt>
+                          <dt data-property-name="arguments">
+                            <span class="json-property-name">arguments:</span>
+                            <div class="json-property-type">object</div>
+                            <span class="json-property-range" title="Value limits"></span>
+                          </dt>
+                          <dt class="json-inner-schema">
+                            <section class="json-schema-properties">
+                              <dl> </dl>
+                            </section>
+                          </dt>
+                        </dl>
+                      </section>
+                    </dt>
+                    <dt data-property-name="taxes">
+                      <span class="json-property-name">taxes:</span>
+                      <div class="json-property-type">object</div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                    <dt class="json-inner-schema">
+                      <section class="json-schema-properties">
+                        <dl>
+                          <dt data-property-name="return">
+                            <span class="json-property-name">return:</span>
+                            <div class="json-property-type">
+                              <div class="json-schema-ref-array">
+                                <a class="json-schema-ref" href="#/definitions/Tax">Tax</a>
                               </div>
                             </div>
                             <span class="json-property-range" title="Value limits"></span>
@@ -4265,6 +4413,105 @@ https://dev-server.com
               <div class="doc-copy">
                 <section class="json-schema-description">
                   <p>The <code>String</code> scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.</p>
+                </section>
+              </div>
+            </div>
+          </div>
+          <div id="definition-Tax" class="definition panel" data-traverse-target="definition-Tax">
+            <h2 class="panel-title">
+              <a name="/definitions/Tax"></a>Tax: object
+              <!-- <span class="json-property-type"><div class="json-property-type">object</div>
+              <span class="json-property-range" title="Value limits"></span>
+              
+              
+              </span> -->
+            </h2>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <section class="json-schema-properties">
+                  <dl>
+                    <dt data-property-name="id">
+                      <span class="json-property-name">id:</span>
+                      <div class="json-property-type">object</div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                    <dt class="json-inner-schema">
+                      <section class="json-schema-properties">
+                        <dl>
+                          <dt data-property-name="return">
+                            <span class="json-property-name">return:</span>
+                            <div class="json-property-type">
+                              <div class="">
+                                <a class="json-schema-ref" href="#/definitions/Int">Int</a>
+                              </div>
+                            </div>
+                            <span class="json-property-range" title="Value limits"></span>
+                          </dt>
+                          <dt data-property-name="arguments">
+                            <span class="json-property-name">arguments:</span>
+                            <div class="json-property-type">object</div>
+                            <span class="json-property-range" title="Value limits"></span>
+                          </dt>
+                          <dt class="json-inner-schema">
+                            <section class="json-schema-properties">
+                              <dl> </dl>
+                            </section>
+                          </dt>
+                        </dl>
+                      </section>
+                    </dt>
+                    <dt data-property-name="value">
+                      <span class="json-property-name">value:</span>
+                      <div class="json-property-type">object</div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                    <dt class="json-inner-schema">
+                      <section class="json-schema-properties">
+                        <dl>
+                          <dt data-property-name="return">
+                            <span class="json-property-name">return:</span>
+                            <div class="json-property-type">
+                              <div class="">
+                                <a class="json-schema-ref" href="#/definitions/Int">Int</a>
+                              </div>
+                            </div>
+                            <span class="json-property-range" title="Value limits"></span>
+                          </dt>
+                          <dt data-property-name="arguments">
+                            <span class="json-property-name">arguments:</span>
+                            <div class="json-property-type">object</div>
+                            <span class="json-property-range" title="Value limits"></span>
+                          </dt>
+                          <dt class="json-inner-schema">
+                            <section class="json-schema-properties">
+                              <dl> </dl>
+                            </section>
+                          </dt>
+                        </dl>
+                      </section>
+                    </dt>
+                  </dl>
+                </section>
+              </div>
+              <div class="doc-examples">
+                <section>
+                  <h5>Example</h5>
+                  <!-- <div class="hljs"> -->
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-json">{
+  <span class="hljs-attr">&quot;id&quot;</span>: {
+    <span class="hljs-attr">&quot;return&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
+    <span class="hljs-attr">&quot;arguments&quot;</span>: {}
+  },
+  <span class="hljs-attr">&quot;value&quot;</span>: {
+    <span class="hljs-attr">&quot;return&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
+    <span class="hljs-attr">&quot;arguments&quot;</span>: {}
+  }
+}
+</code></pre> </body>
+                  </html>
+                  <!-- </div> -->
                 </section>
               </div>
             </div>

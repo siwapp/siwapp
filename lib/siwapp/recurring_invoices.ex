@@ -33,18 +33,12 @@ defmodule Siwapp.RecurringInvoices do
   @doc """
   Gets a recurring invoice by id
   """
-
-  @spec get!(pos_integer | binary) :: RecurringInvoice.t()
+  @spec get!(pos_integer) :: RecurringInvoice.t() | no_return()
   def get!(id) do
-    with nil <- Repo.get(RecurringInvoice, id),
-         do: raise(Siwapp.Error.NotFoundError, id: id, type: "recurring invoice")
-  end
-
-  @spec get!(pos_integer, :preload) :: RecurringInvoice.t()
-  def get!(id, :preload) do
-    id
-    |> get!()
+    RecurringInvoice
+    |> Repo.get!(id)
     |> Repo.preload([:customer, :series])
+    |> InvoiceHelper.calculate_invoice()
   end
 
   @spec create(map) :: {:ok, RecurringInvoice.t()} | {:error, Ecto.Changeset.t()}
@@ -52,7 +46,6 @@ defmodule Siwapp.RecurringInvoices do
     %RecurringInvoice{}
     |> RecurringInvoice.changeset(attrs)
     |> InvoiceHelper.maybe_find_customer_or_new()
-    |> RecurringInvoice.untransform_items()
     |> Repo.insert()
   end
 
@@ -67,7 +60,6 @@ defmodule Siwapp.RecurringInvoices do
     recurring_invoice
     |> RecurringInvoice.changeset(attrs)
     |> InvoiceHelper.maybe_find_customer_or_new()
-    |> RecurringInvoice.untransform_items()
     |> Repo.update()
   end
 
@@ -118,7 +110,7 @@ defmodule Siwapp.RecurringInvoices do
     |> Map.from_struct()
     |> Map.put(:recurring_invoice_id, rec_inv.id)
     |> maybe_add_due_date(rec_inv.days_to_due)
-    |> Map.put(:items, rec_inv.items)
+    |> Map.put(:items, Enum.map(rec_inv.items, &Map.from_struct/1))
   end
 
   @spec maybe_add_due_date(map, integer) :: map

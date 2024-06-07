@@ -38,7 +38,7 @@
           checked={Enum.member?(@checked, 0)}
           phx-click="click_checkbox"
           phx-value-id="0"
-        >
+        />
       </th>
       <th title="Series">
         Series
@@ -70,7 +70,7 @@
             phx-click="click_checkbox"
             checked={Enum.member?(@checked, recurring_invoice.id)}
             phx-value-id={recurring_invoice.id}
-          >
+          />
         </td>
         <td>
           <%= recurring_invoice.series.code %>
@@ -115,4 +115,5 @@
   phx-hook="InfiniteScroll"
   data-page={@page}
   data-no_more_queries={@no_more_queries}
-></div>
+>
+</div>

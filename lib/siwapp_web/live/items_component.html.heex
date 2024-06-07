@@ -2,47 +2,32 @@
   <br />
   <div class="columns is-multiline-mobile is-1 is-variable">
     <div class="column is-4-desktop is-full-mobile">
-      <label class="label">
-        Description
-      </label>
+      <label class="label"> Description </label>
     </div>
     <div class="column is-1-desktop is-half-mobile">
-      <label class="label">
-        Quantity
-      </label>
+      <label class="label"> Quantity </label>
     </div>
     <div class="column is-1-desktop is-half-mobile">
-      <label class="label">
-        Price
-      </label>
+      <label class="label"> Price </label>
     </div>
     <div class="column is-1-desktop is-half-mobile">
-      <label class="label">
-        Discount
-      </label>
+      <label class="label"> Discount </label>
     </div>
     <div class="column is-3-desktop is-half-mobile">
-      <label class="label">
-        Taxes
-      </label>
+      <label class="label"> Taxes </label>
     </div>
     <div class="column is-1-desktop is-full-mobile">
-      <label class="label">
-        Total
-      </label>
+      <label class="label"> Total </label>
     </div>
     <div class="column is-narrow-desktop"></div>
   </div>
-  <%= for fi <- @inputs_for do %>
+  <.inputs_for :let={fi} field={@f[:items]}>
     <div class="columns is-multiline-mobile is-1 is-variable">
-      <%= if fi.data.id do %>
-        <%= hidden_input(fi, :id) %>
-      <% end %>
+      <input type="hidden" name="invoice[items_sort][]" value={fi.index} />
       <div class="column is-4-desktop is-full-mobile">
         <p class="control">
           <%= text_input(fi, :description, class: "input") %>
         </p>
-        <%= error_tag(fi, :description) %>
       </div>
       <div class="column is-1-desktop is-half-mobile">
         <p class="control">
@@ -80,25 +65,33 @@
       </div>
       <div class="column is-narrow-desktop">
         <p class="control">
-          <%= link("Remove Line",
-            to: "#",
-            phx_click: "remove",
-            phx_target: @myself,
-            phx_value_item_id: fi.index,
-            class: "button is-danger is-light is-fullwidth"
-          ) %>
+          <button
+            name="invoice[items_drop][]"
+            value={fi.index}
+            type="button"
+            class="button is-danger is-light is-fullwidth"
+            phx-click={JS.dispatch("change")}
+          >
+            Remove Line
+          </button>
         </p>
       </div>
     </div>
-  <% end %>
+  </.inputs_for>
+
+  <input type="hidden" name="invoice[items_drop][]" />
+
   <div class="columns is-desktop">
     <div class="column is-2">
-      <%= link("Add Line",
-        to: "#",
-        phx_click: "add",
-        phx_target: @myself,
-        class: "button is-dark is-fullwidth"
-      ) %>
+      <button
+        class="button is-dark is-fullwidth"
+        type="button"
+        name="invoice[items_sort][]"
+        value="new"
+        phx-click={JS.dispatch("change")}
+      >
+        Add Line
+      </button>
     </div>
     <div class="column is-3 is-offset-8">
       <table class="table is-fullwidth">

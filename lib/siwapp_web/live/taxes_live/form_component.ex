@@ -41,7 +41,7 @@ defmodule SiwappWeb.TaxesLive.FormComponent do
         {:noreply,
          socket
          |> put_flash(:info, "Tax was successfully destroyed.")
-         |> push_redirect(to: socket.assigns.return_to)}
+         |> push_redirect(to: Routes.taxes_index_path(socket, :index))}
 
       {:error, msg} ->
         {:noreply, put_flash(socket, :error, msg)}
@@ -56,7 +56,7 @@ defmodule SiwappWeb.TaxesLive.FormComponent do
         {:noreply,
          socket
          |> put_flash(:info, "Tax was successfully updated")
-         |> push_redirect(to: socket.assigns.return_to)}
+         |> push_redirect(to: Routes.taxes_index_path(socket, :index))}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, :changeset, changeset)}
@@ -69,7 +69,7 @@ defmodule SiwappWeb.TaxesLive.FormComponent do
         {:noreply,
          socket
          |> put_flash(:info, "Tax was successfully created")
-         |> push_redirect(to: socket.assigns.return_to)}
+         |> push_redirect(to: Routes.taxes_index_path(socket, :index))}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, changeset: changeset)}

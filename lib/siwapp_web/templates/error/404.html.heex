@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <%= csrf_meta_tag() %>
-    <%= live_title_tag(assigns[:page_title] || "Welcome", prefix: "Siwapp - ") %>
+    <.live_title prefix="Siwapp - "><%= assigns[:page_title] || "Welcome" %></.live_title>
     <link phx-track-static rel="stylesheet" href={Routes.static_path(@conn, "/assets/app.css")} />
     <script
       defer
@@ -26,8 +26,7 @@
       <h1>Not Found</h1>
       <%= if Map.has_key?(@reason, :type) do %>
         <span>The <%= @reason.type %>
-          <%= @reason.id %> does not exist
-        </span>
+          <%= @reason.id %> does not exist</span>
       <% end %>
     </main>
   </body>

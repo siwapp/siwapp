@@ -33,7 +33,7 @@ defmodule SiwappWeb.InvoicesLive.Edit do
     result =
       case socket.assigns.live_action do
         :new -> Invoices.create(params)
-        :edit -> Invoices.update(socket.assigns.invoice, put_assoc_if_empty(params))
+        :edit -> Invoices.update(socket.assigns.invoice, params)
       end
 
     case result do
@@ -69,41 +69,6 @@ defmodule SiwappWeb.InvoicesLive.Edit do
     {:noreply, socket}
   end
 
-  def handle_event("add_payment", %{"params" => params}, socket) do
-    currency = Ecto.Changeset.get_field(socket.assigns.changeset, :currency)
-    gross_amount = Ecto.Changeset.get_field(socket.assigns.changeset, :gross_amount)
-    paid_amount = Ecto.Changeset.get_field(socket.assigns.changeset, :paid_amount)
-
-    virtual_left_amount =
-      (gross_amount - paid_amount)
-      |> Money.new(currency)
-      |> Money.to_decimal()
-
-    params =
-      if params["payments"] == nil do
-        Map.put(params, "payments", %{"0" => new_payment_params(virtual_left_amount)})
-      else
-        next_payment_index =
-          params["payments"]
-          |> Enum.count()
-          |> Integer.to_string()
-
-        put_in(params, ["payments", next_payment_index], new_payment_params(virtual_left_amount))
-      end
-
-    {:noreply, assign(socket, changeset: Invoices.change(socket.assigns.invoice, params))}
-  end
-
-  def handle_event("remove_payment", %{"payment_id" => payment_index, "params" => params}, socket) do
-    params =
-      params
-      |> pop_in(["payments", Integer.to_string(payment_index)])
-      |> elem(1)
-      |> Map.update!("payments", &sort_indexes/1)
-
-    {:noreply, assign(socket, changeset: Invoices.change(socket.assigns.invoice, params))}
-  end
-
   def handle_event("copy", _params, socket) do
     invoicing_address = Ecto.Changeset.get_field(socket.assigns.changeset, :invoicing_address)
 
@@ -116,7 +81,7 @@ defmodule SiwappWeb.InvoicesLive.Edit do
   end
 
   def handle_event("send_email", %{"id" => id}, socket) do
-    invoice = Invoices.get!(id, preload: [{:items, :taxes}, :series, :payments])
+    invoice = Invoices.get!(id)
 
     socket =
       case Invoices.send_email(invoice) do
@@ -137,21 +102,11 @@ defmodule SiwappWeb.InvoicesLive.Edit do
     {:noreply, assign(socket, changeset: changeset)}
   end
 
-  @spec sort_indexes(map) :: map
-  def sort_indexes(elements) do
-    values = Map.values(elements)
-    indexes = 0..(length(values) - 1)
-
-    indexes
-    |> Enum.zip(values)
-    |> Enum.map(fn {k, v} -> {Integer.to_string(k), v} end)
-    |> Map.new()
-  end
-
   @spec apply_action(Phoenix.LiveView.Socket.t(), :new | :edit, map()) ::
           Phoenix.LiveView.Socket.t()
   defp apply_action(socket, :new, %{"id" => id}) do
-    invoice = Invoices.get!(id, preload: [{:items, :taxes}, :payments, :series, :customer])
+    # this is used in the duplication
+    invoice = Invoices.get!(id)
 
     socket
     |> assign(:action, :new)
@@ -166,29 +121,18 @@ defmodule SiwappWeb.InvoicesLive.Edit do
     |> assign(:action, :new)
     |> assign(:page_title, "New Invoice")
     |> assign(:invoice, %Invoice{})
-    |> assign(
-      :changeset,
-      Invoices.change(%Invoice{}, %{
-        "items" => %{"0" => %{"taxes" => Commons.default_taxes_names()}}
-      })
-    )
+    |> assign(:changeset, Invoices.change(%Invoice{}, %{}))
   end
 
   defp apply_action(socket, :edit, %{"id" => id}) do
-    invoice = Invoices.get!(id, preload: [{:items, :taxes}, :payments, :series, :customer])
+    invoice = Invoices.get!(id)
 
     socket
     |> assign(:action, :edit)
     |> assign(:page_title, "#{invoice.series.code}-#{Map.get(invoice, :number)}")
     |> assign(:invoice, invoice)
     |> then(&assign(&1, :series_options, set_series_options(&1, invoice)))
-    |> assign(
-      :changeset,
-      Invoices.change(invoice, %{
-        "items" => items_as_params(invoice.items),
-        "payments" => payments_as_params(invoice.payments)
-      })
-    )
+    |> assign(:changeset, Invoices.change(invoice))
   end
 
   @spec set_series_options(series :: list(Series.t())) :: series_options
@@ -204,45 +148,5 @@ defmodule SiwappWeb.InvoicesLive.Edit do
       socket.assigns.series,
       &[key: &1.name, value: &1.id, selected: &1.id == selected_series]
     )
-  end
-
-  @spec put_assoc_if_empty(map()) :: map()
-  defp put_assoc_if_empty(params) do
-    params
-    |> then(&if Map.has_key?(&1, "items"), do: &1, else: Map.put(&1, "items", []))
-    |> then(&if Map.has_key?(&1, "payments"), do: &1, else: Map.put(&1, "payments", []))
-  end
-
-  @spec items_as_params([Siwapp.Invoices.Item.t()]) :: map()
-  defp items_as_params(items) do
-    items
-    |> Enum.map(fn item ->
-      item
-      |> Map.take([:description, :discount, :quantity, :id])
-      |> Mappable.to_map(keys: :strings)
-      |> Map.put("taxes", Enum.map(item.taxes, & &1.name))
-      |> Map.put("virtual_unitary_cost", item.virtual_unitary_cost)
-    end)
-    |> Enum.with_index()
-    |> Enum.map(fn {item, i} -> {Integer.to_string(i), item} end)
-    |> Map.new()
-  end
-
-  @spec payments_as_params([Siwapp.Invoices.Payment.t()]) :: map
-  defp payments_as_params(payments) do
-    payments
-    |> Enum.map(&Map.take(Map.from_struct(&1), [:amount, :date, :notes, :id]))
-    |> Enum.with_index()
-    |> Enum.map(fn {payment, i} -> {Integer.to_string(i), payment} end)
-    |> Map.new()
-  end
-
-  @spec new_payment_params(Decimal.t()) :: map
-  defp new_payment_params(virtual_amount) do
-    %{
-      "date" => Date.utc_today(),
-      "notes" => "",
-      "virtual_amount" => virtual_amount
-    }
   end
 end

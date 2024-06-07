@@ -19,49 +19,84 @@
     <div class="navbar-menu">
       <div class="navbar-start">
         <%= render_search_live(@socket_or_conn) %>
-        <%= live_redirect("Invoices",
-          to: Routes.invoices_index_path(@socket_or_conn, :index),
-          class: "navbar-item"
-        ) %>
-        <%= live_redirect("Recurring Invoices",
-          to: Routes.recurring_invoices_index_path(@socket_or_conn, :index),
-          class: "navbar-item"
-        ) %>
-        <%= live_redirect("Customers",
-          to: Routes.customers_index_path(@socket_or_conn, :index),
-          class: "navbar-item"
-        ) %>
+        <.link
+          navigate={Routes.invoices_index_path(@socket_or_conn, :index)}
+          class="navbar-item"
+          }
+        >
+          Invoices
+        </.link>
+        <.link
+          navigate={Routes.recurring_invoices_index_path(@socket_or_conn, :index)}
+          class="navbar-item"
+          }
+        >
+          Recurring Invoices
+        </.link>
+        <.link
+          navigate={Routes.customers_index_path(@socket_or_conn, :index)}
+          class="navbar-item"
+          }
+        >
+          Customers
+        </.link>
         <div class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link">
             Account
           </a>
           <div class="navbar-dropdown">
-            <%= live_redirect("Profile",
-              to: Routes.user_settings_path(@socket_or_conn, :edit),
-              class: "navbar-item"
-            ) %>
-            <hr class="navbar-divider">
+            <.link
+              navigate={Routes.user_settings_path(@socket_or_conn, :edit)}
+              class="navbar-item"
+              }
+            >
+              Profile
+            </.link>
+            <hr class="navbar-divider" />
             <%= if @current_user.admin do %>
-              <%= live_redirect("Users", to: Routes.users_index_path(@socket_or_conn, :index), class: "navbar-item") %>
-              <hr class="navbar-divider">
+              <.link
+                navigate={Routes.users_index_path(@socket_or_conn, :index)}
+                class="navbar-item"
+                }
+              >
+                Users
+              </.link>
+              <hr class="navbar-divider" />
             <% end %>
-            <%= live_redirect("Settings", to: Routes.settings_path(@socket_or_conn, :edit), class: "navbar-item") %>
-            <hr class="navbar-divider">
-            <%= live_redirect("Series",
-              to: Routes.series_index_path(@socket_or_conn, :index),
-              class: "navbar-item"
-            ) %>
-            <%= live_redirect("Taxes", to: Routes.taxes_index_path(@socket_or_conn, :index), class: "navbar-item") %>
-            <%= live_redirect("Templates",
-              to: Routes.templates_index_path(@socket_or_conn, :index),
-              class: "navbar-item"
-            ) %>
-            <hr class="navbar-divider">
-            <%= link("Log out",
-              to: Routes.user_session_path(@socket_or_conn, :delete),
-              method: :delete,
-              class: "navbar-item"
-            ) %>
+            <.link navigate={Routes.settings_path(@socket_or_conn, :edit)} class="navbar-item" }>
+              Settings
+            </.link>
+            <hr class="navbar-divider" />
+            <.link
+              navigate={Routes.series_index_path(@socket_or_conn, :index)}
+              class="navbar-item"
+              }
+            >
+              Series
+            </.link>
+            <.link
+              navigate={Routes.taxes_index_path(@socket_or_conn, :index)}
+              class="navbar-item"
+              }
+            >
+              Taxes
+            </.link>
+            <.link
+              navigate={Routes.templates_index_path(@socket_or_conn, :index)}
+              class="navbar-item"
+              }
+            >
+              Templates
+            </.link>
+            <hr class="navbar-divider" />
+            <.link
+              href={Routes.user_session_path(@socket_or_conn, :delete)}
+              method={:delete}
+              class="navbar-item"
+              }
+            >
+              Log out
+            </.link>
           </div>
         </div>
       </div>

@@ -44,18 +44,23 @@ defmodule SiwappWeb.LayoutView do
 
     if socket.view in views_with_search do
       view = which_view(socket.view)
-      live_component(SiwappWeb.SearchLive.SearchComponent, id: "search", view: view)
+      live_component(%{module: SiwappWeb.SearchLive.SearchComponent, id: "search", view: view})
     end
   end
 
   @spec render_search_live(Plug.Conn.t()) :: nil
-  def render_search_live(%Plug.Conn{}) do
-    nil
-  end
+  def render_search_live(%Plug.Conn{}), do: nil
 
   @spec new_button(binary, binary) :: any()
   defp new_button(text, to) do
-    live_redirect(text, to: to, method: :get, class: "button is-info")
+    render_button(%{text: text, to: to})
+  end
+
+  @spec render_button(map) :: Phoenix.LiveView.Rendered.t()
+  defp render_button(assigns) do
+    ~H"""
+    <.link navigate={@to} class="button is-info"><%= @text %></.link>
+    """
   end
 
   @spec which_view(atom()) :: binary()

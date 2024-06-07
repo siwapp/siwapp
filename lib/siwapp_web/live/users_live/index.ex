@@ -59,6 +59,10 @@ defmodule SiwappWeb.UsersLive.Index do
     {:noreply, push_redirect(socket, to: Routes.users_index_path(socket, :edit, id))}
   end
 
+  def handle_event("close", _, socket) do
+    {:noreply, push_patch(socket, to: Routes.users_index_path(socket, :index))}
+  end
+
   @spec check_admin(Phoenix.LiveView.Socket.t()) :: Phoenix.LiveView.Socket.t()
   defp check_admin(socket) do
     if socket.assigns.current_user.admin do

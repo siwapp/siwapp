@@ -10,6 +10,7 @@ defmodule Siwapp.Invoices.Invoice do
   alias Siwapp.Commons
   alias Siwapp.Commons.Series
   alias Siwapp.Customers.Customer
+  alias Siwapp.Invoices.AmountHelper
   alias Siwapp.Invoices.InvoiceQuery
   alias Siwapp.Invoices.Item
   alias Siwapp.Invoices.Payment
@@ -116,6 +117,16 @@ defmodule Siwapp.Invoices.Invoice do
 
   @spec changeset(t(), map) :: Ecto.Changeset.t()
   def changeset(invoice, attrs \\ %{}) do
+    attrs =
+      attrs
+      |> AmountHelper.process_attrs("payments", "virtual_amount", "amount", invoice.currency)
+      |> AmountHelper.process_attrs(
+        "items",
+        "virtual_unitary_cost",
+        "unitary_cost",
+        invoice.currency
+      )
+
     invoice
     |> cast(attrs, @fields)
     |> cast_series_id_by_code(attrs)
@@ -143,7 +154,7 @@ defmodule Siwapp.Invoices.Invoice do
 
   # if the attrs have the key "code"
   @spec cast_series_id_by_code(Ecto.Changeset.t(), map) :: Ecto.Changeset.t()
-  def cast_series_id_by_code(changeset, attrs) do
+  defp cast_series_id_by_code(changeset, attrs) do
     if Map.has_key?(attrs, :series_code) do
       case Commons.series_id_by_code(attrs.series_code) do
         nil -> add_error(changeset, :series_code, "series code not found")
@@ -155,15 +166,21 @@ defmodule Siwapp.Invoices.Invoice do
   end
 
   @spec cast_items(Ecto.Changeset.t()) :: Ecto.Changeset.t()
-  def cast_items(changeset) do
-    currency = get_field(changeset, :currency)
-    cast_assoc(changeset, :items, with: {Item, :changeset, [currency]})
+  defp cast_items(changeset) do
+    cast_assoc(changeset, :items,
+      with: &Item.changeset/2,
+      sort_param: :items_sort,
+      drop_param: :items_drop
+    )
   end
 
   @spec cast_payments(Ecto.Changeset.t()) :: Ecto.Changeset.t()
-  def cast_payments(changeset) do
-    currency = get_field(changeset, :currency)
-    cast_assoc(changeset, :payments, with: {Payment, :changeset, [currency]})
+  defp cast_payments(changeset) do
+    cast_assoc(changeset, :payments,
+      with: &Payment.changeset/2,
+      sort_param: :payments_sort,
+      drop_param: :payments_drop
+    )
   end
 
   @doc """
@@ -198,6 +215,63 @@ defmodule Siwapp.Invoices.Invoice do
   """
   @spec fields() :: [atom]
   def fields, do: @fields
+
+  @spec calculate(Ecto.Changeset.t()) :: Ecto.Changeset.t()
+  def calculate(changeset) do
+    changeset
+    |> set_net_amount()
+    |> set_taxes_amounts()
+    |> set_gross_amount()
+  end
+
+  @spec set_net_amount(Ecto.Changeset.t()) :: Ecto.Changeset.t()
+  defp set_net_amount(changeset) do
+    if is_nil(get_change(changeset, :items)) do
+      changeset
+    else
+      total_net_amount =
+        changeset
+        |> get_field(:items)
+        |> Enum.map(& &1.net_amount)
+        |> Enum.sum()
+
+      put_change(changeset, :net_amount, total_net_amount)
+    end
+  end
+
+  @spec set_taxes_amounts(Ecto.Changeset.t()) :: Ecto.Changeset.t()
+  defp set_taxes_amounts(changeset) do
+    if is_nil(get_field(changeset, :items)) do
+      changeset
+    else
+      total_taxes_amounts =
+        changeset
+        |> get_field(:items)
+        |> Enum.map(& &1.taxes_amount)
+        |> Enum.reduce(%{}, &Map.merge(&1, &2, fn _, v1, v2 -> Decimal.add(v1, v2) end))
+        |> Enum.map(fn {k, v} -> {k, v |> Decimal.round() |> Decimal.to_integer()} end)
+        |> Map.new()
+
+      put_change(changeset, :taxes_amounts, total_taxes_amounts)
+    end
+  end
+
+  @spec set_gross_amount(Ecto.Changeset.t()) :: Ecto.Changeset.t()
+  defp set_gross_amount(changeset) do
+    if is_nil(get_change(changeset, :items)) do
+      changeset
+    else
+      taxes_amount =
+        changeset
+        |> get_field(:taxes_amounts)
+        |> Map.values()
+        |> Enum.sum()
+
+      gross_amount = get_field(changeset, :net_amount) + taxes_amount
+
+      put_change(changeset, :gross_amount, gross_amount)
+    end
+  end
 
   @spec assign_issue_date(Ecto.Changeset.t()) :: Ecto.Changeset.t()
   defp assign_issue_date(changeset) do

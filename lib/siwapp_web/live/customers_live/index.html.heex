@@ -44,10 +44,11 @@
           ) %>
         </td>
         <td class="has-text-centered">
-          <%= live_redirect(" ",
-            class: "icon fas fa-list",
-            to: Routes.invoices_index_path(@socket, :customer, customer.id)
-          ) %>
+          <.link
+            navigate={Routes.invoices_index_path(@socket, :customer, customer.id)}
+            class="icon fas fa-list"
+          >
+          </.link>
         </td>
       </tr>
     <% end %>
@@ -58,4 +59,5 @@
   phx-hook="InfiniteScroll"
   data-page={@page}
   data-no_more_queries={@no_more_queries}
-></div>
+>
+</div>

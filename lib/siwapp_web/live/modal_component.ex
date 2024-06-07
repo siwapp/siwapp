@@ -1,9 +1,25 @@
 defmodule SiwappWeb.ModalComponent do
   @moduledoc false
-  use SiwappWeb, :live_component
+  use Phoenix.Component
 
-  @impl Phoenix.LiveComponent
-  def render(assigns) do
+  @doc """
+  Renders a modal.
+
+  ## Examples
+
+      <.modal id="my_modal">
+        hey there
+      </.modal>
+
+  It requires the parent liveview to have a "close" event handler, like this:
+
+      def handle_event("close", _, socket) do
+        {:noreply, push_patch(socket, to: Routes.series_index_path(socket, :index))}
+      end
+
+  """
+  @spec modal(map) :: Phoenix.LiveView.Rendered.t()
+  def modal(assigns) do
     ~H"""
     <div
       id={@id}
@@ -11,20 +27,12 @@ defmodule SiwappWeb.ModalComponent do
       phx-capture-click="close"
       phx-window-keydown="close"
       phx-key="escape"
-      phx-target={@myself}
-      phx-page-loading
     >
-
       <div class="phx-modal-content">
-        <%= live_patch(raw("&times;"), to: @return_to, class: "phx-modal-close") %>
-        <%= live_component(@component, @opts) %>
+        <.link navigate={@return_to} class="phx-modal-close">&times;</.link>
+        <%= render_slot(@inner_block) %>
       </div>
     </div>
     """
-  end
-
-  @impl Phoenix.LiveComponent
-  def handle_event("close", _, socket) do
-    {:noreply, push_patch(socket, to: socket.assigns.return_to)}
   end
 end

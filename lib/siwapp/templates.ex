@@ -266,8 +266,6 @@ defmodule Siwapp.Templates do
   # Returns evaluated template using invoice data
   @spec string_template(binary, Siwapp.Invoices.Invoice.t()) :: binary
   defp string_template(template, invoice) do
-    invoice = Siwapp.Invoices.with_virtual_fields(invoice)
-
     eval_data = [
       invoice: invoice,
       settings: Settings.current_bundle(),

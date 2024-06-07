@@ -1,15 +1,16 @@
 <h1>Series</h1>
 
 <%= if @live_action in [:new, :edit] do %>
-  <%= live_modal(SiwappWeb.SeriesLive.FormComponent,
-    id: @series.id || :new,
-    title: @page_title,
-    action: @live_action,
-    series: @series || %Siwapp.Commons.Series{},
-    return_to: Routes.series_index_path(@socket, :index)
-  ) %>
+  <SiwappWeb.ModalComponent.modal id="modal" return_to={Routes.series_index_path(@socket, :index)}>
+    <.live_component
+      id="form"
+      module={SiwappWeb.SeriesLive.FormComponent}
+      series={@series || %Siwapp.Commons.Series{}}
+      title={@page_title}
+      action={@live_action}
+    />
+  </SiwappWeb.ModalComponent.modal>
 <% end %>
-
 <table class="table is-fullwidth is-striped is-bordered is-hoverable">
   <thead>
     <tr>
@@ -35,7 +36,12 @@
     <%= for series <- @series_list do %>
       <tr phx-click="edit" phx-value-id={series.id} class="is-clickable">
         <td class="icon table-icon">
-          <input type="radio" phx-click="defaultClicked" phx-value-id={series.id} checked={series.default}>
+          <input
+            type="radio"
+            phx-click="defaultClicked"
+            phx-value-id={series.id}
+            checked={series.default}
+          />
         </td>
         <td>
           <%= series.name %>

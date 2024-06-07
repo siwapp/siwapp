@@ -1,13 +1,15 @@
 <h1>Taxes</h1>
 
 <%= if @live_action in [:new, :edit] do %>
-  <%= live_modal(SiwappWeb.TaxesLive.FormComponent,
-    id: @tax.id || :new,
-    title: @page_title,
-    action: @live_action,
-    tax: @tax || %Siwapp.Commons.Tax{},
-    return_to: Routes.taxes_index_path(@socket, :index)
-  ) %>
+  <SiwappWeb.ModalComponent.modal id="modal" return_to={Routes.taxes_index_path(@socket, :index)}>
+    <.live_component
+      id="form"
+      module={SiwappWeb.TaxesLive.FormComponent}
+      tax={@tax || %Siwapp.Commons.Tax{}}
+      title={@page_title}
+      action={@live_action}
+    />
+  </SiwappWeb.ModalComponent.modal>
 <% end %>
 
 <table class="table is-fullwidth is-striped is-bordered is-hoverable">
@@ -26,7 +28,12 @@
     <%= for tax <- @taxes do %>
       <tr phx-click="edit" phx-value-id={tax.id} class="is-clickable">
         <td class="icon table-icon">
-          <input type="checkbox" phx-click="defaultClicked" phx-value-id={tax.id} checked={tax.default}>
+          <input
+            type="checkbox"
+            phx-click="defaultClicked"
+            phx-value-id={tax.id}
+            checked={tax.default}
+          />
         </td>
         <td>
           <%= tax.name %>

@@ -5,7 +5,10 @@
       to: Routes.page_path(@conn, :send_email, @invoice.id),
       class: "button is-purple"
     ) %>
-    <%= link("Download PDF", to: Routes.page_path(@conn, :download, @invoice.id), class: "button is-info") %>
+    <%= link("Download PDF",
+      to: Routes.page_path(@conn, :download, @invoice.id),
+      class: "button is-info"
+    ) %>
     <%= link("Duplicate",
       to: Routes.invoices_edit_path(@conn, :new, @invoice.id, @url_query_string),
       class: "button is-info"
@@ -20,5 +23,6 @@
   <iframe
     class="iframe template column is-half"
     src={Routes.iframe_path(@conn, :iframe, @invoice.id)}
-  ></iframe>
+  >
+  </iframe>
 </div>

@@ -1,14 +1,16 @@
 <h1>Users</h1>
 
 <%= if @live_action in [:new, :edit] do %>
-  <%= live_modal(SiwappWeb.UsersLive.FormComponent,
-    id: @user.id || :new,
-    current_user_id: @current_user.id,
-    title: @page_title,
-    action: @live_action,
-    user: @user || %Siwapp.Accounts.User{},
-    return_to: Routes.users_index_path(@socket, :index)
-  ) %>
+  <SiwappWeb.ModalComponent.modal id="modal" return_to={Routes.users_index_path(@socket, :index)}>
+    <.live_component
+      id="form"
+      module={SiwappWeb.UsersLive.FormComponent}
+      user={@user || %Siwapp.Accounts.User{}}
+      current_user_id={@current_user.id}
+      title={@page_title}
+      action={@live_action}
+    />
+  </SiwappWeb.ModalComponent.modal>
 <% end %>
 <nav
   class={"navbar is-fixed-bottom
@@ -41,7 +43,7 @@
           checked={Enum.member?(@checked, 0)}
           phx-click="click_checkbox"
           phx-value-id="0"
-        >
+        />
       </th>
     <% end %>
     <th title="email">
@@ -59,7 +61,7 @@
           phx-click="click_checkbox"
           checked={Enum.member?(@checked, user.id)}
           phx-value-id={user.id}
-        >
+        />
       </td>
       <td>
         <%= user.email %>
