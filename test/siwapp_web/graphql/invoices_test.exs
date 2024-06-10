@@ -67,7 +67,7 @@ defmodule SiwappWeb.Graphql.InvoicesTest do
   test "Create an invoice", %{conn: conn, series: series} do
     query = """
       mutation {
-        create_invoice(name: "test_name", series_code: "#{series.code}", metaAttributes: [{key: "testkey"}]) {
+        create_invoice(name: "test_name", series_code: "#{series.code}", metaAttributes: [{key: "testkey", value: "val"}]) {
           name
           series_id
           metaAttributes {
@@ -89,8 +89,38 @@ defmodule SiwappWeb.Graphql.InvoicesTest do
                  "name" => "test_name",
                  "series_id" => "#{series.id}",
                  "metaAttributes" => [
-                   %{"key" => "testkey", "value" => nil}
+                   %{"key" => "testkey", "value" => "val"}
                  ]
+               }
+             }
+           }
+  end
+
+  test "Create an invoice with taxes", %{conn: conn, series: series} do
+    query = """
+      mutation {
+        createInvoice(
+          name: "test_name",
+          seriesCode: "#{series.code}",
+          items: [
+            {description: "whatever", quantity: 1, unitaryCost: 100, taxes: ["VAT"]}
+          ]
+        )
+        {
+          grossAmount
+        }
+      }
+    """
+
+    res =
+      conn
+      |> post("/graphql", %{query: query})
+      |> json_response(200)
+
+    assert res == %{
+             "data" => %{
+               "createInvoice" => %{
+                 "grossAmount" => "1.21"
                }
              }
            }

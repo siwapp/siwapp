@@ -97,7 +97,6 @@ defmodule Siwapp.MixProject do
     [
       {:absinthe, "~> 1.7"},
       {:absinthe_plug, "~> 1.5"},
-      {:bcrypt_elixir, "~> 3.1"},
       {:bulma, "~> 0.9"},
       {:chromic_pdf, "~> 1.15"},
       {:contex, "~> 0.5.0"},
@@ -119,6 +118,7 @@ defmodule Siwapp.MixProject do
       {:jason, "~> 1.4"},
       {:mappable, "~> 0.2.4"},
       {:money, "~> 1.12"},
+      {:pbkdf2_elixir, "~> 2.2"},
       {:phoenix, "~> 1.7"},
       {:phoenix_ecto, "~> 4.5"},
       {:phoenix_html, "~> 4.1"},
