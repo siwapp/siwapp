@@ -14,6 +14,8 @@ services:
       - siwapp_postgres_volume:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+    networks:
+      - doofinder_network
 
   siwapp:
     build:
