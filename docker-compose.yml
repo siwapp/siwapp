@@ -1,5 +1,10 @@
+---
+networks:
+  doofinder_network:
+    external: true
+
 services:
-  db:
+  siwapp_db:
     image: postgres:13.5-alpine
     environment:
       POSTGRES_PASSWORD: postgres
@@ -11,6 +16,8 @@ services:
       start_period: 5s
     ports:
       - "5432:5432"
+    networks:
+      - doofinder_network
 
   siwapp:
     build:
@@ -20,13 +27,16 @@ services:
       dockerfile: docker/Dockerfile
     command: elixir -S mix phx.server
     depends_on:
-      db:
+      siwapp_db:
         condition: service_healthy
     entrypoint: [ "./docker/entrypoint.sh" ]
     environment:
-      DB_HOST: db
+      DB_HOST: siwapp_db
+      DB_PORT: 5432
       MIX_ENV: dev
     ports:
       - "4010:4010"
     volumes:
-      - ${PWD}:/app
+      - .:/app
+    networks:
+      - doofinder_network
