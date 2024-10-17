@@ -1,8 +1,4 @@
 ---
-networks:
-  doofinder_network:
-    external: true
-
 services:
   siwapp_db:
     image: postgres:13.5-alpine
@@ -24,8 +20,6 @@ services:
   siwapp:
     build:
       context: .
-      args:
-        user_id: ${UID:-1000}
       dockerfile: docker/Dockerfile
     command: elixir -S mix phx.server
     depends_on:
@@ -40,8 +34,6 @@ services:
       - "4010:4010"
     volumes:
       - .:/app
-    networks:
-      - doofinder_network
 
 volumes:
   siwapp_postgres_volume:
