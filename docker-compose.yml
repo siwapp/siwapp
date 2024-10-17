@@ -14,6 +14,8 @@ services:
       timeout: 25s
       retries: 5
       start_period: 5s
+    volumes:
+      - siwapp_postgres_volume:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     networks:
@@ -29,7 +31,7 @@ services:
     depends_on:
       siwapp_db:
         condition: service_healthy
-    entrypoint: [ "./docker/entrypoint.sh" ]
+    entrypoint: ["./docker/entrypoint.sh"]
     environment:
       DB_HOST: siwapp_db
       DB_PORT: 5432
@@ -40,3 +42,7 @@ services:
       - .:/app
     networks:
       - doofinder_network
+
+volumes:
+  siwapp_postgres_volume:
+    name: siwapp_postgres_volume

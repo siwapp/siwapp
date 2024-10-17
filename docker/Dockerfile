@@ -1,5 +1,10 @@
 FROM amd64/elixir:1.16-otp-26
 
+ARG UID=1000
+ARG GID=1000
+ARG USER=dfchat
+ARG GROUP=dfchat
+
 # Skip post-install steps
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -19,12 +24,18 @@ RUN apt-get update -qq && \
     rm chrome.deb && \
     apt-get clean
 
-# Install hex and rebar
-RUN mix local.hex --force
-RUN mix local.rebar --force
+RUN addgroup --system --gid "$GID" "$GROUP" && \
+    useradd --system --create-home --uid "$UID" --gid "$GROUP" "$USER"
+USER $USER
 
-# Create required dirs
-RUN mkdir /app
-
-# Set /app as workdir
+# Set up the working directory
 WORKDIR /app
+
+COPY --chown=$USER:$GROUP mix.exs /app
+COPY --chown=$USER:$GROUP mix.lock /app
+
+RUN mix local.hex --force  && \
+    mix local.rebar --force && \
+    mix deps.get && \
+    mix deps.clean --unused && \
+    mix compile
