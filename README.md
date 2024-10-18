@@ -13,6 +13,7 @@ Or you can use docker:
 docker compose build
 docker compose up
 docker compose exec -it siwapp mix siwapp.demo  # if you want demo data
+docker compose exec -it siwapp mix siwapp.register 'demo@example.com' '<password>'  # if you have restored a database dump
 ```
 
 Now you can visit [`localhost:4010`](http://localhost:4010) from your browser.
