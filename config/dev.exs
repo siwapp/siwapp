@@ -2,7 +2,11 @@ import Config
 
 config :siwapp,
   env: :dev,
-  pdf_opts: [no_sandbox: true, discard_stderr: false]
+  pdf_opts: [
+    no_sandbox: true,
+    discard_stderr: false,
+    chrome_executable: "/opt/google/chrome/chrome"
+  ]
 
 # Configure your database
 config :siwapp, Siwapp.Repo,
