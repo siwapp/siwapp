@@ -15,7 +15,7 @@ defmodule Mix.Tasks.Siwapp.Register do
 
   @impl Mix.Task
   def run(args) do
-    Mix.Task.run("app.start")
+    Application.ensure_all_started(:siwapp)
 
     validate_args!(args)
 
@@ -30,8 +30,7 @@ defmodule Mix.Tasks.Siwapp.Register do
         :ok
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        IO.puts(changeset.errors)
-        Mix.raise("Sorry. The user hasn't been created.")
+        Mix.raise("Sorry. The user hasn't been created.\n\t#{inspect(changeset.errors)}")
     end
   end
 
