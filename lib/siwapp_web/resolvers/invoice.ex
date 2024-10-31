@@ -106,6 +106,7 @@ defmodule SiwappWeb.Resolvers.Invoice do
     params
     |> Map.drop([:limit, :offset])
     |> with_status_params()
+    |> with_issue_date()
     |> meta_attributes_params()
     |> Map.to_list()
   end
@@ -115,6 +116,23 @@ defmodule SiwappWeb.Resolvers.Invoice do
     do: Map.put(params, :with_status, String.to_existing_atom(status))
 
   defp with_status_params(params), do: params
+
+  @spec with_issue_date(map()) :: map()
+  defp with_issue_date(%{from_issue_date: issue_date_gteq} = params) do
+    params
+    |> Map.delete(:from_issue_date)
+    |> Map.put(:issue_date_gteq, issue_date_gteq)
+    |> with_issue_date()
+  end
+
+  defp with_issue_date(%{to_issue_date: issue_date_lteq} = params) do
+    params
+    |> Map.delete(:to_issue_date)
+    |> Map.put(:issue_date_lteq, issue_date_lteq)
+    |> with_issue_date()
+  end
+
+  defp with_issue_date(params), do: params
 
   @spec meta_attributes_params(map()) :: map()
   defp meta_attributes_params(%{meta_attributes: meta_attributes} = params) do
