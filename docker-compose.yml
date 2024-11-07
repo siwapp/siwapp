@@ -21,6 +21,9 @@ services:
     build:
       context: .
       dockerfile: docker/Dockerfile
+      args:
+        - UID=${UID:-1000}
+        - GID=${GID:-1000}
     command: elixir -S mix phx.server
     depends_on:
       siwapp_db:
