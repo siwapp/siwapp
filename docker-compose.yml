@@ -1,34 +1,45 @@
+---
 services:
-  db:
+  siwapp_db:
     image: postgres:13.5-alpine
     environment:
       POSTGRES_PASSWORD: postgres
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres -p 5432"]
-      interval: 5s
+      interval: 15s
       timeout: 25s
       retries: 5
-      start_period: 5s
+      start_period: 100s
+    volumes:
+      - siwapp_postgres_volume:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+    networks:
+      - doofinder_network
 
   siwapp:
     build:
       context: .
-      args:
-        user_id: ${UID:-1000}
       dockerfile: docker/Dockerfile
+      args:
+        - UID=${UID:-1000}
+        - GID=${GID:-1000}
     command: elixir -S mix phx.server
     depends_on:
-      db:
+      siwapp_db:
         condition: service_healthy
-    entrypoint: [ "./docker/entrypoint.sh" ]
+    entrypoint: ["./docker/entrypoint.sh"]
     environment:
-      DB_HOST: db
+      DB_HOST: siwapp_db
+      DB_PORT: 5432
       MIX_ENV: dev
     ports:
       - "4010:4010"
     ulimits:
       nofile: 65535
     volumes:
-      - ${PWD}:/app
+      - .:/app
+
+volumes:
+  siwapp_postgres_volume:
+    name: siwapp_postgres_volume
