@@ -30,6 +30,8 @@ services:
       MIX_ENV: dev
     ports:
       - "4010:4010"
+    ulimits:
+      nofile: 65535
     volumes:
       - .:/app
 
