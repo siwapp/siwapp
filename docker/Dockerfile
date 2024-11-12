@@ -1,30 +1,48 @@
 FROM amd64/elixir:1.16-otp-26
 
+ARG UID=1000
+ARG GID=1000
+ARG USER=siwapp
+ARG GROUP=siwapp
+ARG CHROME_VERSION=126.0.6478.182-1
+
 # Skip post-install steps
 ENV DEBIAN_FRONTEND=noninteractive
 
 # Install required packages
-RUN apt-get update -qq && \
-    apt-get install -y --no-install-recommends \
-    build-essential \
-    ca-certificates \
-    git \
-    gnupg \
-    inotify-tools \
-    wget && \
+RUN apt update -qq && \
+    apt install -y --no-install-recommends \
+      build-essential \
+      ca-certificates \
+      fonts-liberation \
+      git \
+      gnupg \
+      inotify-tools \
+      libasound2 \
+      libnspr4 \
+      libnss3 \
+      libu2f-udev \
+      wget \
+      xdg-utils && \
     wget --no-check-certificate \
-    -qO chrome.deb \
-    https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
-    apt-get -y --no-install-recommends install ./chrome.deb && \
-    rm chrome.deb && \
-    apt-get clean
+      https://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_${CHROME_VERSION}_amd64.deb && \
+    dpkg -i google-chrome-stable_${CHROME_VERSION}_amd64.deb && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* && \
+    rm -f google-chrome-stable_${CHROME_VERSION}_amd64.deb
 
-# Install hex and rebar
-RUN mix local.hex --force
-RUN mix local.rebar --force
+RUN addgroup --system --gid "$GID" "$GROUP" && \
+    useradd --system --create-home --uid "$UID" --gid "$GROUP" "$USER"
+USER $USER
 
-# Create required dirs
-RUN mkdir /app
-
-# Set /app as workdir
+# Set up the working directory
 WORKDIR /app
+
+COPY --chown=$USER:$GROUP mix.exs /app
+COPY --chown=$USER:$GROUP mix.lock /app
+
+RUN mix local.hex --force  && \
+    mix local.rebar --force && \
+    mix deps.get && \
+    mix deps.clean --unused && \
+    mix compile
