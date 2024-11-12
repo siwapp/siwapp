@@ -2,11 +2,7 @@ import Config
 
 config :siwapp,
   env: :dev,
-  pdf_opts: [
-    no_sandbox: true,
-    discard_stderr: false,
-    chrome_executable: "/opt/google/chrome/chrome"
-  ]
+  pdf_opts: [no_sandbox: true, discard_stderr: false]
 
 # Configure your database
 config :siwapp, Siwapp.Repo,
@@ -14,7 +10,7 @@ config :siwapp, Siwapp.Repo,
   password: System.get_env("DB_PWD") || "postgres",
   database: System.get_env("DB_NAME") || "siwapp_dev",
   hostname: System.get_env("DB_HOST") || "localhost",
-  port: System.get_env("DB_PORT") || 5432,
+  port: System.get_env("DB_PORT") || "5432",
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
 
