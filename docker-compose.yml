@@ -1,6 +1,7 @@
 ---
 services:
   siwapp_db:
+    container_name: siwapp_db
     image: postgres:13.5-alpine
     environment:
       POSTGRES_PASSWORD: postgres
@@ -16,6 +17,7 @@ services:
       - "5432:5432"
 
   siwapp:
+    container_name: siwapp
     build:
       context: .
       args:
