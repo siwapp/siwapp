@@ -12,7 +12,7 @@ defmodule SiwappWeb.Resolvers.Invoice do
   def get(%{id: id}, _resolution) do
     case Invoices.get(id) do
       nil -> {:error, "Invoice with id #{id} not found."}
-      invoice -> {:ok, set_reference(invoice)}
+      invoice -> {:ok, invoice |> set_correct_units() |> set_reference()}
     end
   end
 
