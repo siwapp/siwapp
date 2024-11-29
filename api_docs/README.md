@@ -4,6 +4,6 @@ To generate new docs:
 
 ```
 $ cd api_docs
-$ npm install
-$ npx dociql config.yml
+$ docker build -t dociql .
+$ docker run -v $PWD/public:/src/public --net=host -it --rm dociql npx dociql config.yml
 ```
