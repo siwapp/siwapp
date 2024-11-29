@@ -114,6 +114,7 @@ defmodule Siwapp.MixProject do
       {:gettext, "~> 0.24"},
       {:gen_smtp, "~> 1.2"},
       {:hackney, "~> 1.20"},
+      {:html_sanitize_ex, "~> 1.4"},
       {:hut, "~> 1.4", manager: :rebar3, override: true},
       {:jason, "~> 1.4"},
       {:mappable, "~> 0.2.4"},
