@@ -45,7 +45,7 @@ defmodule SiwappWeb.Resolvers.Invoice do
 
     case Invoices.create(args) do
       {:ok, invoice} ->
-        {:ok, set_correct_units(invoice)}
+        {:ok, invoice |> set_correct_units() |> set_status() |> set_reference()}
 
       {:error, changeset} ->
         {:error, message: "Failed!", details: Errors.extract(changeset)}
@@ -63,7 +63,7 @@ defmodule SiwappWeb.Resolvers.Invoice do
     else
       case Invoices.update(invoice, params) do
         {:ok, invoice} ->
-          {:ok, set_correct_units(invoice)}
+          {:ok, invoice |> set_correct_units() |> set_status() |> set_reference()}
 
         {:error, changeset} ->
           {:error, message: "Failed!", details: Errors.extract(changeset)}

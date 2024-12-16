@@ -37,11 +37,15 @@ defmodule Siwapp.Invoices do
   """
   @spec create(map()) :: {:ok, Invoice.t()} | {:error, Ecto.Changeset.t()}
   def create(attrs \\ %{}) do
-    %Invoice{}
-    |> change(attrs)
-    |> InvoiceHelper.maybe_find_customer_or_new()
-    |> Invoice.assign_number()
-    |> Repo.insert()
+    result =
+      %Invoice{}
+      |> change(attrs)
+      |> InvoiceHelper.maybe_find_customer_or_new()
+      |> Invoice.assign_number()
+      |> Repo.insert()
+
+    with {:ok, invoice} <- result,
+      do: {:ok, Repo.preload(invoice, [:payments, :series, :customer])}
   end
 
   @doc """
@@ -49,11 +53,15 @@ defmodule Siwapp.Invoices do
   """
   @spec update(Invoice.t(), map()) :: {:ok, Invoice.t()} | {:error, Ecto.Changeset.t()}
   def update(%Invoice{} = invoice, attrs) do
-    invoice
-    |> change(attrs)
-    |> InvoiceHelper.maybe_find_customer_or_new()
-    |> Invoice.assign_number()
-    |> Repo.update()
+    result =
+      invoice
+      |> change(attrs)
+      |> InvoiceHelper.maybe_find_customer_or_new()
+      |> Invoice.assign_number()
+      |> Repo.update()
+
+    with {:ok, invoice} <- result,
+      do: {:ok, Repo.preload(invoice, [:payments, :series, :customer])}
   end
 
   @doc """
