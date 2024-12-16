@@ -45,7 +45,7 @@ defmodule Siwapp.Invoices do
       |> Repo.insert()
 
     with {:ok, invoice} <- result,
-      do: {:ok, Repo.preload(invoice, [:payments, :series, :customer])}
+         do: {:ok, Repo.preload(invoice, [:payments, :series, :customer])}
   end
 
   @doc """
@@ -61,7 +61,7 @@ defmodule Siwapp.Invoices do
       |> Repo.update()
 
     with {:ok, invoice} <- result,
-      do: {:ok, Repo.preload(invoice, [:payments, :series, :customer])}
+         do: {:ok, Repo.preload(invoice, [:payments, :series, :customer])}
   end
 
   @doc """
