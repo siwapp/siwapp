@@ -6,6 +6,7 @@ defmodule SiwappWeb.Schema.InvoiceTypes do
   object :invoice do
     field :id, :id
     field :customer_id, :id
+    field :customer, :customer
     field :name, :string
     field :identification, :string
     field :contact_person, :string

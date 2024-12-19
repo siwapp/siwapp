@@ -24,7 +24,7 @@ defmodule SiwappWeb.Resolvers.Invoice do
       Invoices.list(
         limit: limit,
         offset: offset,
-        preload: [:items, :payments, :series],
+        preload: [:items, :payments, :series, :customer],
         filters: filters
       )
 
