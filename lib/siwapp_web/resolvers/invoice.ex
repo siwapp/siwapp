@@ -4,6 +4,7 @@ defmodule SiwappWeb.Resolvers.Invoice do
   """
 
   alias Siwapp.Invoices
+  alias Siwapp.Repo
   alias SiwappWeb.PageView
   alias SiwappWeb.Resolvers.Errors
   alias SiwappWeb.Resolvers.Helpers
@@ -45,7 +46,10 @@ defmodule SiwappWeb.Resolvers.Invoice do
 
     case Invoices.create(args) do
       {:ok, invoice} ->
-        {:ok, set_correct_units(invoice)}
+        {:ok,
+         invoice
+         |> set_reference()
+         |> set_correct_units()}
 
       {:error, changeset} ->
         {:error, message: "Failed!", details: Errors.extract(changeset)}
@@ -63,7 +67,10 @@ defmodule SiwappWeb.Resolvers.Invoice do
     else
       case Invoices.update(invoice, params) do
         {:ok, invoice} ->
-          {:ok, set_correct_units(invoice)}
+          {:ok,
+           invoice
+           |> set_reference()
+           |> set_correct_units()}
 
         {:error, changeset} ->
           {:error, message: "Failed!", details: Errors.extract(changeset)}
@@ -98,7 +105,9 @@ defmodule SiwappWeb.Resolvers.Invoice do
 
   @spec set_reference(map) :: map
   defp set_reference(invoice) do
-    Map.put(invoice, :reference, "#{invoice.series.code}-#{Map.get(invoice, :number)}")
+    invoice
+    |> Repo.preload(:series)
+    |> then(&Map.put(&1, :reference, "#{&1.series.code}-#{Map.get(&1, :number)}"))
   end
 
   @spec get_filters(map()) :: Keyword.t()
