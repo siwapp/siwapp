@@ -267,13 +267,30 @@ defmodule Siwapp.Templates do
   @spec string_template(binary, Siwapp.Invoices.Invoice.t()) :: binary
   defp string_template(template, invoice) do
     eval_data = [
-      invoice: invoice,
+      invoice: sanitize_invoice(invoice),
       settings: Settings.current_bundle(),
       have_discount?: have_items_discount?(invoice.items),
       status: Invoices.status(invoice)
     ]
 
     EEx.eval_string(template, eval_data)
+  end
+
+  defp sanitize_invoice(invoice) do
+    fields_to_sanitize = [
+      :name,
+      :identification,
+      :email,
+      :contact_person,
+      :invoicing_address,
+      :shipping_address,
+      :notes,
+      :terms
+    ]
+
+    Enum.reduce(fields_to_sanitize, invoice, fn field, acc ->
+      %{acc | field => HtmlSanitizeEx.strip_tags(Map.get(acc, field))}
+    end)
   end
 
   @spec have_items_discount?(list) :: boolean
