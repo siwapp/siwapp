@@ -276,6 +276,7 @@ defmodule Siwapp.Templates do
     EEx.eval_string(template, eval_data)
   end
 
+  @spec sanitize_invoice(Siwapp.Invoices.Invoice.t()) :: Siwapp.Invoices.Invoice.t()
   defp sanitize_invoice(invoice) do
     fields_to_sanitize = [
       :name,
