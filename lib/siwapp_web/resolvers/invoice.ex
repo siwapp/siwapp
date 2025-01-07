@@ -104,6 +104,8 @@ defmodule SiwappWeb.Resolvers.Invoice do
   end
 
   @spec set_reference(map) :: map
+  defp set_reference(%Invoices.Invoice{draft: true} = invoice), do: invoice
+
   defp set_reference(invoice) do
     invoice
     |> Repo.preload(:series)
