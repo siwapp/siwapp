@@ -30,7 +30,7 @@ defmodule SiwappWeb.Schema.InvoiceTypes do
     field :paid_amount, :string
     field :paid, :boolean
     field :failed, :boolean
-    field :recurring_invoice, :id
+    field :recurring_invoice_id, :id
     field :sent_by_email, :boolean
     field :inserted_at, :date
     field :updated_at, :date
