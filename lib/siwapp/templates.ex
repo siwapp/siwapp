@@ -9,6 +9,17 @@ defmodule Siwapp.Templates do
   alias Siwapp.Settings
   alias Siwapp.Templates.Template
 
+  @fields_to_sanitize [
+    :name,
+    :identification,
+    :email,
+    :contact_person,
+    :invoicing_address,
+    :shipping_address,
+    :notes,
+    :terms
+  ]
+
   @doc """
   Returns the list of templates.
 
@@ -267,13 +278,24 @@ defmodule Siwapp.Templates do
   @spec string_template(binary, Siwapp.Invoices.Invoice.t()) :: binary
   defp string_template(template, invoice) do
     eval_data = [
-      invoice: invoice,
+      invoice: sanitize_invoice(invoice),
       settings: Settings.current_bundle(),
       have_discount?: have_items_discount?(invoice.items),
       status: Invoices.status(invoice)
     ]
 
     EEx.eval_string(template, eval_data)
+  end
+
+  @spec sanitize_invoice(Siwapp.Invoices.Invoice.t()) :: Siwapp.Invoices.Invoice.t()
+  defp sanitize_invoice(invoice) do
+    invoice
+    |> Map.from_struct()
+    |> Enum.map(fn
+      {key, value} when key in @fields_to_sanitize -> {key, HtmlSanitizeEx.strip_tags(value)}
+      field -> field
+    end)
+    |> then(&struct(Siwapp.Invoices.Invoice, &1))
   end
 
   @spec have_items_discount?(list) :: boolean
