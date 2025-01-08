@@ -9,6 +9,17 @@ defmodule Siwapp.Templates do
   alias Siwapp.Settings
   alias Siwapp.Templates.Template
 
+  @fields_to_sanitize [
+    :name,
+    :identification,
+    :email,
+    :contact_person,
+    :invoicing_address,
+    :shipping_address,
+    :notes,
+    :terms
+  ]
+
   @doc """
   Returns the list of templates.
 
@@ -275,17 +286,6 @@ defmodule Siwapp.Templates do
 
     EEx.eval_string(template, eval_data)
   end
-
-  @fields_to_sanitize [
-    :name,
-    :identification,
-    :email,
-    :contact_person,
-    :invoicing_address,
-    :shipping_address,
-    :notes,
-    :terms
-  ]
 
   @spec sanitize_invoice(Siwapp.Invoices.Invoice.t()) :: Siwapp.Invoices.Invoice.t()
   defp sanitize_invoice(invoice) do
