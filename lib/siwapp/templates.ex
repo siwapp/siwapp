@@ -276,22 +276,26 @@ defmodule Siwapp.Templates do
     EEx.eval_string(template, eval_data)
   end
 
+  @fields_to_sanitize [
+    :name,
+    :identification,
+    :email,
+    :contact_person,
+    :invoicing_address,
+    :shipping_address,
+    :notes,
+    :terms
+  ]
+
   @spec sanitize_invoice(Siwapp.Invoices.Invoice.t()) :: Siwapp.Invoices.Invoice.t()
   defp sanitize_invoice(invoice) do
-    fields_to_sanitize = [
-      :name,
-      :identification,
-      :email,
-      :contact_person,
-      :invoicing_address,
-      :shipping_address,
-      :notes,
-      :terms
-    ]
-
-    Enum.reduce(fields_to_sanitize, invoice, fn field, acc ->
-      %{acc | field => HtmlSanitizeEx.strip_tags(Map.get(acc, field))}
+    invoice
+    |> Map.from_struct()
+    |> Enum.map(fn
+      {key, value} when key in @fields_to_sanitize -> {key, HtmlSanitizeEx.strip_tags(value)}
+      field -> field
     end)
+    |> then(&struct(Siwapp.Invoices.Invoice, &1))
   end
 
   @spec have_items_discount?(list) :: boolean
