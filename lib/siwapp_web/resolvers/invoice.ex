@@ -113,9 +113,12 @@ defmodule SiwappWeb.Resolvers.Invoice do
     Enum.reduce([:net_amount, :gross_amount, :paid_amount], invoice, fn key, invoice ->
       # This is for backwards compatibility so format_amount/4 can return the
       # legacy value when no specfic format is requested
-      Map.update(invoice, :"legacy_#{key}", 0, fn existing_value ->
-        PageView.money_format(existing_value, invoice.currency, symbol: false)
-      end)
+      amount_in_units =
+        invoice
+        |> Map.fetch!(key)
+        |> PageView.money_format(invoice.currency, symbol: false)
+
+      Map.put(invoice, :"legacy_#{key}", amount_in_units)
     end)
   end
 
