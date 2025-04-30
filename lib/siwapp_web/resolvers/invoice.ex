@@ -89,7 +89,8 @@ defmodule SiwappWeb.Resolvers.Invoice do
     end
   end
 
-  @spec format_amount(atom, Invoices.Invoice.t(), map(), Absinthe.Resolution.t()) :: {:ok, integer() | String.t()}
+  @spec format_amount(atom, Invoices.Invoice.t(), map(), Absinthe.Resolution.t()) ::
+          {:ok, integer() | String.t()}
   def format_amount(field, invoice, args, _resolution) do
     amount_in_cents = Map.fetch!(invoice, field)
 
