@@ -89,6 +89,11 @@ defmodule SiwappWeb.Resolvers.Invoice do
     end
   end
 
+  @spec get_series_code(Invoices.Invoice.t(), map(), Absinthe.Resolution.t()) :: {:ok, String.t()}
+  def get_series_code(invoice, _args, _resolution) do
+    {:ok, Repo.preload(invoice, :series).series.code}
+  end
+
   @spec set_correct_units(Invoices.Invoice.t()) :: Invoices.Invoice.t()
   defp set_correct_units(invoice) do
     Enum.reduce([:net_amount, :gross_amount, :paid_amount], invoice, fn key, invoice ->
