@@ -18,6 +18,7 @@ defmodule SiwappWeb.Schema.InvoiceTypes do
     field :terms, :string
     field :notes, :string
     field :series_id, :id
+    field :series_code, :string, resolve: &Invoice.get_series_code/3
     field :number, :string
     field :reference, :string
     field :currency, :string

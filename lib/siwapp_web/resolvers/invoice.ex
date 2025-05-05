@@ -89,6 +89,11 @@ defmodule SiwappWeb.Resolvers.Invoice do
     end
   end
 
+  @spec get_series_code(Invoices.Invoice.t(), map(), Absinthe.Resolution.t()) :: {:ok, String.t()}
+  def get_series_code(invoice, _args, _resolution) do
+    {:ok, Repo.preload(invoice, :series).series.code}
+  end
+
   @spec format_amount(atom, Invoices.Invoice.t(), map(), Absinthe.Resolution.t()) ::
           {:ok, integer() | String.t()}
   def format_amount(field, invoice, args, _resolution) do
