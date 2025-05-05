@@ -94,12 +94,36 @@ defmodule SiwappWeb.Resolvers.Invoice do
     {:ok, Repo.preload(invoice, :series).series.code}
   end
 
+  @spec format_amount(atom, Invoices.Invoice.t(), map(), Absinthe.Resolution.t()) ::
+          {:ok, integer() | String.t()}
+  def format_amount(field, invoice, args, _resolution) do
+    amount_in_cents = Map.fetch!(invoice, field)
+
+    case args do
+      %{format: "cents"} ->
+        {:ok, amount_in_cents}
+
+      %{format: "unit"} ->
+        {:ok, PageView.money_format(amount_in_cents, nil, symbol: false)}
+
+      _ ->
+        # legacy value may either be in cents or units depending on the query/mutation
+        {:ok, Map.get(invoice, :"legacy_#{field}", amount_in_cents)}
+    end
+  end
+
+  # Deprecated: amounts are now converted in format_amount/4
   @spec set_correct_units(Invoices.Invoice.t()) :: Invoices.Invoice.t()
   defp set_correct_units(invoice) do
     Enum.reduce([:net_amount, :gross_amount, :paid_amount], invoice, fn key, invoice ->
-      Map.update(invoice, key, 0, fn existing_value ->
-        PageView.money_format(existing_value, invoice.currency, symbol: false)
-      end)
+      # This is for backwards compatibility so format_amount/4 can return the
+      # legacy value when no specfic format is requested
+      amount_in_units =
+        invoice
+        |> Map.fetch!(key)
+        |> PageView.money_format(invoice.currency, symbol: false)
+
+      Map.put(invoice, :"legacy_#{key}", amount_in_units)
     end)
   end
 

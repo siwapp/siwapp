@@ -28,9 +28,22 @@ defmodule SiwappWeb.Schema.InvoiceTypes do
     field :status, :string
     field :items, list_of(:item)
     field :payments, list_of(:payment)
-    field :gross_amount, :string
-    field :net_amount, :string
-    field :paid_amount, :string
+
+    field :gross_amount, :string do
+      arg(:format, :string)
+      resolve(&Invoice.format_amount(:gross_amount, &1, &2, &3))
+    end
+
+    field :net_amount, :string do
+      arg(:format, :string)
+      resolve(&Invoice.format_amount(:net_amount, &1, &2, &3))
+    end
+
+    field :paid_amount, :string do
+      arg(:format, :string)
+      resolve(&Invoice.format_amount(:paid_amount, &1, &2, &3))
+    end
+
     field :paid, :boolean
     field :failed, :boolean
     field :recurring_invoice_id, :id
