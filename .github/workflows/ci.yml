@@ -46,7 +46,11 @@ jobs:
           key: ${{ runner.os }}-${{ matrix.otp }}-${{ matrix.elixir }}-mix-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}
 
       - name: Install npm Dependencies
-        run: npm --prefix ./api_docs install
+        run: |
+          . ~/.nvm/nvm.sh
+          nvm install 16.13.2
+          nvm use 16.13.2
+          npm --prefix ./api_docs install
 
       - name: Install Mix Dependencies
         if: steps.mix-cache.outputs.cache-hit != 'true'
