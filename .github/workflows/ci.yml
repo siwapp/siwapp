@@ -88,7 +88,7 @@ jobs:
       - name: Run Tests
         run: mix test
         env:
-          MIX_ENV: dev
+          MIX_ENV: test
 
       - name: Run assets format-check
         run: npm run --prefix ./api_docs format-check
