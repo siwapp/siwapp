@@ -123,7 +123,7 @@ defmodule SiwappWeb.Resolvers.Invoice do
         |> Map.fetch!(key)
         |> PageView.money_format(invoice.currency, symbol: false)
 
-      Map.put(invoice, String.to_existing_atom("legacy_#{key}"), amount_in_units)
+      Map.put(invoice, String.to_atom("legacy_#{key}"), amount_in_units)
     end)
   end
 
