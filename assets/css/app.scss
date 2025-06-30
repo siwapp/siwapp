@@ -48,11 +48,11 @@ td.table-span:not([align]) {
   display: none;
 }
 
-.search-menu-content label{
+.search-menu-content label {
   font-size: 14px;
 }
 
-.search-menu-content .buttons{
+.search-menu-content .buttons {
   margin-top: 0.5rem;
 }
 
@@ -64,7 +64,7 @@ p.control.has-dropdown {
   display: grid;
 }
 
-.input:focus-within+.dropdown.below-input,
+.input:focus-within + .dropdown.below-input,
 .dropdown.below-input:hover {
   display: block;
   position: static;
@@ -85,15 +85,17 @@ p.control.has-dropdown {
   width: 100%;
 }
 
-.customers_list{
+.customers_list {
   position: absolute;
   width: 46%;
   z-index: 5;
 }
-.customers_list_content{
+.customers_list_content {
   padding: 1rem;
   border-radius: 4px;
-  box-shadow: 0 0.5em 1em -0.125em rgb(10 10 10 / 10%), 0 0px 0 1px rgb(10 10 10 / 2%);
+  box-shadow:
+    0 0.5em 1em -0.125em rgb(10 10 10 / 10%),
+    0 0px 0 1px rgb(10 10 10 / 2%);
   background-color: white;
   text-align: center;
   overflow: hidden;
@@ -101,7 +103,7 @@ p.control.has-dropdown {
   max-height: 200px;
 }
 
-.customers_list_content option:hover{
+.customers_list_content option:hover {
   background-color: hsl(0, 0%, 96%);
 }
 
@@ -113,8 +115,8 @@ p.control.has-dropdown {
   max-width: 35vw;
 }
 
-span.pointer{
-    cursor: pointer;
+span.pointer {
+  cursor: pointer;
 }
 
 /* CHARTS STYLING*/
@@ -128,14 +130,14 @@ span.pointer{
 
 /* Styling for axis line */
 .exc-domain {
-  stroke:  black;
+  stroke: black;
   stroke-width: 0.5;
 }
 
-.button.is-purple{
-    color: white;
-    background-color: #8A4D76;
-    border-color: transparent;
+.button.is-purple {
+  color: white;
+  background-color: #8a4d76;
+  border-color: transparent;
 }
 
 @media screen and (max-width: 1000px) {
