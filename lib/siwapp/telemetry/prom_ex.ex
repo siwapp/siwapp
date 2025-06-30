@@ -56,7 +56,6 @@ defmodule Siwapp.PromEx do
 
   alias PromEx.Plugins
 
-  @impl true
   def plugins do
     [
       # PromEx built in plugins
@@ -76,7 +75,6 @@ defmodule Siwapp.PromEx do
     ]
   end
 
-  @impl true
   def dashboard_assigns do
     [
       datasource_id: "Prometheus",
@@ -84,7 +82,6 @@ defmodule Siwapp.PromEx do
     ]
   end
 
-  @impl true
   def dashboards do
     [
       # PromEx built in Grafana dashboards

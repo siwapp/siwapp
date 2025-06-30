@@ -31,7 +31,11 @@
           "apps/*/test/",
           "apps/*/web/"
         ],
-        excluded: [~r"/_build/", ~r"/deps/", ~r"/node_modules/"]
+        excluded: [
+          ~r"/_build/",
+          ~r"/deps/",
+          ~r"/node_modules/"
+        ]
       },
       #
       # Load and configure plugins here:
@@ -97,7 +101,7 @@
           #
           {Credo.Check.Readability.AliasOrder, []},
           {Credo.Check.Readability.FunctionNames, []},
-          # {Credo.Check.Readability.ImplTrue, []},
+          {Credo.Check.Readability.ImplTrue, []},
           {Credo.Check.Readability.LargeNumbers, []},
           {Credo.Check.Readability.MaxLineLength, [priority: :low, max_length: 120]},
           {Credo.Check.Readability.ModuleAttributeNames, []},
@@ -112,9 +116,7 @@
           {Credo.Check.Readability.RedundantBlankLines, []},
           {Credo.Check.Readability.Semicolons, []},
           {Credo.Check.Readability.SeparateAliasRequire, []},
-          {Credo.Check.Readability.SinglePipe, []},
           {Credo.Check.Readability.SpaceAfterCommas, []},
-          {Credo.Check.Readability.Specs, [include_defp: true]},
           {Credo.Check.Readability.StrictModuleLayout,
            [
              # Order similar than elixir style guide
@@ -123,11 +125,13 @@
                :shortdoc,
                :moduledoc,
                :behaviour,
-               :use,
                :import,
                :require,
                :alias,
                :module_attribute
+             ],
+             ignore: [
+               :use
              ]
            ]},
           {Credo.Check.Readability.StringSigils, []},
@@ -153,7 +157,6 @@
           {Credo.Check.Refactor.NegatedConditionsInUnless, []},
           {Credo.Check.Refactor.NegatedConditionsWithElse, []},
           {Credo.Check.Refactor.Nesting, []},
-          {Credo.Check.Refactor.PipeChainStart, []},
           {Credo.Check.Refactor.RedundantWithClauseResult, []},
           {Credo.Check.Refactor.RejectFilter, []},
           {Credo.Check.Refactor.RejectReject, []},

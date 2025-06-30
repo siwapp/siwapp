@@ -3,7 +3,6 @@ defmodule Siwapp.Telemetry.Plugin.Phoenix do
 
   use PromEx.Plugin
 
-  @impl true
   def event_metrics(_opts) do
     [
       distribution_metrics()

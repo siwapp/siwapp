@@ -148,8 +148,8 @@ defmodule SiwappWeb.InvoicesLive.Index do
   def handle_event("reorder", %{"field" => field, "order" => order}, socket) do
     order_by =
       order
-      |> String.to_atom()
-      |> Searches.prepare_order_by(String.to_atom(field))
+      |> String.to_existing_atom()
+      |> Searches.prepare_order_by(String.to_existing_atom(field))
 
     socket =
       socket

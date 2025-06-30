@@ -1,0 +1,18 @@
+[
+  verbose: false,
+  private: false,
+  skip: true,
+  router: nil,
+  exit: 0,
+  format: "txt",
+  out: nil,
+  threshold: :low,
+  ignore: [
+    "Config.HTTPS",
+    "XSS.HTML",
+    "RCE.EEx",
+  ],
+  ignore_files: [],
+  version: false
+]
+

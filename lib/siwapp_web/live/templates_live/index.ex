@@ -19,7 +19,7 @@ defmodule SiwappWeb.TemplatesLive.Index do
     template = id |> String.to_integer() |> Templates.get()
 
     socket =
-      case Templates.set_default(String.to_atom(type), template) do
+      case Templates.set_default(String.to_existing_atom(type), template) do
         {:ok, _} ->
           socket
           |> assign(templates: Templates.list())
