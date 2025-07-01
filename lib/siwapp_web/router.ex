@@ -9,7 +9,8 @@ defmodule SiwappWeb.Router do
     "x-frame-options" => "SAMEORIGIN",
     "x-xss-protection" => "1; mode=block",
     "x-content-type-options" => "nosniff",
-    "content-security-policy" => "default-src 'self'"
+    "content-security-policy" =>
+      "default-src 'self'; style-src 'self' 'unsafe-inline' data:; font-src 'self' data:; img-src 'self' data:"
   }
 
   pipeline :browser do
