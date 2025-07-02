@@ -108,7 +108,7 @@ defmodule SiwappWeb.Resolvers.Invoice do
 
       _ ->
         # legacy value may either be in cents or units depending on the query/mutation
-        {:ok, Map.get(invoice, :"legacy_#{field}", amount_in_cents)}
+        {:ok, Map.get(invoice, String.to_existing_atom("legacy_#{field}"), amount_in_cents)}
     end
   end
 
@@ -123,7 +123,7 @@ defmodule SiwappWeb.Resolvers.Invoice do
         |> Map.fetch!(key)
         |> PageView.money_format(invoice.currency, symbol: false)
 
-      Map.put(invoice, :"legacy_#{key}", amount_in_units)
+      Map.put(invoice, String.to_atom("legacy_#{key}"), amount_in_units)
     end)
   end
 

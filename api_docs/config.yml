@@ -6,34 +6,34 @@ servers: # same format as for OpenAPI Specification
     description: Dev
 
 info: # same format as for OpenAPI Specification
-    title: Siwapp API
-    description:  This is the static documentation for Siwapp API
+  title: Siwapp API
+  description: This is the static documentation for Siwapp API
 
- # define your domains by providing a set of usecases
+  # define your domains by providing a set of usecases
 domains:
   - name: Get # Name of the domain
     usecases:
-     - name: Get an invoice
-       query: query.invoice
+      - name: Get an invoice
+        query: query.invoice
   - name: List
     usecases:
-     - name: Get all customers
-       query: query.customers
-     - name: Get all invoices
-       query: query.invoices
+      - name: Get all customers
+        query: query.customers
+      - name: Get all invoices
+        query: query.invoices
   - name: Create
     usecases:
-     - name: Create a customer
-       query: mutation.createCustomer
-     - name: Create an invoice
-       query: mutation.createInvoice
+      - name: Create a customer
+        query: mutation.createCustomer
+      - name: Create an invoice
+        query: mutation.createInvoice
   - name: Delete
     usecases:
-     - name: Delete a customer
-       query: mutation.deleteCustomer
-     - name: Delete an invoice
-       query: mutation.deleteInvoice
+      - name: Delete a customer
+        query: mutation.deleteCustomer
+      - name: Delete an invoice
+        query: mutation.deleteInvoice
   - name: Update
     usecases:
-     - name: Update an invoice
-       query: mutation.updateInvoice
+      - name: Update an invoice
+        query: mutation.updateInvoice

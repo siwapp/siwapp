@@ -1,5 +1,14 @@
 {
+  "scripts": {
+    "format": "prettier --write . ../assets",
+    "format-check": "prettier --check . ../assets"
+  },
   "dependencies": {
     "dociql": "^1.1.7"
+  },
+  "author": "Doofinder",
+  "license": "ISC",
+  "devDependencies": {
+    "prettier": "^3.5.3"
   }
 }

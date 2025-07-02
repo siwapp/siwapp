@@ -125,6 +125,6 @@ defmodule Siwapp.Searches.SearchQuery do
   defp convert_to_atom(value) do
     value
     |> String.downcase()
-    |> String.to_atom()
+    |> String.to_existing_atom()
   end
 end

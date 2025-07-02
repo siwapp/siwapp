@@ -5,13 +5,21 @@ defmodule SiwappWeb.Router do
 
   @env Application.compile_env!(:siwapp, :env)
 
+  @secure_headers %{
+    "x-frame-options" => "SAMEORIGIN",
+    "x-xss-protection" => "1; mode=block",
+    "x-content-type-options" => "nosniff",
+    "content-security-policy" =>
+      "default-src 'self'; style-src 'self' 'unsafe-inline' data:; font-src 'self' data:; img-src 'self' data:"
+  }
+
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
     plug :fetch_live_flash
     plug :put_root_layout, {SiwappWeb.LayoutView, :root}
     plug :protect_from_forgery
-    plug :put_secure_browser_headers
+    plug :put_secure_browser_headers, @secure_headers
     plug :fetch_current_user
   end
 

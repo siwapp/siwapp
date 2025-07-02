@@ -1,7 +1,12 @@
 name: CI
 # Based on https://hashrocket.com/blog/posts/build-the-ultimate-elixir-ci-with-github-actions
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    types: [opened, reopened, synchronize, ready_for_review]
 
 env:
   MIX_ENV: test
@@ -40,6 +45,13 @@ jobs:
           path: deps
           key: ${{ runner.os }}-${{ matrix.otp }}-${{ matrix.elixir }}-mix-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}
 
+      - name: Install npm Dependencies
+        run: |
+          . ~/.nvm/nvm.sh
+          nvm install 16.13.2
+          nvm use 16.13.2
+          npm --prefix ./api_docs install
+
       - name: Install Mix Dependencies
         if: steps.mix-cache.outputs.cache-hit != 'true'
         run: |
@@ -49,9 +61,6 @@ jobs:
 
       - name: Check Formatting
         run: mix format --check-formatted
-
-      - name: Run Tests
-        run: mix test
 
       - name: Retrieve PLT Cache
         uses: actions/cache@v4
@@ -70,3 +79,20 @@ jobs:
         run: mix credo --strict
         env:
           MIX_ENV: dev
+
+      - name: Check security issues
+        run: mix sobelow --config
+        env:
+          MIX_ENV: dev
+
+      - name: Run Tests
+        run: mix test
+        env:
+          MIX_ENV: test
+
+      - name: Run assets format-check
+        run: npm run --prefix ./api_docs format-check
+        env:
+          MIX_ENV: dev
+      
+

@@ -4,7 +4,7 @@ defmodule Siwapp.MixProject do
   def project do
     [
       app: :siwapp,
-      version: "0.1.0",
+      version: "0.1.1",
       elixir: "~> 1.13",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: Mix.compilers(),
@@ -134,7 +134,8 @@ defmodule Siwapp.MixProject do
       {:sentry, "~> 10.5"},
       {:swoosh, "~> 1.16"},
       {:telemetry_metrics, "~> 0.6"},
-      {:telemetry_poller, "~> 1.1"}
+      {:telemetry_poller, "~> 1.1"},
+      {:sobelow, "~> 0.13", only: [:dev, :test], runtime: false}
     ]
   end
 
@@ -154,6 +155,22 @@ defmodule Siwapp.MixProject do
         "sass default --no-source-map --style=compressed",
         "esbuild default --minify",
         "phx.digest"
+      ],
+      consistency: [
+        "cmd echo Formatting ...",
+        "format",
+        "cmd echo",
+        "cmd echo Checking compile warnings ...",
+        "compile --no-deps-check --force",
+        "cmd echo",
+        "cmd echo Checking Credo ...",
+        "credo -A --ignore todo --mute-exit-status",
+        "cmd echo",
+        "cmd echo Checking Dialyzer ...",
+        "dialyzer --quiet-with-result",
+        "cmd echo",
+        "cmd echo Sobelow scan ...",
+        "sobelow --config"
       ],
       sentry_recompile: ["compile", "deps.compile sentry --force"]
     ]

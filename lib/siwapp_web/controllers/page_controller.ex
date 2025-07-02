@@ -124,7 +124,9 @@ defmodule SiwappWeb.PageController do
   @spec maybe_add_meta_attributes_key([atom], map) :: [atom]
   defp maybe_add_meta_attributes_key(keys, %{"csv_meta_attributes" => meta_attributes_params}) do
     keys ++
-      Enum.map(meta_attributes_params, fn {_key, %{"key" => key}} -> String.to_atom(key) end)
+      Enum.map(meta_attributes_params, fn {_key, %{"key" => key}} ->
+        String.to_existing_atom(key)
+      end)
   end
 
   defp maybe_add_meta_attributes_key(keys, _else), do: keys
@@ -192,7 +194,7 @@ defmodule SiwappWeb.PageController do
        }) do
     Enum.reduce(meta_attributes_params, record, fn {_index, %{"key" => key}}, acc ->
       meta_attribute = Map.get(meta_attributes, key)
-      Map.put(acc, String.to_atom(key), meta_attribute)
+      Map.put(acc, String.to_existing_atom(key), meta_attribute)
     end)
   end
 

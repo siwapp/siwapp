@@ -6,7 +6,7 @@ $blue: hsl(217, 71%, 53%);
       border-bottom-left-radius: 0;
     }
   }
-  &>* {
+  & > * {
     display: block;
     width: 100%;
   }
@@ -23,10 +23,10 @@ $blue: hsl(217, 71%, 53%);
     height: fit-content;
     .placeholder {
       font-weight: 400;
-      color: rgba(0, 0, 0, .6);
+      color: rgba(0, 0, 0, 0.6);
     }
     &:after {
-      content: '';
+      content: "";
       border-top: 6px solid black;
       border-left: 6px solid transparent;
       border-right: 6px solid transparent;
@@ -58,7 +58,7 @@ $blue: hsl(217, 71%, 53%);
         appearance: none;
         background: transparent;
         border: none;
-        color: rgba(255, 255, 255, .8);
+        color: rgba(255, 255, 255, 0.8);
         font-size: 12px;
         position: absolute;
         right: 0px;
@@ -70,7 +70,7 @@ $blue: hsl(217, 71%, 53%);
         height: 26px;
         font-weight: 600;
         &:hover {
-          background-color: rgba(255, 255, 255, .2);
+          background-color: rgba(255, 255, 255, 0.2);
           color: white;
         }
       }
