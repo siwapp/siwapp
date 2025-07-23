@@ -125,7 +125,8 @@ defmodule SiwappWeb.PageController do
   defp maybe_add_meta_attributes_key(keys, %{"csv_meta_attributes" => meta_attributes_params}) do
     keys ++
       Enum.map(meta_attributes_params, fn {_key, %{"key" => key}} ->
-        String.to_existing_atom(key)
+        # sobelow_skip :dos_string_to_atom
+        String.to_atom(key)
       end)
   end
 
