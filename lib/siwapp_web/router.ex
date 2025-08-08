@@ -10,7 +10,7 @@ defmodule SiwappWeb.Router do
     "x-xss-protection" => "1; mode=block",
     "x-content-type-options" => "nosniff",
     "content-security-policy" =>
-      "default-src 'self'; style-src 'self' 'unsafe-inline' data:; font-src 'self' data:; img-src 'self' data:"
+      "default-src 'self'; script-src 'self' https://kit.fontawesome.com; style-src 'self' 'unsafe-inline' data: https://ka-f.fontawesome.com; font-src 'self' data: https://ka-f.fontawesome.com; connect-src 'self' https://ka-f.fontawesome.com; img-src 'self' data:"
   }
 
   pipeline :browser do
