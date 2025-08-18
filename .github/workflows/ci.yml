@@ -30,7 +30,7 @@ jobs:
         otp: [26.2]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v5
 
       - name: Setup elixir
         uses: erlef/setup-beam@v1
