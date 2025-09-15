@@ -111,7 +111,7 @@ defmodule Siwapp.MixProject do
       {:faker, "~> 0.18"},
       {:finch, "~> 0.18"},
       {:floki, ">= 0.36.0", only: :test},
-      {:gettext, "~> 0.24"},
+      {:gettext, "~> 1.0"},
       {:gen_smtp, "~> 1.2"},
       {:hackney, "~> 1.20"},
       {:html_sanitize_ex, "~> 1.4"},
