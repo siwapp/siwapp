@@ -122,7 +122,6 @@ defmodule SiwappWeb.PageController do
   defp maybe_add_reference_key(keys, "invoice"), do: keys ++ [:reference]
   defp maybe_add_reference_key(keys, _else), do: keys
 
-
   @spec maybe_add_last_payment_date_key([atom], binary) :: [atom]
   defp maybe_add_last_payment_date_key(keys, "invoice"), do: keys ++ [:last_payment_date]
   defp maybe_add_last_payment_date_key(keys, _else), do: keys
@@ -170,7 +169,9 @@ defmodule SiwappWeb.PageController do
   end
 
   @spec maybe_preload_series_and_payments(list, Ecto.Queryable.t()) :: list
-  defp maybe_preload_series_and_payments(invoices, Invoice), do: Repo.preload(invoices, [:series, :payments])
+  defp maybe_preload_series_and_payments(invoices, Invoice),
+    do: Repo.preload(invoices, [:series, :payments])
+
   defp maybe_preload_series_and_payments(others, _else), do: others
 
   # For each invoice, customer or recurring_invoice gets its own sorted values
@@ -198,12 +199,15 @@ defmodule SiwappWeb.PageController do
 
   # refund invoices are paid but don't have payments
   @spec maybe_add_last_payment_date(Ecto.Queryable.t()) :: map
-  defp maybe_add_last_payment_date(%Invoice{paid: true, payments: payments} = invoice) when payments != [] do
+  defp maybe_add_last_payment_date(%Invoice{paid: true, payments: payments} = invoice)
+       when payments != [] do
     last_date =
       payments
       |> Enum.map(& &1.date)
       |> Enum.reject(&is_nil/1)
-      |> Enum.max_by(fn date -> :calendar.date_to_gregorian_days({date.year, date.month, date.day}) end)
+      |> Enum.max_by(fn date ->
+        :calendar.date_to_gregorian_days({date.year, date.month, date.day})
+      end)
 
     Map.put(invoice, :last_payment_date, last_date)
   end
