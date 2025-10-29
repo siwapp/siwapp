@@ -204,10 +204,7 @@ defmodule SiwappWeb.PageController do
     last_date =
       payments
       |> Enum.map(& &1.date)
-      |> Enum.reject(&is_nil/1)
-      |> Enum.max_by(fn date ->
-        :calendar.date_to_gregorian_days({date.year, date.month, date.day})
-      end)
+      |> Enum.max(Date)
 
     Map.put(invoice, :last_payment_date, last_date)
   end
