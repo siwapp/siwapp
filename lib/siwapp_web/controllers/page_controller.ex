@@ -62,6 +62,7 @@ defmodule SiwappWeb.PageController do
       |> Kernel.++([:inserted_at, :updated_at])
       |> maybe_add_series_code_key(params["view"])
       |> maybe_add_reference_key(params["view"])
+      |> maybe_add_last_payment_date_key(params["view"])
       |> maybe_delete_key(params["view"])
       |> maybe_add_meta_attributes_key(params)
 
@@ -121,6 +122,10 @@ defmodule SiwappWeb.PageController do
   defp maybe_add_reference_key(keys, "invoice"), do: keys ++ [:reference]
   defp maybe_add_reference_key(keys, _else), do: keys
 
+  @spec maybe_add_last_payment_date_key([atom], binary) :: [atom]
+  defp maybe_add_last_payment_date_key(keys, "invoice"), do: keys ++ [:last_payment_date]
+  defp maybe_add_last_payment_date_key(keys, _else), do: keys
+
   @spec maybe_add_meta_attributes_key([atom], map) :: [atom]
   defp maybe_add_meta_attributes_key(keys, %{"csv_meta_attributes" => meta_attributes_params}) do
     keys ++
@@ -150,7 +155,7 @@ defmodule SiwappWeb.PageController do
     |> Searches.filters_query(query_params)
     |> maybe_deleted_at_query(queryable)
     |> Repo.all()
-    |> maybe_preload_series(queryable)
+    |> maybe_preload_series_and_payments(queryable)
     |> Enum.map(&prepare_values(&1, fields, params))
   end
 
@@ -163,9 +168,11 @@ defmodule SiwappWeb.PageController do
     end
   end
 
-  @spec maybe_preload_series(list, Ecto.Queryable.t()) :: list
-  defp maybe_preload_series(invoices, Invoice), do: Repo.preload(invoices, :series)
-  defp maybe_preload_series(others, _else), do: others
+  @spec maybe_preload_series_and_payments(list, Ecto.Queryable.t()) :: list
+  defp maybe_preload_series_and_payments(invoices, Invoice),
+    do: Repo.preload(invoices, [:series, :payments])
+
+  defp maybe_preload_series_and_payments(others, _else), do: others
 
   # For each invoice, customer or recurring_invoice gets its own sorted values
   @spec prepare_values(Ecto.Queryable.t(), [atom], map) :: list()
@@ -173,6 +180,7 @@ defmodule SiwappWeb.PageController do
     struct
     |> maybe_add_series_code()
     |> maybe_add_reference()
+    |> maybe_add_last_payment_date()
     |> maybe_add_meta_attributes(params)
     |> sort_values(fields)
   end
@@ -188,6 +196,20 @@ defmodule SiwappWeb.PageController do
     do: Map.put(invoice, :reference, "#{code}-#{number}")
 
   defp maybe_add_reference(other), do: other
+
+  # refund invoices are paid but don't have payments
+  @spec maybe_add_last_payment_date(Ecto.Queryable.t()) :: map
+  defp maybe_add_last_payment_date(%Invoice{paid: true, payments: payments} = invoice)
+       when payments != [] do
+    last_date =
+      payments
+      |> Enum.map(& &1.date)
+      |> Enum.max(Date)
+
+    Map.put(invoice, :last_payment_date, last_date)
+  end
+
+  defp maybe_add_last_payment_date(other), do: other
 
   @spec maybe_add_meta_attributes(map, map) :: map()
   defp maybe_add_meta_attributes(%{meta_attributes: meta_attributes} = record, %{
