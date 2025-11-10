@@ -10,6 +10,10 @@
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 
+# Start the Ecto repository
+Enum.each([:postgrex, :ecto], &Application.ensure_all_started(&1))
+Siwapp.Repo.start_link()
+
 alias Siwapp.{
   Settings,
   Templates

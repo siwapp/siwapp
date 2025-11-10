@@ -55,9 +55,11 @@ defmodule SiwappWeb.PageController do
   def csv(conn, params) do
     queryable = which_queryable(params["view"])
 
+    fields = queryable.fields()
+
     keys =
       [:id]
-      |> Kernel.++(queryable.fields)
+      |> Kernel.++(fields)
       |> Kernel.--([:meta_attributes])
       |> Kernel.++([:inserted_at, :updated_at])
       |> maybe_add_series_code_key(params["view"])
