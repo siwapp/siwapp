@@ -148,4 +148,10 @@ defmodule Siwapp.RecurringInvoices.RecurringInvoice do
     |> validate_length(:contact_person, max: 100)
     |> validate_length(:currency, max: 3)
   end
+
+  @doc """
+  Returns module fields
+  """
+  @spec fields() :: [atom]
+  def fields, do: @fields
 end

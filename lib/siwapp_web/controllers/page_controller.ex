@@ -55,7 +55,7 @@ defmodule SiwappWeb.PageController do
   def csv(conn, params) do
     queryable = which_queryable(params["view"])
 
-    fields = Module.get_attribute(queryable, :fields)
+    fields = queryable.fields()
 
     keys =
       [:id]
