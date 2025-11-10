@@ -23,11 +23,12 @@ RUN apt update -qq && \
       libnspr4 \
       libnss3 \
       libu2f-udev \
+      libvulkan1 \
       wget \
       xdg-utils && \
     wget --no-check-certificate \
       https://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_${CHROME_VERSION}_amd64.deb && \
-    dpkg -i google-chrome-stable_${CHROME_VERSION}_amd64.deb && \
+    apt-get install -y ./google-chrome-stable_${CHROME_VERSION}_amd64.deb && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
     rm -f google-chrome-stable_${CHROME_VERSION}_amd64.deb
