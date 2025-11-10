@@ -23,7 +23,7 @@ defmodule SiwappWeb do
       use Phoenix.Controller, namespace: SiwappWeb
 
       import Plug.Conn
-      import SiwappWeb.Gettext
+      use Gettext, backend: SiwappWeb.Gettext
       alias SiwappWeb.Router.Helpers, as: Routes
     end
   end
@@ -83,7 +83,7 @@ defmodule SiwappWeb do
   def channel do
     quote do
       use Phoenix.Channel
-      import SiwappWeb.Gettext
+      use Gettext, backend: SiwappWeb.Gettext
     end
   end
 
@@ -104,7 +104,7 @@ defmodule SiwappWeb do
       import Phoenix.View
 
       import SiwappWeb.ErrorHelpers
-      import SiwappWeb.Gettext
+      use Gettext, backend: SiwappWeb.Gettext
       alias SiwappWeb.Router.Helpers, as: Routes
     end
   end
