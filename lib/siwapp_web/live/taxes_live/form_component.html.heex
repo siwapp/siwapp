@@ -1,5 +1,5 @@
 <fieldset class="fieldset">
-  <%= if error_msg = live_flash(@flash, :error) do %>
+  <%= if error_msg = Phoenix.Flash.get(@flash, :error) do %>
     <span
       class="alert alert-danger columns is-centered mx-6 mt-1"
       role="alert"
