@@ -37,6 +37,6 @@ defmodule SiwappWeb.TemplatesLive.Index do
   end
 
   def handle_event("edit", %{"id" => id}, socket) do
-    {:noreply, push_redirect(socket, to: Routes.templates_edit_path(socket, :edit, id))}
+    {:noreply, push_navigate(socket, to: Routes.templates_edit_path(socket, :edit, id))}
   end
 end

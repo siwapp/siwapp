@@ -58,12 +58,12 @@ defmodule SiwappWeb.CustomersLive.Index do
   end
 
   def handle_event("edit", %{"id" => id}, socket) do
-    {:noreply, push_redirect(socket, to: Routes.customers_edit_path(socket, :edit, id))}
+    {:noreply, push_navigate(socket, to: Routes.customers_edit_path(socket, :edit, id))}
   end
 
   @impl Phoenix.LiveView
   def handle_info({:search, params}, socket) do
-    {:noreply, push_redirect(socket, to: Routes.customers_index_path(socket, :index, params))}
+    {:noreply, push_navigate(socket, to: Routes.customers_index_path(socket, :index, params))}
   end
 
   @spec due(integer, integer) :: integer

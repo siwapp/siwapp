@@ -80,7 +80,7 @@ defmodule SiwappWeb.InvoicesLive.Index do
     id
     |> Invoices.get!()
     |> Invoices.status()
-    |> push_redirect_by_invoice_status(socket, id, socket.assigns.params)
+    |> push_navigate_by_invoice_status(socket, id, socket.assigns.params)
   end
 
   def handle_event("delete", _params, socket) do
@@ -116,7 +116,7 @@ defmodule SiwappWeb.InvoicesLive.Index do
     socket =
       socket
       |> put_flash(:info, "Invoices sent by mail")
-      |> push_redirect(to: Routes.invoices_index_path(socket, :index))
+      |> push_navigate(to: Routes.invoices_index_path(socket, :index))
 
     {:noreply, socket}
   end
@@ -173,7 +173,7 @@ defmodule SiwappWeb.InvoicesLive.Index do
 
   @impl Phoenix.LiveView
   def handle_info({:search, params}, socket) do
-    {:noreply, push_redirect(socket, to: Routes.invoices_index_path(socket, :index, params))}
+    {:noreply, push_navigate(socket, to: Routes.invoices_index_path(socket, :index, params))}
   end
 
   @spec download_url(MapSet.t()) :: binary
@@ -185,18 +185,18 @@ defmodule SiwappWeb.InvoicesLive.Index do
        |> Enum.reduce("", fn id, acc -> acc <> "/#{id}" end))
   end
 
-  @spec push_redirect_by_invoice_status(atom, Phoenix.LiveView.Socket.t(), any, map) ::
+  @spec push_navigate_by_invoice_status(atom, Phoenix.LiveView.Socket.t(), any, map) ::
           {:noreply, Phoenix.LiveView.Socket.t()}
-  defp push_redirect_by_invoice_status(:paid, socket, id, params) do
+  defp push_navigate_by_invoice_status(:paid, socket, id, params) do
     {:noreply,
-     push_redirect(socket,
+     push_navigate(socket,
        to: Routes.page_path(socket, :show_invoice, id, params)
      )}
   end
 
-  defp push_redirect_by_invoice_status(_, socket, id, params) do
+  defp push_navigate_by_invoice_status(_, socket, id, params) do
     {:noreply,
-     push_redirect(socket,
+     push_navigate(socket,
        to: Routes.invoices_edit_path(socket, :edit, id, params)
      )}
   end

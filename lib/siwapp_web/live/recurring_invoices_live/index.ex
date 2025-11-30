@@ -70,14 +70,14 @@ defmodule SiwappWeb.RecurringInvoicesLive.Index do
 
   def handle_event("edit", %{"id" => id}, socket) do
     {:noreply,
-     push_redirect(socket,
+     push_navigate(socket,
        to: Routes.recurring_invoices_edit_path(socket, :edit, id, socket.assigns.params)
      )}
   end
 
   def handle_event("generate_invoices", _, socket) do
     RecurringInvoices.generate_invoices()
-    {:noreply, push_redirect(socket, to: Routes.invoices_index_path(socket, :index))}
+    {:noreply, push_navigate(socket, to: Routes.invoices_index_path(socket, :index))}
   end
 
   def handle_event("delete", _params, socket) do
@@ -105,7 +105,7 @@ defmodule SiwappWeb.RecurringInvoicesLive.Index do
   @impl Phoenix.LiveView
   def handle_info({:search, params}, socket) do
     {:noreply,
-     push_redirect(socket, to: Routes.recurring_invoices_index_path(socket, :index, params))}
+     push_navigate(socket, to: Routes.recurring_invoices_index_path(socket, :index, params))}
   end
 
   @spec update_checked(map(), Phoenix.LiveView.Socket.t()) :: MapSet.t()

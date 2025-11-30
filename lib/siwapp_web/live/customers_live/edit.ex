@@ -34,7 +34,7 @@ defmodule SiwappWeb.CustomersLive.Edit do
         socket =
           socket
           |> put_flash(:info, "Customer successfully saved")
-          |> push_redirect(to: Routes.customers_index_path(socket, :index))
+          |> push_navigate(to: Routes.customers_index_path(socket, :index))
 
         {:noreply, socket}
 
@@ -54,7 +54,7 @@ defmodule SiwappWeb.CustomersLive.Edit do
        {:error, msg} ->
          put_flash(socket, :error, msg)
      end
-     |> push_redirect(to: Routes.customers_index_path(socket, :index))}
+     |> push_navigate(to: Routes.customers_index_path(socket, :index))}
   end
 
   def handle_event("copy", _params, socket) do

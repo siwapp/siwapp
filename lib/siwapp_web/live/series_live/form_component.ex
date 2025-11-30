@@ -39,7 +39,7 @@ defmodule SiwappWeb.SeriesLive.FormComponent do
         {:noreply,
          socket
          |> put_flash(:info, "Series was successfully destroyed.")
-         |> push_redirect(to: Routes.series_index_path(socket, :index))}
+         |> push_navigate(to: Routes.series_index_path(socket, :index))}
 
       {:error, msg} ->
         {:noreply, put_flash(socket, :error, msg)}
@@ -54,7 +54,7 @@ defmodule SiwappWeb.SeriesLive.FormComponent do
         {:noreply,
          socket
          |> put_flash(:info, "Series was successfully updated")
-         |> push_redirect(to: Routes.series_index_path(socket, :index))}
+         |> push_navigate(to: Routes.series_index_path(socket, :index))}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, :changeset, changeset)}
@@ -67,7 +67,7 @@ defmodule SiwappWeb.SeriesLive.FormComponent do
         {:noreply,
          socket
          |> put_flash(:info, "Series was successfully created")
-         |> push_redirect(to: Routes.series_index_path(socket, :index))}
+         |> push_navigate(to: Routes.series_index_path(socket, :index))}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, changeset: changeset)}
