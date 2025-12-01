@@ -56,7 +56,7 @@ defmodule SiwappWeb.UsersLive.Index do
   end
 
   def handle_event("redirect", %{"id" => id}, socket) do
-    {:noreply, push_redirect(socket, to: Routes.users_index_path(socket, :edit, id))}
+    {:noreply, push_navigate(socket, to: Routes.users_index_path(socket, :edit, id))}
   end
 
   def handle_event("close", _, socket) do
@@ -70,7 +70,7 @@ defmodule SiwappWeb.UsersLive.Index do
       |> assign(:checked, MapSet.new())
       |> assign(:users, Accounts.list_users())
     else
-      push_redirect(socket, to: Routes.user_session_path(socket, :new))
+      push_navigate(socket, to: Routes.user_session_path(socket, :new))
     end
   end
 

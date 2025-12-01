@@ -39,7 +39,7 @@ defmodule SiwappWeb.UsersLive.FormComponent do
     {:noreply,
      socket
      |> put_flash(:info, "User was successfully deleted.")
-     |> push_redirect(to: Routes.users_index_path(socket, :index))}
+     |> push_navigate(to: Routes.users_index_path(socket, :index))}
   end
 
   @spec save_user(Phoenix.LiveView.Socket.t(), :new | :edit, map()) ::
@@ -50,7 +50,7 @@ defmodule SiwappWeb.UsersLive.FormComponent do
         {:noreply,
          socket
          |> put_flash(:info, "User was successfully updated")
-         |> push_redirect(to: Routes.users_index_path(socket, :index))}
+         |> push_navigate(to: Routes.users_index_path(socket, :index))}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, :changeset, changeset)}
@@ -63,7 +63,7 @@ defmodule SiwappWeb.UsersLive.FormComponent do
         {:noreply,
          socket
          |> put_flash(:info, "User was successfully created")
-         |> push_redirect(to: Routes.users_index_path(socket, :index))}
+         |> push_navigate(to: Routes.users_index_path(socket, :index))}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, changeset: changeset)}

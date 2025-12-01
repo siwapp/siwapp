@@ -41,7 +41,7 @@ defmodule SiwappWeb.InvoicesLive.Edit do
         socket =
           socket
           |> put_flash(:info, "Invoice successfully saved")
-          |> push_redirect(
+          |> push_navigate(
             to: Routes.invoices_index_path(socket, :index, socket.assigns.url_query_string)
           )
 
@@ -64,7 +64,7 @@ defmodule SiwappWeb.InvoicesLive.Edit do
     socket =
       socket
       |> put_flash(:info, "Invoice succesfully deleted")
-      |> push_redirect(to: Routes.invoices_index_path(socket, :index))
+      |> push_navigate(to: Routes.invoices_index_path(socket, :index))
 
     {:noreply, socket}
   end

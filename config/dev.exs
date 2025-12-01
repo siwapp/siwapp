@@ -4,7 +4,7 @@ config :siwapp,
   env: :dev,
   pdf_opts: [
     no_sandbox: true,
-    discard_stderr: false,
+    discard_stderr: true,
     chrome_executable: "/opt/google/chrome/chrome"
   ]
 

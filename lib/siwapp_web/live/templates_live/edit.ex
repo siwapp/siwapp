@@ -38,7 +38,7 @@ defmodule SiwappWeb.TemplatesLive.Edit do
         {:noreply,
          socket
          |> put_flash(:info, "Template was successfully destroyed.")
-         |> push_redirect(to: Routes.templates_index_path(socket, :index))}
+         |> push_navigate(to: Routes.templates_index_path(socket, :index))}
 
       {:error, _msg} ->
         {:noreply, put_flash(socket, :error, "You can't delete the default template.")}
@@ -75,7 +75,7 @@ defmodule SiwappWeb.TemplatesLive.Edit do
         {:noreply,
          socket
          |> put_flash(:info, "Template was successfully updated")
-         |> push_redirect(to: Routes.templates_index_path(socket, :index))}
+         |> push_navigate(to: Routes.templates_index_path(socket, :index))}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, :changeset, changeset)}
@@ -88,7 +88,7 @@ defmodule SiwappWeb.TemplatesLive.Edit do
         {:noreply,
          socket
          |> put_flash(:info, "Template was successfully created")
-         |> push_redirect(to: Routes.templates_index_path(socket, :index))}
+         |> push_navigate(to: Routes.templates_index_path(socket, :index))}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, changeset: changeset)}

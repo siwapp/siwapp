@@ -37,7 +37,7 @@ defmodule SiwappWeb.RecurringInvoicesLive.Edit do
         socket =
           socket
           |> put_flash(:info, "Recurring Invoice successfully saved")
-          |> push_redirect(
+          |> push_navigate(
             to:
               Routes.recurring_invoices_index_path(
                 socket,
@@ -76,7 +76,7 @@ defmodule SiwappWeb.RecurringInvoicesLive.Edit do
     socket =
       socket
       |> put_flash(:info, "Recurring Invoice succesfully deleted")
-      |> push_redirect(to: Routes.recurring_invoices_index_path(socket, :index))
+      |> push_navigate(to: Routes.recurring_invoices_index_path(socket, :index))
 
     {:noreply, socket}
   end
