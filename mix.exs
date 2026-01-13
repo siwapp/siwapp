@@ -1,8 +1,6 @@
 defmodule Siwapp.MixProject do
   use Mix.Project
 
-  @include_erts Application.compile_env(:siwapp, :include_erts, false)
-
   def project do
     [
       app: :siwapp,
@@ -15,7 +13,7 @@ defmodule Siwapp.MixProject do
       deps: deps(),
       releases: [
         siwapp: [
-          include_erts: @include_erts,
+          include_erts: true,
           include_executables_for: [:unix]
         ]
       ],

@@ -1,8 +1,7 @@
 import Config
 
 config :siwapp,
-  env: :prod,
-  include_erts: System.get_env("INCLUDE_ERTS") == "true"
+  env: :prod
 
 # For production, don't forget to configure the url host
 # to something meaningful, Phoenix uses this information
