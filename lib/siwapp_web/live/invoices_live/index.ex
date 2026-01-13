@@ -201,7 +201,6 @@ defmodule SiwappWeb.InvoicesLive.Index do
      )}
   end
 
-  @spec update_checked(map(), Phoenix.LiveView.Socket.t()) :: %MapSet{}
   defp update_checked(%{"id" => "0", "value" => "on"}, socket) do
     socket.assigns.invoices
     |> MapSet.new(& &1.id)
