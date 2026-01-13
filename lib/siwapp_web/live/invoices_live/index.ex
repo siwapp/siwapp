@@ -84,10 +84,8 @@ defmodule SiwappWeb.InvoicesLive.Index do
   end
 
   def handle_event("delete", _params, socket) do
-    socket.assigns.checked
-    |> MapSet.to_list()
-    |> Enum.reject(&(&1 == 0))
-    |> Enum.map(&Invoices.get!/1)
+    socket
+    |> get_checked_invoices()
     |> Enum.each(&Invoices.delete/1)
 
     socket =
@@ -107,10 +105,8 @@ defmodule SiwappWeb.InvoicesLive.Index do
   end
 
   def handle_event("send_email", _params, socket) do
-    socket.assigns.checked
-    |> MapSet.to_list()
-    |> Enum.reject(&(&1 == 0))
-    |> Enum.map(&Invoices.get!/1)
+    socket
+    |> get_checked_invoices()
     |> Enum.each(&Invoices.send_email/1)
 
     socket =
@@ -122,10 +118,8 @@ defmodule SiwappWeb.InvoicesLive.Index do
   end
 
   def handle_event("set_paid", _params, socket) do
-    socket.assigns.checked
-    |> MapSet.to_list()
-    |> List.delete(0)
-    |> Enum.map(&Invoices.get!/1)
+    socket
+    |> get_checked_invoices()
     |> Enum.filter(&(!&1.paid))
     |> Enum.each(&Invoices.set_paid/1)
 
@@ -183,6 +177,14 @@ defmodule SiwappWeb.InvoicesLive.Index do
        |> MapSet.to_list()
        |> Enum.reject(&(&1 == 0))
        |> Enum.reduce("", fn id, acc -> acc <> "/#{id}" end))
+  end
+
+  @spec get_checked_invoices(Phoenix.LiveView.Socket.t()) :: list(Invoice.t())
+  defp get_checked_invoices(socket) do
+    socket.assigns.checked
+    |> MapSet.to_list()
+    |> Enum.reject(&(&1 == 0))
+    |> Enum.map(&Invoices.get!/1)
   end
 
   @spec push_navigate_by_invoice_status(atom, Phoenix.LiveView.Socket.t(), any, map) ::
