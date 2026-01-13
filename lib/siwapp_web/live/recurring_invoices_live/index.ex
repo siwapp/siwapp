@@ -108,7 +108,7 @@ defmodule SiwappWeb.RecurringInvoicesLive.Index do
      push_navigate(socket, to: Routes.recurring_invoices_index_path(socket, :index, params))}
   end
 
-  @spec update_checked(map(), Phoenix.LiveView.Socket.t()) :: MapSet.t()
+  @spec update_checked(map(), Phoenix.LiveView.Socket.t()) :: %MapSet{}
   defp update_checked(%{"id" => "0", "value" => "on"}, socket) do
     socket.assigns.recurring_invoices
     |> MapSet.new(& &1.id)

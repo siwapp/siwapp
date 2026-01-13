@@ -1,4 +1,4 @@
-FROM amd64/elixir:1.18-otp-27
+FROM elixir:1.19.4-otp-28
 
 ARG UID=1000
 ARG GID=1000
