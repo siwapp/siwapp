@@ -1,9 +1,9 @@
-defmodule SiwappWeb.Schema.InvoiceTypes do
+defmodule SiwappWeb.GraphQL.Schema.InvoiceTypes do
   @moduledoc false
 
   use Absinthe.Schema.Notation
 
-  alias SiwappWeb.Resolvers.Invoice
+  alias SiwappWeb.GraphQL.Resolvers.Invoice
 
   object :invoice do
     field :id, :id

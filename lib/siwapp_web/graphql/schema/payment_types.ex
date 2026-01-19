@@ -1,4 +1,4 @@
-defmodule SiwappWeb.Schema.PaymentTypes do
+defmodule SiwappWeb.GraphQL.Schema.PaymentTypes do
   @moduledoc false
 
   use Absinthe.Schema.Notation

@@ -1,4 +1,4 @@
-defmodule SiwappWeb.Schema.Helpers do
+defmodule SiwappWeb.GraphQL.Helpers do
   @moduledoc """
   Helpers to use in GraphQL mutations.
   """

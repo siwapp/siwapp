@@ -58,10 +58,10 @@ defmodule Siwapp.MixProject do
             SiwappWeb.Api.TokenController
           ],
           GraphQL: [
-            SiwappWeb.Resolvers.Customer,
-            SiwappWeb.Resolvers.Invoice,
-            SiwappWeb.Resolvers.Errors,
-            SiwappWeb.Schema.Helpers
+            SiwappWeb.GraphQL.Resolvers.Customer,
+            SiwappWeb.GraphQL.Resolvers.Invoice,
+            SiwappWeb.GraphQL.Resolvers.Errors,
+            SiwappWeb.GraphQL.Schema.Helpers
           ],
           Views: [
             SiwappWeb.LayoutView,

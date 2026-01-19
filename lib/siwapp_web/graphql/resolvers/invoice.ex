@@ -1,4 +1,4 @@
-defmodule SiwappWeb.Resolvers.Invoice do
+defmodule SiwappWeb.GraphQL.Resolvers.Invoice do
   @moduledoc """
   Invoices functions for GraphQL
   """
@@ -6,8 +6,8 @@ defmodule SiwappWeb.Resolvers.Invoice do
   alias Siwapp.Invoices
   alias Siwapp.Repo
   alias SiwappWeb.PageView
-  alias SiwappWeb.Resolvers.Errors
-  alias SiwappWeb.Resolvers.Helpers
+  alias SiwappWeb.GraphQL.Resolvers.Errors
+  alias SiwappWeb.GraphQL.Resolvers.Helpers
 
   @spec get(map, Absinthe.Resolution.t()) :: {:ok, map} | {:error, binary}
   def get(%{id: id}, _resolution) do

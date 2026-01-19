@@ -1,18 +1,18 @@
-defmodule SiwappWeb.Schema do
+defmodule SiwappWeb.GraphQL.Schema do
   @moduledoc false
 
   use Absinthe.Schema
 
-  import SiwappWeb.Schema.Helpers
+  import SiwappWeb.GraphQL.Helpers
 
-  import_types(SiwappWeb.Schema.CustomerTypes)
-  import_types(SiwappWeb.Schema.InvoiceTypes)
-  import_types(SiwappWeb.Schema.ItemTypes)
-  import_types(SiwappWeb.Schema.PaymentTypes)
-  import_types(SiwappWeb.Schema.MetaAttributeTypes)
+  import_types(SiwappWeb.GraphQL.Schema.CustomerTypes)
+  import_types(SiwappWeb.GraphQL.Schema.InvoiceTypes)
+  import_types(SiwappWeb.GraphQL.Schema.ItemTypes)
+  import_types(SiwappWeb.GraphQL.Schema.PaymentTypes)
+  import_types(SiwappWeb.GraphQL.Schema.MetaAttributeTypes)
   import_types(Absinthe.Type.Custom)
 
-  alias SiwappWeb.Resolvers
+  alias SiwappWeb.GraphQL.Resolvers
 
   query do
     @desc "Get all customers"
