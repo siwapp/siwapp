@@ -11,7 +11,7 @@ config :siwapp,
       "--no-sandbox",
       "--disable-setuid-sandbox"
     ],
-    chrome_executable: "/usr/bin/google-chrome",
+    chrome_executable: "/usr/bin/chromium",
     discard_stderr: false
   ]
 
