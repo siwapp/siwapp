@@ -108,4 +108,12 @@ defmodule SiwappWeb.GraphQL.Schema do
       resolve(&Resolvers.Invoice.delete/2)
     end
   end
+
+  @impl Absinthe.Schema
+  def middleware(middleware, _field, %Absinthe.Type.Object{identifier: identifier})
+      when identifier in [:query, :mutation] do
+    [SiwappWeb.GraphQL.Logger | middleware]
+  end
+
+  def middleware(middleware, _, _), do: middleware
 end

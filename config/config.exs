@@ -43,7 +43,11 @@ config :esbuild,
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$date $time [$level] [$metadata] \t $message\r\n",
-  metadata: [:request_id]
+  metadata: [
+    :request_id,
+    :graphql,
+    :graphql_variables
+  ]
 
 config :siwapp, Siwapp.PromEx,
   disabled: false,
