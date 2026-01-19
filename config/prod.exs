@@ -11,7 +11,8 @@ config :siwapp,
       "--no-sandbox",
       "--disable-setuid-sandbox"
     ],
-    chrome_executable: "/usr/bin/chromium-browser"
+    chrome_executable: "/usr/bin/chromium-browser",
+    discard_stderr: false
   ]
 
 # For production, don't forget to configure the url host
