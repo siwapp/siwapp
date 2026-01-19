@@ -5,9 +5,9 @@ defmodule SiwappWeb.GraphQL.Resolvers.Invoice do
 
   alias Siwapp.Invoices
   alias Siwapp.Repo
-  alias SiwappWeb.PageView
   alias SiwappWeb.GraphQL.Resolvers.Errors
   alias SiwappWeb.GraphQL.Resolvers.Helpers
+  alias SiwappWeb.PageView
 
   @spec get(map, Absinthe.Resolution.t()) :: {:ok, map} | {:error, binary}
   def get(%{id: id}, _resolution) do
