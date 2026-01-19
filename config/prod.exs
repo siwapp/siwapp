@@ -1,7 +1,18 @@
 import Config
 
 config :siwapp,
-  env: :prod
+  env: :prod,
+  pdf_opts: [
+    no_sandbox: true,
+    chrome_args: [
+      "--headless",
+      "--disable-gpu",
+      "--disable-dev-shm-usage",
+      "--no-sandbox",
+      "--disable-setuid-sandbox"
+    ],
+    chrome_executable: "/usr/bin/chromium-browser"
+  ]
 
 # For production, don't forget to configure the url host
 # to something meaningful, Phoenix uses this information
