@@ -1,4 +1,4 @@
-defmodule SiwappWeb.Resolvers.Helpers do
+defmodule SiwappWeb.GraphQL.Resolvers.Helpers do
   @moduledoc false
 
   @spec maybe_change_meta_attributes(map) :: map

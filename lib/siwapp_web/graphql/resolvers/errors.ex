@@ -1,4 +1,4 @@
-defmodule SiwappWeb.Resolvers.Errors do
+defmodule SiwappWeb.GraphQL.Resolvers.Errors do
   @moduledoc """
   Error helpers for GraphQL.
   """

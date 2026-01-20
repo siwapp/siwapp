@@ -1,4 +1,4 @@
-defmodule SiwappWeb.Schema.CustomerTypes do
+defmodule SiwappWeb.GraphQL.Schema.CustomerTypes do
   @moduledoc false
 
   use Absinthe.Schema.Notation

@@ -1,4 +1,4 @@
-defmodule SiwappWeb.Schema.MetaAttributeTypes do
+defmodule SiwappWeb.GraphQL.Schema.MetaAttributeTypes do
   @moduledoc false
 
   use Absinthe.Schema.Notation

@@ -1,11 +1,11 @@
-defmodule SiwappWeb.Resolvers.Customer do
+defmodule SiwappWeb.GraphQL.Resolvers.Customer do
   @moduledoc """
   Customers functions for GraphQL
   """
 
   alias Siwapp.Customers
-  alias SiwappWeb.Resolvers.Errors
-  alias SiwappWeb.Resolvers.Helpers
+  alias SiwappWeb.GraphQL.Resolvers.Errors
+  alias SiwappWeb.GraphQL.Resolvers.Helpers
 
   @spec list(map(), Absinthe.Resolution.t()) :: {:ok, [Customers.Customer.t()]}
   def list(%{limit: limit, offset: offset}, _resolution) do
