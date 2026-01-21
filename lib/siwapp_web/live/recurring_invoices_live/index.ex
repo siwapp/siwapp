@@ -82,8 +82,7 @@ defmodule SiwappWeb.RecurringInvoicesLive.Index do
 
   def handle_event("delete", _params, socket) do
     socket.assigns.checked
-    |> MapSet.to_list()
-    |> List.delete(0)
+    |> Enum.reject(&(&1 == 0))
     |> Enum.map(&RecurringInvoices.get!/1)
     |> Enum.each(&RecurringInvoices.delete/1)
 

@@ -174,7 +174,6 @@ defmodule SiwappWeb.InvoicesLive.Index do
   def download_url(checked) do
     "/invoices/download" <>
       (checked
-       |> MapSet.to_list()
        |> Enum.reject(&(&1 == 0))
        |> Enum.reduce("", fn id, acc -> acc <> "/#{id}" end))
   end
@@ -182,7 +181,6 @@ defmodule SiwappWeb.InvoicesLive.Index do
   @spec get_checked_invoices(Phoenix.LiveView.Socket.t()) :: list(Invoice.t())
   defp get_checked_invoices(socket) do
     socket.assigns.checked
-    |> MapSet.to_list()
     |> Enum.reject(&(&1 == 0))
     |> Enum.map(&Invoices.get!/1)
   end
