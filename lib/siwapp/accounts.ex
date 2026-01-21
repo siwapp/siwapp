@@ -164,6 +164,7 @@ defmodule Siwapp.Accounts do
     end
   end
 
+  @dialyzer {:nowarn_function, user_email_multi: 3}
   @spec user_email_multi(User.t(), binary(), any()) :: Ecto.Multi.t()
   defp user_email_multi(user, email, context) do
     changeset = user |> User.email_changeset(%{email: email}) |> User.confirm_changeset()
@@ -218,6 +219,7 @@ defmodule Siwapp.Accounts do
       {:error, %Ecto.Changeset{}}
 
   """
+  @dialyzer {:nowarn_function, update_user_password: 3}
   @spec update_user_password(User.t(), binary(), map()) ::
           {:ok, User.t()} | {:error, Ecto.Changeset.t()}
   def update_user_password(user, password, attrs) do
@@ -309,6 +311,7 @@ defmodule Siwapp.Accounts do
     end
   end
 
+  @dialyzer {:nowarn_function, confirm_user_multi: 1}
   @spec confirm_user_multi(User.t()) :: Ecto.Multi.t()
   defp confirm_user_multi(user) do
     Ecto.Multi.new()
@@ -370,6 +373,7 @@ defmodule Siwapp.Accounts do
       {:error, %Ecto.Changeset{}}
 
   """
+  @dialyzer {:nowarn_function, reset_user_password: 2}
   @spec reset_user_password(User.t(), map) :: {:ok, User.t()} | {:error, Ecto.Changeset.t()}
   def reset_user_password(user, attrs) do
     Ecto.Multi.new()

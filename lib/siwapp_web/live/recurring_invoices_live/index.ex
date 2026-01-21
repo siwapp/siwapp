@@ -82,8 +82,7 @@ defmodule SiwappWeb.RecurringInvoicesLive.Index do
 
   def handle_event("delete", _params, socket) do
     socket.assigns.checked
-    |> MapSet.to_list()
-    |> List.delete(0)
+    |> Enum.reject(&(&1 == 0))
     |> Enum.map(&RecurringInvoices.get!/1)
     |> Enum.each(&RecurringInvoices.delete/1)
 
@@ -108,6 +107,7 @@ defmodule SiwappWeb.RecurringInvoicesLive.Index do
      push_navigate(socket, to: Routes.recurring_invoices_index_path(socket, :index, params))}
   end
 
+  @dialyzer {:nowarn_function, update_checked: 2}
   @spec update_checked(map(), Phoenix.LiveView.Socket.t()) :: MapSet.t()
   defp update_checked(%{"id" => "0", "value" => "on"}, socket) do
     socket.assigns.recurring_invoices

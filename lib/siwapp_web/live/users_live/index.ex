@@ -96,6 +96,7 @@ defmodule SiwappWeb.UsersLive.Index do
     |> assign(:user, nil)
   end
 
+  @dialyzer {:nowarn_function, update_checked: 2}
   @spec update_checked(map(), Phoenix.LiveView.Socket.t()) :: MapSet.t()
   defp update_checked(%{"id" => "0", "value" => "on"}, socket) do
     socket.assigns.users
@@ -120,7 +121,6 @@ defmodule SiwappWeb.UsersLive.Index do
   @spec type_of_response(MapSet.t(), User.t(), atom) :: {atom, binary, list}
   defp type_of_response(checked, current_user, atom) do
     checked
-    |> MapSet.to_list()
     |> Enum.reject(&(&1 in [0, current_user.id]))
     |> check_if_list_is_empty(atom)
   end

@@ -5,7 +5,7 @@ defmodule Siwapp.MixProject do
     [
       app: :siwapp,
       version: "0.1.1",
-      elixir: "~> 1.13",
+      elixir: "~> 1.19",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: Mix.compilers(),
       start_permanent: Mix.env() == :prod,
@@ -13,7 +13,7 @@ defmodule Siwapp.MixProject do
       deps: deps(),
       releases: [
         siwapp: [
-          include_erts: false,
+          include_erts: true,
           include_executables_for: [:unix]
         ]
       ],
