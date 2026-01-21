@@ -96,6 +96,8 @@ defmodule SiwappWeb.UsersLive.Index do
     |> assign(:user, nil)
   end
 
+  @dialyzer {:nowarn_function, update_checked: 2}
+  @spec update_checked(map(), Phoenix.LiveView.Socket.t()) :: MapSet.t()
   defp update_checked(%{"id" => "0", "value" => "on"}, socket) do
     socket.assigns.users
     |> MapSet.new(& &1.id)

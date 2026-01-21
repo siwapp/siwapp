@@ -203,6 +203,8 @@ defmodule SiwappWeb.InvoicesLive.Index do
      )}
   end
 
+  @dialyzer {:nowarn_function, update_checked: 2}
+  @spec update_checked(map(), Phoenix.LiveView.Socket.t()) :: MapSet.t()
   defp update_checked(%{"id" => "0", "value" => "on"}, socket) do
     socket.assigns.invoices
     |> MapSet.new(& &1.id)
