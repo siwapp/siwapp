@@ -16,7 +16,7 @@ defmodule SiwappWeb.Plugs.Logger do
   @spec call(Conn.t(), Plug.opts()) :: Conn.t()
   def call(%{request_path: "/status"} = conn, _opts), do: conn
 
-  def call(%{params: params} = conn, _opts) do
+  def call(conn, _opts) do
     start = System.monotonic_time(:microsecond)
     conn = Conn.assign(conn, :start, start)
 
@@ -46,8 +46,6 @@ defmodule SiwappWeb.Plugs.Logger do
       conn
     end)
   end
-
-  def call(conn, _opts), do: conn
 
   @spec body_length(list() | nil | binary()) :: binary()
   defp body_length(body) when is_list(body),
