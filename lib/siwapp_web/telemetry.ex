@@ -60,6 +60,13 @@ defmodule SiwappWeb.Telemetry do
         ],
         unit: {:native, :second}
       ),
+      distribution("phoenix.live_view.mount.stop.duration",
+        event_name: [:phoenix, :live_view, :mount, :stop],
+        reporter_options: [
+          buckets: [0.01, 0.05, 0.1, 0.5, 1, 2, 5, 10]
+        ],
+        unit: {:native, :second}
+      ),
       distribution("phoenix.router_dispatch.stop.duration",
         reporter_options: [
           buckets: [0.01, 0.02, 0.03, 0.05, 0.1, 0.5, 1]
