@@ -14,7 +14,6 @@ defmodule Siwapp.Application do
       SiwappWeb.Endpoint,
       # Start the Telemetry supervisor
       SiwappWeb.Telemetry,
-      {Siwapp.PromEx, delay_manual_start: :no_delay},
       # Start the Ecto repository
       Siwapp.Repo,
       # Start the PubSub system
