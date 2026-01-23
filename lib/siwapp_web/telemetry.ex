@@ -22,7 +22,7 @@ defmodule SiwappWeb.Telemetry do
     Supervisor.init(children, strategy: :one_for_one)
   end
 
-  @spec metrics :: [Telemetry.Metrics.Summary.t()]
+  @spec metrics :: [Telemetry.Metrics.t(), ...]
   def metrics do
     [
       last_value("vm.memory.total", unit: :byte),
