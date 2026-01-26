@@ -49,10 +49,10 @@ defmodule SiwappWeb.Plugs.Logger do
 
   @spec body_length(list() | nil | binary()) :: binary()
   defp body_length(body) when is_list(body),
-    do: body |> Enum.join("") |> String.length() |> Integer.to_string()
+    do: body |> Enum.join("") |> body_length()
 
   defp body_length(nil), do: "0"
-  defp body_length(body), do: body |> String.length() |> Integer.to_string()
+  defp body_length(body), do: body |> byte_size() |> Integer.to_string()
 
   @spec get_remote_ip(Conn.t()) :: binary()
   defp get_remote_ip(conn), do: to_string(:inet_parse.ntoa(conn.remote_ip))
