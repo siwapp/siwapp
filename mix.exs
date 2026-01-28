@@ -97,7 +97,7 @@ defmodule Siwapp.MixProject do
     [
       {:absinthe, "~> 1.7"},
       {:absinthe_plug, "~> 1.5"},
-      {:bulma, "~> 0.9"},
+      {:bulma, "~> 1.0"},
       {:chromic_pdf, "~> 1.15"},
       {:contex, "~> 0.5.0"},
       {:cachex, "~> 3.6"},
