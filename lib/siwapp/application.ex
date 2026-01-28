@@ -10,11 +10,10 @@ defmodule Siwapp.Application do
     Logger.add_backend(Sentry.LoggerBackend)
 
     children = [
-      # Start the Endpoint (http/https)
-      SiwappWeb.Endpoint,
       # Start the Telemetry supervisor
       SiwappWeb.Telemetry,
-      {Siwapp.PromEx, delay_manual_start: :no_delay},
+      # Start the Endpoint (http/https)
+      SiwappWeb.Endpoint,
       # Start the Ecto repository
       Siwapp.Repo,
       # Start the PubSub system

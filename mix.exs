@@ -82,7 +82,7 @@ defmodule Siwapp.MixProject do
   def application do
     [
       mod: {Siwapp.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :os_mon]
     ]
   end
 
@@ -130,11 +130,11 @@ defmodule Siwapp.MixProject do
       {:phoenix_view, "~> 2.0"},
       {:plug_cowboy, "~> 2.7"},
       {:postgrex, ">= 0.0.0"},
-      {:prom_ex, "~> 1.9"},
       {:sentry, "~> 11.0"},
       {:swoosh, "~> 1.16"},
-      {:telemetry_metrics, "~> 0.6"},
-      {:telemetry_poller, "~> 1.1"},
+      {:telemetry_metrics, "~> 1.0"},
+      {:telemetry_metrics_prometheus, "~> 1.1.0"},
+      {:telemetry_poller, "~> 1.0"},
       {:sobelow, "~> 0.13", only: [:dev, :test], runtime: false}
     ]
   end

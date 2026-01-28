@@ -13,7 +13,8 @@ defmodule SiwappWeb.Telemetry do
     children = [
       # Telemetry poller will execute the given period measurements
       # every 10_000ms. Learn more here: https://hexdocs.pm/telemetry_metrics
-      {:telemetry_poller, measurements: periodic_measurements(), period: 10_000}
+      {:telemetry_poller, measurements: periodic_measurements(), period: :timer.seconds(10)},
+      {TelemetryMetricsPrometheus, [metrics: metrics()]}
       # Add reporters as children of your supervision tree.
       # {Telemetry.Metrics.ConsoleReporter, metrics: metrics()}
     ]
@@ -21,55 +22,139 @@ defmodule SiwappWeb.Telemetry do
     Supervisor.init(children, strategy: :one_for_one)
   end
 
-  @spec metrics :: [Telemetry.Metrics.Summary.t()]
+  @spec metrics :: [Telemetry.Metrics.t(), ...]
   def metrics do
     [
-      # Phoenix Metrics
-      summary("phoenix.endpoint.stop.duration",
-        unit: {:native, :millisecond}
+      last_value("vm.memory.total", unit: :byte),
+      last_value("vm.memory.processes", unit: :byte),
+      last_value("vm.memory.processes_used", unit: :byte),
+      last_value("vm.memory.system", unit: :byte),
+      last_value("vm.memory.atom", unit: :byte),
+      last_value("vm.memory.atom_used", unit: :byte),
+      last_value("vm.memory.binary", unit: :byte),
+      last_value("vm.memory.code", unit: :byte),
+      last_value("vm.memory.ets", unit: :byte),
+
+      # CPU & IO metrics
+      last_value("vm.cpu.usage"),
+      last_value("vm.total_run_queue_lengths.total"),
+      last_value("vm.total_run_queue_lengths.cpu"),
+      last_value("vm.total_run_queue_lengths.io"),
+
+      # Count metrics
+      last_value("vm.system_limits.process"),
+      last_value("vm.system_counts.process_count"),
+      last_value("vm.system_counts.atom_count"),
+      last_value("vm.system_counts.port_count"),
+
+      # Phoenix metrics
+      counter("phoenix.endpoint.count",
+        event_name: [:phoenix, :endpoint, :stop],
+        measurement: :duration,
+        tag_values: fn %{conn: conn} -> %{status: conn.status} end,
+        tags: [:status]
       ),
-      summary("phoenix.router_dispatch.stop.duration",
+      distribution("phoenix.endpoint.stop.duration",
+        reporter_options: [
+          buckets: [0.01, 0.02, 0.03, 0.05, 0.1, 0.5, 1]
+        ],
+        unit: {:native, :second}
+      ),
+      distribution("phoenix.live_view.mount.stop.duration",
+        event_name: [:phoenix, :live_view, :mount, :stop],
+        reporter_options: [
+          buckets: [0.01, 0.05, 0.1, 0.5, 1, 2, 5, 10]
+        ],
+        unit: {:native, :second}
+      ),
+      distribution("phoenix.router_dispatch.stop.duration",
+        reporter_options: [
+          buckets: [0.01, 0.02, 0.03, 0.05, 0.1, 0.5, 1]
+        ],
         tags: [:route],
-        unit: {:native, :millisecond}
+        unit: {:native, :second}
+      ),
+      # Absinthe operations
+      distribution([:absinthe, :execute, :operation, :stop, :duration],
+        reporter_options: [
+          buckets: [0.01, 0.05, 0.1, 0.5, 1, 2, 5, 10]
+        ],
+        tag_values: &expose_absinthe_op_name/1,
+        tags: [:operation_name],
+        unit: {:native, :second}
       ),
 
       # Database Metrics
-      summary("siwapp.repo.query.total_time",
-        unit: {:native, :millisecond},
-        description: "The sum of the other measurements"
-      ),
-      summary("siwapp.repo.query.decode_time",
-        unit: {:native, :millisecond},
-        description: "The time spent decoding the data received from the database"
-      ),
-      summary("siwapp.repo.query.query_time",
-        unit: {:native, :millisecond},
-        description: "The time spent executing the query"
-      ),
-      summary("siwapp.repo.query.queue_time",
-        unit: {:native, :millisecond},
-        description: "The time spent waiting for a database connection"
-      ),
-      summary("siwapp.repo.query.idle_time",
-        unit: {:native, :millisecond},
-        description:
-          "The time the connection spent waiting before being checked out for the query"
-      ),
 
-      # VM Metrics
-      summary("vm.memory.total", unit: {:byte, :kilobyte}),
-      summary("vm.total_run_queue_lengths.total"),
-      summary("vm.total_run_queue_lengths.cpu"),
-      summary("vm.total_run_queue_lengths.io")
+      distribution("siwapp.repo.query.idle_time",
+        reporter_options: [
+          buckets: [0.01, 0.02, 0.03, 0.05, 0.1, 0.5, 1, 5]
+        ],
+        tags: [:type, :source],
+        unit: {:native, :second}
+      ),
+      distribution("siwapp.repo.query.queue_time",
+        reporter_options: [
+          buckets: [0.01, 0.02, 0.03, 0.05, 0.1, 0.5, 1, 5]
+        ],
+        tags: [:type, :source],
+        unit: {:native, :second}
+      ),
+      distribution("siwapp.repo.query.query_time",
+        reporter_options: [
+          buckets: [0.01, 0.02, 0.03, 0.05, 0.1, 0.5, 1, 5]
+        ],
+        tags: [:type, :source],
+        unit: {:native, :second}
+      ),
+      distribution("siwapp.repo.query.total_time",
+        reporter_options: [
+          buckets: [0.01, 0.02, 0.03, 0.05, 0.1, 0.5, 1, 5]
+        ],
+        tags: [:type, :source],
+        unit: {:native, :second}
+      ),
+      distribution("siwapp.repo.query.decode_time",
+        reporter_options: [
+          buckets: [0.01, 0.02, 0.03, 0.05, 0.1, 0.5, 1, 5]
+        ],
+        tags: [:type, :source],
+        unit: {:native, :second}
+      )
     ]
   end
 
   @spec periodic_measurements :: list
-  defp periodic_measurements do
+  def periodic_measurements do
     [
-      # A module, function and arguments to be invoked periodically.
-      # This function must call :telemetry.execute/3 and a metric must be added above.
-      # {SiwappWeb, :count_users, []}
+      {__MODULE__, :cpu_usage, []},
+      {__MODULE__, :process_limit, []}
     ]
+  end
+
+  @compile {:no_warn_undefined, :cpu_sup}
+  @spec cpu_usage :: :ok
+  def cpu_usage do
+    :telemetry.execute([:vm, :cpu], %{usage: :cpu_sup.util()}, %{})
+  end
+
+  @spec process_limit :: :ok
+  def process_limit do
+    :telemetry.execute(
+      [:vm, :system_limits],
+      %{process: :erlang.system_info(:process_limit)},
+      %{}
+    )
+  end
+
+  @spec expose_absinthe_op_name(map) :: map
+  defp expose_absinthe_op_name(
+         %{
+           blueprint: %{
+             input: %{definitions: [%{selection_set: %{selections: [%{name: name} | _]}} | _]}
+           }
+         } = metadata
+       ) do
+    Map.put(metadata, :operation_name, name)
   end
 end
