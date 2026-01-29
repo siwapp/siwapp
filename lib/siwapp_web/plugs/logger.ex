@@ -32,8 +32,6 @@ defmodule SiwappWeb.Plugs.Logger do
           ?\s,
           conn.request_path,
           ?\s,
-          # params,
-          # ?\s,
           Integer.to_string(conn.status),
           ?\s,
           body_length(conn.resp_body),
