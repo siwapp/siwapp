@@ -53,8 +53,11 @@ defmodule SiwappWeb.Plugs.Logger do
       [] ->
         conn.remote_ip |> Tuple.to_list() |> Enum.join(".")
 
-      [forwarded] ->
-        forwarded |> String.split(",") |> Enum.at(-1) |> String.trim()
+      [forwarded_for | _] ->
+        forwarded_for
+        |> String.split(",")
+        |> List.first()
+        |> String.trim()
     end
   end
 
