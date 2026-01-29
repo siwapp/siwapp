@@ -7,6 +7,7 @@ defmodule SiwappWeb.Plugs.Logger do
   require Logger
 
   alias Plug.Conn
+  alias SiwappWeb.Utils
 
   @spec init(Plug.opts()) :: Plug.opts()
   def init(opts) do
@@ -39,7 +40,7 @@ defmodule SiwappWeb.Plugs.Logger do
           ?\s,
           formatted_diff(diff),
           ?\s,
-          get_remote_ip(conn)
+          Utils.get_remote_ip(conn)
         ]
       end)
 
@@ -53,9 +54,6 @@ defmodule SiwappWeb.Plugs.Logger do
 
   defp body_length(nil), do: "0"
   defp body_length(body), do: body |> byte_size() |> Integer.to_string()
-
-  @spec get_remote_ip(Conn.t()) :: binary()
-  defp get_remote_ip(conn), do: to_string(:inet_parse.ntoa(conn.remote_ip))
 
   @spec formatted_diff(integer()) :: [binary(), ...]
   defp formatted_diff(diff) when diff > 1000,
