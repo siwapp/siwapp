@@ -4,10 +4,11 @@ defmodule SiwappWeb.Plugs.Logger do
   """
   @behaviour Plug
 
+  import Plug.Conn, only: [get_req_header: 2]
+
   require Logger
 
   alias Plug.Conn
-  alias SiwappWeb.Utils
 
   @spec init(Plug.opts()) :: Plug.opts()
   def init(opts) do
@@ -38,12 +39,23 @@ defmodule SiwappWeb.Plugs.Logger do
           ?\s,
           formatted_diff(diff),
           ?\s,
-          Utils.get_remote_ip(conn)
+          get_remote_ip(conn)
         ]
       end)
 
       conn
     end)
+  end
+
+  @spec get_remote_ip(Conn.t()) :: String.t()
+  defp get_remote_ip(conn) do
+    case get_req_header(conn, "x-forwarded-for") do
+      [] ->
+        conn.remote_ip |> Tuple.to_list() |> Enum.join(".")
+
+      [forwarded] ->
+        forwarded |> String.split(",") |> Enum.at(-1) |> String.trim()
+    end
   end
 
   @spec body_length(list() | nil | binary()) :: binary()
