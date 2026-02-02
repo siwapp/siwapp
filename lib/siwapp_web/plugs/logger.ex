@@ -4,6 +4,8 @@ defmodule SiwappWeb.Plugs.Logger do
   """
   @behaviour Plug
 
+  import Plug.Conn, only: [get_req_header: 2]
+
   require Logger
 
   alias Plug.Conn
@@ -31,8 +33,6 @@ defmodule SiwappWeb.Plugs.Logger do
           ?\s,
           conn.request_path,
           ?\s,
-          # params,
-          # ?\s,
           Integer.to_string(conn.status),
           ?\s,
           body_length(conn.resp_body),
@@ -47,15 +47,26 @@ defmodule SiwappWeb.Plugs.Logger do
     end)
   end
 
+  @spec get_remote_ip(Conn.t()) :: String.t()
+  defp get_remote_ip(conn) do
+    case get_req_header(conn, "x-forwarded-for") do
+      [] ->
+        conn.remote_ip |> Tuple.to_list() |> Enum.join(".")
+
+      [forwarded_for | _] ->
+        forwarded_for
+        |> String.split(",")
+        |> List.first()
+        |> String.trim()
+    end
+  end
+
   @spec body_length(list() | nil | binary()) :: binary()
   defp body_length(body) when is_list(body),
     do: body |> Enum.join("") |> body_length()
 
   defp body_length(nil), do: "0"
   defp body_length(body), do: body |> byte_size() |> Integer.to_string()
-
-  @spec get_remote_ip(Conn.t()) :: binary()
-  defp get_remote_ip(conn), do: to_string(:inet_parse.ntoa(conn.remote_ip))
 
   @spec formatted_diff(integer()) :: [binary(), ...]
   defp formatted_diff(diff) when diff > 1000,
