@@ -34,7 +34,9 @@ RUN apt update -qq && \
     rm -f google-chrome-stable_${CHROME_VERSION}_amd64.deb
 
 RUN addgroup --system --gid "$GID" "$GROUP" && \
-    useradd --system --create-home --uid "$UID" --gid "$GROUP" "$USER"
+    useradd --system --create-home --uid "$UID" --gid "$GROUP" "$USER" && \
+    mkdir -p /app && \
+    chown "$UID:$GID" /app
 USER $USER
 
 # Set up the working directory
