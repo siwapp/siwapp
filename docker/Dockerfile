@@ -4,9 +4,6 @@ ARG UID=1000
 ARG GID=1000
 ARG USER=siwapp
 ARG GROUP=siwapp
-ARG CHROME_VERSION=139.0.7258.138-1
-
-
 # Skip post-install steps
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -26,12 +23,11 @@ RUN apt update -qq && \
       libvulkan1 \
       wget \
       xdg-utils && \
-    wget --no-check-certificate \
-      https://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_${CHROME_VERSION}_amd64.deb && \
-    apt-get install -y ./google-chrome-stable_${CHROME_VERSION}_amd64.deb && \
+    wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
+    apt-get install -y ./google-chrome-stable_current_amd64.deb && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
-    rm -f google-chrome-stable_${CHROME_VERSION}_amd64.deb
+    rm -f google-chrome-stable_current_amd64.deb
 
 RUN addgroup --system --gid "$GID" "$GROUP" && \
     useradd --system --create-home --uid "$UID" --gid "$GROUP" "$USER" && \
