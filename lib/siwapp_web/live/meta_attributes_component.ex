@@ -33,7 +33,7 @@ defmodule SiwappWeb.MetaAttributesComponent do
     <fieldset>
       <h2>Meta Attributes</h2>
       <%= for {k, v} <- @attributes do %>
-        <div class="field is-horizontal">
+        <div class="field is-horizontal mb-3">
           <div class="field-label is-normal">
             <label class="label">
               {k} :
@@ -63,7 +63,7 @@ defmodule SiwappWeb.MetaAttributesComponent do
         <input type="hidden" name={"#{@name}[#{@field}]"} />
       <% end %>
 
-      <div class="field is-horizontal field-body">
+      <div class="field is-horizontal field-body mt-4">
         <input
           class="input field"
           type="text"
