@@ -89,7 +89,7 @@ defmodule SiwappWeb.Graphql.InvoicesTest do
     assert error["message"] == "A maximum of 100 invoice IDs is allowed."
   end
 
-  test "rejects a null invoice ID list", %{conn: conn} do
+  test "treats a null invoice ID list as omitted", %{conn: conn} do
     query = """
       query {
         invoices(ids: null) {
@@ -103,8 +103,8 @@ defmodule SiwappWeb.Graphql.InvoicesTest do
       |> post("/graphql", %{query: query})
       |> json_response(200)
 
-    assert %{"errors" => [error]} = res
-    assert error["message"] == "Argument \"ids\" has invalid value null."
+    assert %{"data" => %{"invoices" => invoices}} = res
+    assert length(invoices) == 10
   end
 
   test "Get an invoice", %{conn: conn, invoices: invoices} do

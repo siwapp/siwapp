@@ -21,6 +21,8 @@ defmodule SiwappWeb.GraphQL.Resolvers.Invoice do
 
   @spec list(map(), Absinthe.Resolution.t()) ::
           {:ok, [Invoices.Invoice.t()]} | {:error, String.t()}
+  def list(%{ids: nil} = params, resolution), do: list(Map.delete(params, :ids), resolution)
+
   def list(%{ids: ids}, _resolution) when length(ids) > @max_invoice_ids,
     do: {:error, "A maximum of #{@max_invoice_ids} invoice IDs is allowed."}
 
