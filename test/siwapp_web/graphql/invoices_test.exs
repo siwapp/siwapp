@@ -68,6 +68,26 @@ defmodule SiwappWeb.Graphql.InvoicesTest do
            }
   end
 
+  test "lists all requested invoice IDs when limit is omitted", %{conn: conn, invoices: invoices} do
+    ids = Enum.map_join(invoices, ", ", & &1.id)
+
+    query = """
+      query {
+        invoices(ids: [#{ids}]) {
+          id
+        }
+      }
+    """
+
+    res =
+      conn
+      |> post("/graphql", %{query: query})
+      |> json_response(200)
+
+    assert %{"data" => %{"invoices" => results}} = res
+    assert MapSet.new(results, & &1["id"]) == MapSet.new(invoices, &to_string(&1.id))
+  end
+
   test "rejects invoice ID batches larger than 100", %{conn: conn, invoices: invoices} do
     invoice = hd(invoices)
     ids = Enum.map_join(1..101, ", ", fn _number -> "#{invoice.id}" end)

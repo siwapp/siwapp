@@ -26,7 +26,8 @@ defmodule SiwappWeb.GraphQL.Resolvers.Invoice do
   def list(%{ids: ids}, _resolution) when length(ids) > @max_invoice_ids,
     do: {:error, "A maximum of #{@max_invoice_ids} invoice IDs is allowed."}
 
-  def list(%{limit: limit, offset: offset} = params, _resolution) do
+  def list(%{offset: offset} = params, _resolution) do
+    limit = effective_limit(params)
     filters = get_filters(params)
 
     invoices =
@@ -47,6 +48,10 @@ defmodule SiwappWeb.GraphQL.Resolvers.Invoice do
 
     {:ok, invoices}
   end
+
+  defp effective_limit(%{limit: limit}) when is_integer(limit), do: limit
+  defp effective_limit(%{ids: ids}), do: length(ids)
+  defp effective_limit(_params), do: 10
 
   @spec create(map(), Absinthe.Resolution.t()) :: {:error, map()} | {:ok, Invoices.Invoice.t()}
   def create(args, _resolution) do

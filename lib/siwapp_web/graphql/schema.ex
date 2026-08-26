@@ -34,7 +34,7 @@ defmodule SiwappWeb.GraphQL.Schema do
     field :invoices, list_of(:invoice) do
       arg(:ids, list_of(non_null(:id)))
       arg(:customer_id, :id)
-      arg(:limit, :integer, default_value: 10)
+      arg(:limit, :integer)
       arg(:offset, :integer, default_value: 0)
       arg(:with_status, :string)
       arg(:from_issue_date, :date)
