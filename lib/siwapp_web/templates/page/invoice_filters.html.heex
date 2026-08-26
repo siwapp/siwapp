@@ -14,13 +14,13 @@
     <label class="label">
       ISSUE DATE FROM:
     </label>
-    <%= date_input(@f, :issue_from_date, class: "input") %>
+    {date_input(@f, :issue_from_date, class: "input")}
   </div>
   <div class="column is-3">
     <label class="label">
       TO:
     </label>
-    <%= date_input(@f, :issue_to_date, class: "input") %>
+    {date_input(@f, :issue_to_date, class: "input")}
   </div>
 </div>
 <div class="columns">
@@ -29,28 +29,28 @@
       SERIES:
     </label>
     <div class="select is-fullwidth">
-      <%= select(@f, :series, ["Choose...": ""] ++ Enum.map(@series_names, &{&1, &1})) %>
+      {select(@f, :series, ["Choose...": ""] ++ Enum.map(@series_names, &{&1, &1}))}
     </div>
   </div>
   <div class="column is-3">
     <label class="label">
       NUMBER:
     </label>
-    <%= number_input(@f, :number, class: "input") %>
+    {number_input(@f, :number, class: "input")}
   </div>
   <div class="column is-6">
     <label class="label">
       STATUS:
     </label>
     <div class="select is-fullwidth">
-      <%= select(@f, :status,
+      {select(@f, :status,
         "Choose...": "",
         Draft: "draft",
         Paid: "paid",
         Pending: "pending",
         "Past Due": "past_due",
         Failed: "failed"
-      ) %>
+      )}
     </div>
   </div>
 </div>
@@ -59,14 +59,14 @@
     <label class="label">
       KEY
     </label>
-    <%= text_input(@f, :key, class: "input") %>
-    <%= error_tag(@f, :key, style: "margin: 0", phx_feedback_for: "") %>
+    {text_input(@f, :key, class: "input")}
+    {error_tag(@f, :key, style: "margin: 0")}
   </div>
   <div class="column">
     <label class="label">
       VALUE
     </label>
-    <%= text_input(@f, :value, class: "input") %>
+    {text_input(@f, :value, class: "input")}
   </div>
 </div>
 <label class="label px-3">
@@ -75,7 +75,7 @@
 <.inputs_for :let={ma_f} field={@f[:csv_meta_attributes]}>
   <div class="columns">
     <div class="column pb-0">
-      <%= text_input(ma_f, :key, class: "input") %>
+      {text_input(ma_f, :key, class: "input")}
     </div>
     <div class="column pb-0">
       <button

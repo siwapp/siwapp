@@ -24,13 +24,12 @@ defmodule SiwappWeb.ModalComponent do
     <div
       id={@id}
       class="phx-modal"
-      phx-capture-click="close"
       phx-window-keydown="close"
       phx-key="escape"
     >
-      <div class="phx-modal-content">
+      <div class="phx-modal-content" phx-click-away="close">
         <.link navigate={@return_to} class="phx-modal-close">&times;</.link>
-        <%= render_slot(@inner_block) %>
+        {render_slot(@inner_block)}
       </div>
     </div>
     """

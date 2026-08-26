@@ -21,13 +21,13 @@
   <div class="navbar-menu">
     <div class="navbar-end">
       <div class="navbar-item buttons">
-        <%= link("Delete",
+        {link("Delete",
           to: "#",
           phx_click: "delete",
           data: [confirm: "Are you sure?"],
           class: "button is-danger"
-        ) %>
-        <button class="button is-info" , phx-click="upgrade_downgrade">
+        )}
+        <button class="button is-info" phx-click="upgrade_downgrade">
           Upgrade/Downgrade
         </button>
       </div>
@@ -64,7 +64,7 @@
         />
       </td>
       <td>
-        <%= user.email %>
+        {user.email}
       </td>
       <%= if user.admin do %>
         <td class="icon has-text-success table-icon">

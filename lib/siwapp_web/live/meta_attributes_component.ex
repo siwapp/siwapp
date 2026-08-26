@@ -4,13 +4,17 @@ defmodule SiwappWeb.MetaAttributesComponent do
   use SiwappWeb, :live_component
 
   alias Phoenix.HTML.Form
+  alias SiwappWeb.LiveHelpers
 
   @impl Phoenix.LiveComponent
   def update(assigns, socket) do
     attributes =
       case Form.input_value(assigns.f, assigns.field) do
-        "" -> %{}
-        attrs -> attrs
+        "" ->
+          %{}
+
+        attrs ->
+          LiveHelpers.remove_unused_fields(attrs)
       end
 
     socket =
@@ -33,7 +37,7 @@ defmodule SiwappWeb.MetaAttributesComponent do
         <div class="field is-horizontal">
           <div class="field-label is-normal">
             <label class="label">
-              <%= k %> :
+              {k} :
             </label>
           </div>
           <div class="field-body">

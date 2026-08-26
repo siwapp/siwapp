@@ -4,21 +4,26 @@ defmodule SiwappWeb.ErrorHelpers do
   """
 
   use PhoenixHTMLHelpers
-  import Phoenix.HTML.Form
 
   @doc """
   Generates tag for inlined form input errors.
   """
   @spec error_tag(Phoenix.HTML.Form.t(), atom, Keyword.t()) :: list
   def error_tag(form, field, attrs \\ []) do
-    Enum.map(Keyword.get_values(form.errors, field), fn error ->
+    action = if is_map(form.source), do: Map.get(form.source, :action)
+
+    errors =
+      if action != :validate or Phoenix.Component.used_input?(form[field]) do
+        Keyword.get_values(form.errors, field)
+      else
+        []
+      end
+
+    Enum.map(errors, fn error ->
       content_tag(
         :span,
         translate_error(error),
-        Keyword.merge(
-          [class: "invalid-feedback", phx_feedback_for: input_name(form, field)],
-          attrs
-        )
+        Keyword.put_new(attrs, :class, "invalid-feedback")
       )
     end)
   end

@@ -30,6 +30,8 @@ defmodule SiwappWeb.InvoicesLive.Edit do
 
   @impl Phoenix.LiveView
   def handle_event("save", %{"invoice" => params}, socket) do
+    params = remove_unused_meta_attributes(params)
+
     result =
       case socket.assigns.live_action do
         :new -> Invoices.create(params)
@@ -53,6 +55,7 @@ defmodule SiwappWeb.InvoicesLive.Edit do
   end
 
   def handle_event("validate", %{"invoice" => params}, socket) do
+    params = remove_unused_meta_attributes(params)
     changeset = Invoices.change(socket.assigns.invoice, params)
 
     {:noreply, assign(socket, :changeset, changeset)}

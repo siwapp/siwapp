@@ -1,60 +1,60 @@
 <h1>
-  <%= @page_title %>
+  {@page_title}
 </h1>
 
-<.form :let={f} for={@changeset} phx-change="validate" phx-submit="save">
+<.form :let={f} id="invoice-form" for={@changeset} phx-change="validate" phx-submit="save">
   <%= if @live_action == :new do %>
     <div class="field">
       <label class="checkbox">
-        <%= checkbox(f, :draft, phx_debounce: "blur", class: "checkbox") %> Save as draft
+        {checkbox(f, :draft, phx_debounce: "blur", class: "checkbox")} Save as draft
       </label>
     </div>
   <% end %>
 
-  <%= render(SiwappWeb.PageView, "invoice_customer_form.html", f: f, view: "invoices") %>
+  {render(SiwappWeb.PageView, "invoice_customer_form.html", f: f, view: "invoices")}
 
   <fieldset class="fieldset">
     <h2>Invoice Details</h2>
 
     <div class="field is-horizontal field-body">
       <div class="field">
-        <%= label(f, :series_id, class: "label") %>
+        {label(f, :series_id, class: "label")}
         <p class=" control select is-fullwidth">
-          <%= select(f, :series_id, @series_options) %>
+          {select(f, :series_id, @series_options)}
         </p>
-        <%= error_tag(f, :series_id) %>
+        {error_tag(f, :series_id)}
       </div>
       <%= if @live_action == :edit && is_nil(Ecto.Changeset.get_change(@changeset, :series_id)) do %>
         <div class="field">
-          <%= label(f, :number, class: "label") %>
+          {label(f, :number, class: "label")}
           <p class="control">
-            <%= number_input(f, :number, phx_debounce: "blur", class: "input") %>
+            {number_input(f, :number, phx_debounce: "blur", class: "input")}
           </p>
-          <%= error_tag(f, :number) %>
+          {error_tag(f, :number)}
         </div>
       <% end %>
       <div class="field">
-        <%= label(f, :currency, class: "label") %>
+        {label(f, :currency, class: "label")}
         <p class="control select is-fullwidth">
-          <%= select(f, :currency, @currency_options) %>
+          {select(f, :currency, @currency_options)}
         </p>
       </div>
     </div>
 
     <div class="field is-horizontal field-body">
       <div class="field">
-        <%= label(f, :issue_date, class: "label") %>
+        {label(f, :issue_date, class: "label")}
         <p class="control">
-          <%= date_input(f, :issue_date, phx_debounce: "blur", class: "input") %>
+          {date_input(f, :issue_date, phx_debounce: "blur", class: "input")}
         </p>
-        <%= error_tag(f, :issue_date) %>
+        {error_tag(f, :issue_date)}
       </div>
       <div class="field">
-        <%= label(f, :due_date, class: "label") %>
+        {label(f, :due_date, class: "label")}
         <p class="control">
-          <%= date_input(f, :due_date, phx_debounce: "blur", class: "input") %>
+          {date_input(f, :due_date, phx_debounce: "blur", class: "input")}
         </p>
-        <%= error_tag(f, :due_date) %>
+        {error_tag(f, :due_date)}
       </div>
     </div>
 
@@ -82,19 +82,19 @@
           <input type="hidden" name="invoice[payments_sort][]" value={fp.index} />
           <div class="column is-3-desktop is-full-mobile">
             <p class="control">
-              <%= date_input(fp, :date, phx_debounce: "blur", class: "input") %>
+              {date_input(fp, :date, phx_debounce: "blur", class: "input")}
             </p>
-            <%= error_tag(fp, :date) %>
+            {error_tag(fp, :date)}
           </div>
           <div class="column is-6-desktop is-full-mobile">
             <p class="control">
-              <%= textarea(fp, :notes, phx_debounce: "blur", class: "textarea", rows: "1") %>
+              {textarea(fp, :notes, phx_debounce: "blur", class: "textarea", rows: "1")}
             </p>
-            <%= error_tag(fp, :notes) %>
+            {error_tag(fp, :notes)}
           </div>
           <div class="column is-1-desktop is-full-mobile">
             <p class="control">
-              <%= text_input(fp, :virtual_amount, class: "input") %>
+              {text_input(fp, :virtual_amount, class: "input")}
             </p>
           </div>
           <div class="column is-narrow-desktop is-full-mobile">
@@ -126,7 +126,7 @@
       </button>
 
       <br />
-      <%= checkbox(f, :failed, class: "checkbox") %> Payment collection failed
+      {checkbox(f, :failed, class: "checkbox")} Payment collection failed
     </fieldset>
   <% end %>
 
@@ -144,32 +144,32 @@
   >
     <div class="navbar-end navbar-items buttons">
       <%= if @live_action == :edit do %>
-        <%= link("Delete",
+        {link("Delete",
           to: "#",
           phx_click: "delete",
           phx_value_id: @invoice.id,
           data: [confirm: "Are you sure?"],
           class: "button is-danger"
-        ) %>
+        )}
       <% end %>
-      <%= link("Back", to: "#", onclick: "history.back()", class: "button is-dark") %>
+      {link("Back", to: "#", onclick: "history.back()", class: "button is-dark")}
       <%= if @live_action == :edit do %>
-        <%= link("Send Email",
+        {link("Send Email",
           to: "#",
           phx_click: "send_email",
           phx_value_id: @invoice.id,
           class: "button is-purple"
-        ) %>
-        <%= link("Download PDF",
+        )}
+        {link("Download PDF",
           to: Routes.page_path(@socket, :download, @invoice.id),
           class: "button is-info"
-        ) %>
-        <%= link("Duplicate",
+        )}
+        {link("Duplicate",
           to: Routes.invoices_edit_path(@socket, :new, @invoice.id, @url_query_string),
           class: "button is-info"
-        ) %>
+        )}
       <% end %>
-      <%= submit("Save", class: "button is-success") %>
+      {submit("Save", class: "button is-success")}
     </div>
   </nav>
 </.form>

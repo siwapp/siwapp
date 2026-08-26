@@ -1,28 +1,27 @@
 <nav class="navbar is-fixed-bottom navbar-menu" role="navigation" aria-label="main navigation">
   <div class="navbar-end navbar-items buttons mr-3">
-    <%= link("Back", to: "#", onclick: "history.back()", class: "button is-dark") %>
-    <%= link("Send Email",
+    {link("Back", to: "#", onclick: "history.back()", class: "button is-dark")}
+    {link("Send Email",
       to: Routes.page_path(@conn, :send_email, @invoice.id),
       class: "button is-purple"
-    ) %>
-    <%= link("Download PDF",
+    )}
+    {link("Download PDF",
       to: Routes.page_path(@conn, :download, @invoice.id),
       class: "button is-info"
-    ) %>
-    <%= link("Duplicate",
+    )}
+    {link("Duplicate",
       to: Routes.invoices_edit_path(@conn, :new, @invoice.id, @url_query_string),
       class: "button is-info"
-    ) %>
-    <%= link("Edit",
+    )}
+    {link("Edit",
       to: Routes.invoices_edit_path(@conn, :edit, @invoice.id, @url_query_string),
       class: "button is-info"
-    ) %>
+    )}
   </div>
 </nav>
 <div class="columns is-centered">
   <iframe
     class="iframe template column is-half"
     src={Routes.iframe_path(@conn, :iframe, @invoice.id)}
-  >
-  </iframe>
+  ></iframe>
 </div>

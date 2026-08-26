@@ -95,8 +95,7 @@ defmodule SiwappWeb do
       import Phoenix.HTML.Form
       use PhoenixHTMLHelpers
 
-      # Import LiveView and .heex helpers (live_render, live_patch, <.form>, etc)
-      import Phoenix.LiveView.Helpers
+      # Import LiveView and .heex helpers
       import Phoenix.Component
       import SiwappWeb.LiveHelpers
 

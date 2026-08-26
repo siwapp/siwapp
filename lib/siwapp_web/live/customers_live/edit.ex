@@ -17,12 +17,15 @@ defmodule SiwappWeb.CustomersLive.Edit do
 
   @impl Phoenix.LiveView
   def handle_event("validate", %{"customer" => params}, socket) do
+    params = remove_unused_meta_attributes(params)
     changeset = Customers.change(socket.assigns.customer, params)
 
     {:noreply, assign(socket, :changeset, changeset)}
   end
 
   def handle_event("save", %{"customer" => params}, socket) do
+    params = remove_unused_meta_attributes(params)
+
     result =
       case socket.assigns.live_action do
         :new -> Customers.create(params)

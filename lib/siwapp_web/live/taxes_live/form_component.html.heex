@@ -6,11 +6,11 @@
       phx-click="lv:clear-flash"
       phx-value-key="error"
     >
-      <%= error_msg %>
+      {error_msg}
     </span>
   <% end %>
   <h2>
-    <%= @title %>
+    {@title}
   </h2>
   <.form
     :let={f}
@@ -21,51 +21,51 @@
     phx-submit="save"
   >
     <div class="field">
-      <%= label(f, :name, required: true, class: "label") %>
+      {label(f, :name, required: true, class: "label")}
       <p class="control">
-        <%= text_input(f, :name, class: "input") %>
+        {text_input(f, :name, class: "input")}
       </p>
-      <%= error_tag(f, :name) %>
+      {error_tag(f, :name)}
     </div>
 
     <div class="field">
-      <%= label(f, :value, required: true, class: "label") %>
+      {label(f, :value, required: true, class: "label")}
       <p class="control">
-        <%= number_input(f, :value, class: "input") %>
+        {number_input(f, :value, class: "input")}
       </p>
-      <%= error_tag(f, :value) %>
+      {error_tag(f, :value)}
     </div>
 
     <div class="field">
       <label class="checkbox">
-        <%= checkbox(f, :enabled, class: "checkbox") %> Enabled
+        {checkbox(f, :enabled, class: "checkbox")} Enabled
       </label>
     </div>
 
     <div class="field-">
       <label class="checkbox">
-        <%= checkbox(f, :default, class: "checkbox") %> Apply to new items by default
+        {checkbox(f, :default, class: "checkbox")} Apply to new items by default
       </label>
     </div>
 
     <div class="field is-grouped is-pulled-right">
       <p class="control">
         <%= if @action == :edit do %>
-          <%= link("Delete",
+          {link("Delete",
             to: "#",
             phx_click: "delete",
             phx_value_id: @tax.id,
             phx_target: @myself,
             data: [confirm: "Are you sure?"],
             class: "button is-danger"
-          ) %>
+          )}
         <% end %>
       </p>
       <p class="control">
-        <%= link("Back", to: "#", onclick: "history.back()", class: "button is-dark") %>
+        {link("Back", to: "#", onclick: "history.back()", class: "button is-dark")}
       </p>
       <p class="control">
-        <%= submit("Save", class: "button is-success") %>
+        {submit("Save", class: "button is-success")}
       </p>
     </div>
   </.form>

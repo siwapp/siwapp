@@ -41,7 +41,7 @@ defmodule SiwappWeb.TaxesComponent do
         <%= for {k, v} <- @selected do %>
           <div class="tag-badge">
             <span>
-              <%= k %>
+              {k}
             </span>
             <button
               type="button"
@@ -58,7 +58,7 @@ defmodule SiwappWeb.TaxesComponent do
             JS.push("add", target: @myself, value: %{index: @index, key: k, val: v})
             |> JS.toggle(to: "#tag-list-#{@index}")
           }>
-            <%= k %>
+            {k}
           </li>
         <% end %>
       </ul>

@@ -7,23 +7,23 @@
     </div>
   <% end %>
 
-  <%= label(f, :password, "New password") %>
+  {label(f, :password, "New password")}
   <p class="control">
-    <%= password_input(f, :password, required: true) %>
+    {password_input(f, :password, required: true)}
   </p>
-  <%= error_tag(f, :password) %>
+  {error_tag(f, :password)}
 
-  <%= label(f, :password_confirmation, "Confirm new password") %>
+  {label(f, :password_confirmation, "Confirm new password")}
   <p class="control">
-    <%= password_input(f, :password_confirmation, required: true) %>
+    {password_input(f, :password_confirmation, required: true)}
   </p>
-  <%= error_tag(f, :password_confirmation) %>
+  {error_tag(f, :password_confirmation)}
 
   <div>
-    <%= submit("Reset password") %>
+    {submit("Reset password")}
   </div>
 </.form>
 
 <p>
-  <%= link("Log in", to: Routes.user_session_path(@conn, :new)) %>
+  {link("Log in", to: Routes.user_session_path(@conn, :new))}
 </p>
