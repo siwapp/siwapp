@@ -3,18 +3,12 @@ defmodule SiwappWeb.MetaAttributesComponentTest do
 
   import Phoenix.LiveViewTest
 
-  alias SiwappWeb.LiveHelpers
   alias SiwappWeb.MetaAttributesComponent
 
-  test "does not render LiveView unused-field markers as meta attributes" do
+  test "disables LiveView unused-field tracking for meta attributes" do
     form =
       Phoenix.Component.to_form(
-        %{
-          "meta_attributes" => %{
-            "_unused_country" => "",
-            "country" => "Germany"
-          }
-        },
+        %{"meta_attributes" => %{"country" => "Germany"}},
         as: :invoice
       )
 
@@ -27,21 +21,6 @@ defmodule SiwappWeb.MetaAttributesComponentTest do
 
     assert html =~ "country"
     assert html =~ "Germany"
-    refute html =~ "_unused_country"
-  end
-
-  test "removes LiveView unused-field markers from submitted meta attributes" do
-    params = %{
-      "name" => "Invoice",
-      "meta_attributes" => %{
-        "_unused_country" => "",
-        "country" => "Germany"
-      }
-    }
-
-    assert LiveHelpers.remove_unused_meta_attributes(params) == %{
-             "name" => "Invoice",
-             "meta_attributes" => %{"country" => "Germany"}
-           }
+    assert html =~ "phx-no-unused-field"
   end
 end

@@ -4,7 +4,6 @@ defmodule SiwappWeb.MetaAttributesComponent do
   use SiwappWeb, :live_component
 
   alias Phoenix.HTML.Form
-  alias SiwappWeb.LiveHelpers
 
   @impl Phoenix.LiveComponent
   def update(assigns, socket) do
@@ -14,7 +13,7 @@ defmodule SiwappWeb.MetaAttributesComponent do
           %{}
 
         attrs ->
-          LiveHelpers.remove_unused_fields(attrs)
+          attrs
       end
 
     socket =
@@ -41,7 +40,13 @@ defmodule SiwappWeb.MetaAttributesComponent do
             </label>
           </div>
           <div class="field-body">
-            <input class="input field" type="text" name={"#{@name}[#{@field}][#{k}]"} value={v} />
+            <input
+              class="input field"
+              type="text"
+              name={"#{@name}[#{@field}][#{k}]"}
+              value={v}
+              phx-no-unused-field
+            />
             <span
               class="icon has-text-danger is-clickable"
               phx-click="remove"

@@ -27,20 +27,4 @@ defmodule SiwappWeb.LiveHelpers do
   def maybe_add(current_list, next_list) do
     {current_list ++ next_list, 0}
   end
-
-  @spec remove_unused_meta_attributes(map()) :: map()
-  def remove_unused_meta_attributes(%{"meta_attributes" => attributes} = params)
-      when is_map(attributes) do
-    Map.put(params, "meta_attributes", remove_unused_fields(attributes))
-  end
-
-  def remove_unused_meta_attributes(params), do: params
-
-  @spec remove_unused_fields(map()) :: map()
-  def remove_unused_fields(params) do
-    Map.reject(params, fn
-      {key, _value} when is_binary(key) -> String.starts_with?(key, "_unused_")
-      {_key, _value} -> false
-    end)
-  end
 end
