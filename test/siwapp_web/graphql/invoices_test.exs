@@ -45,6 +45,50 @@ defmodule SiwappWeb.Graphql.InvoicesTest do
     assert res == %{"data" => %{"invoices" => data_result}}
   end
 
+  test "list invoices by IDs", %{conn: conn, invoices: invoices} do
+    [first, second | _invoices] = invoices
+
+    query = """
+      query {
+        invoices(ids: [#{first.id}, #{second.id}], limit: 100) {
+          id
+        }
+      }
+    """
+
+    res =
+      conn
+      |> post("/graphql", %{query: query})
+      |> json_response(200)
+
+    assert res == %{
+             "data" => %{
+               "invoices" => [%{"id" => "#{second.id}"}, %{"id" => "#{first.id}"}]
+             }
+           }
+  end
+
+  test "rejects invoice ID batches larger than 100", %{conn: conn, invoices: invoices} do
+    invoice = hd(invoices)
+    ids = Enum.map_join(1..101, ", ", fn _number -> "#{invoice.id}" end)
+
+    query = """
+      query {
+        invoices(ids: [#{ids}], limit: 100) {
+          id
+        }
+      }
+    """
+
+    res =
+      conn
+      |> post("/graphql", %{query: query})
+      |> json_response(200)
+
+    assert %{"data" => %{"invoices" => nil}, "errors" => [error]} = res
+    assert error["message"] == "A maximum of 100 invoice IDs is allowed."
+  end
+
   test "Get an invoice", %{conn: conn, invoices: invoices} do
     invoice = hd(invoices)
 

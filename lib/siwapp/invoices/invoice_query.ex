@@ -69,6 +69,7 @@ defmodule Siwapp.Invoices.InvoiceQuery do
   @spec list_by_query(
           Ecto.Query.t(),
           :customer_id
+          | :ids
           | :issue_date_gteq
           | :issue_date_lteq
           | :series_id
@@ -78,6 +79,9 @@ defmodule Siwapp.Invoices.InvoiceQuery do
         ) :: Ecto.Query.t()
   def list_by_query(query, key, value) do
     case {key, value} do
+      {:ids, value} ->
+        where(query, [invoice], invoice.id in ^value)
+
       {:with_terms, value} ->
         with_terms(query, value)
 
