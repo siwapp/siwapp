@@ -100,7 +100,7 @@ defmodule Siwapp.MixProject do
       {:bulma, "~> 0.9"},
       {:chromic_pdf, "~> 1.15"},
       {:contex, "~> 0.5.0"},
-      {:cachex, "~> 3.6"},
+      {:cachex, "~> 4.1"},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:csv, "~> 3.2"},
       {:dart_sass, "~> 0.7", runtime: Mix.env() == :dev},
