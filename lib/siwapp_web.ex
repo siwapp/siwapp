@@ -20,7 +20,9 @@ defmodule SiwappWeb do
   @spec controller :: tuple
   def controller do
     quote do
-      use Phoenix.Controller, namespace: SiwappWeb
+      use Phoenix.Controller, formats: [html: "View", json: "View"]
+
+      plug :put_layout, html: {SiwappWeb.LayoutView, :app}
 
       import Plug.Conn
       use Gettext, backend: SiwappWeb.Gettext
