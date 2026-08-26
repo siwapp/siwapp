@@ -12,6 +12,7 @@ defmodule Siwapp.Application do
     children = [
       # Start the Telemetry supervisor
       SiwappWeb.Telemetry,
+      {Finch, name: Swoosh.Finch},
       # Start the Endpoint (http/https)
       SiwappWeb.Endpoint,
       # Start the Ecto repository

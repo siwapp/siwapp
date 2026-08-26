@@ -114,7 +114,6 @@ defmodule Siwapp.MixProject do
       {:lazy_html, ">= 0.0.0", only: :test},
       {:gettext, "~> 1.0"},
       {:gen_smtp, "~> 1.3"},
-      {:hackney, "~> 1.20"},
       {:html_sanitize_ex, "~> 1.4"},
       {:hut, "~> 1.4", manager: :rebar3, override: true},
       {:jason, "~> 1.4"},
