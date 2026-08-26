@@ -12,6 +12,11 @@ main.container {
   background-color: #f8f9fa;
   border-bottom: 1px solid #ced4da;
 }
+
+.navbar.is-fixed-bottom .buttons {
+  align-items: center;
+}
+
 fieldset.fieldset {
   margin-bottom: 3em;
 }
