@@ -7,7 +7,7 @@ defmodule Siwapp.Application do
 
   @impl Application
   def start(_type, _args) do
-    Logger.add_backend(Sentry.LoggerBackend)
+    :ok = :logger.add_handler(:sentry_handler, Sentry.LoggerHandler, %{config: %{}})
 
     children = [
       # Start the Telemetry supervisor

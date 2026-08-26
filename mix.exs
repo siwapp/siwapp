@@ -131,7 +131,7 @@ defmodule Siwapp.MixProject do
       {:phoenix_view, "~> 2.0"},
       {:plug_cowboy, "~> 2.7"},
       {:postgrex, ">= 0.0.0"},
-      {:sentry, "~> 11.0"},
+      {:sentry, "~> 13.0"},
       {:swoosh, "~> 1.16"},
       {:telemetry_metrics, "~> 1.0"},
       {:telemetry_metrics_prometheus, "~> 1.1.0"},
