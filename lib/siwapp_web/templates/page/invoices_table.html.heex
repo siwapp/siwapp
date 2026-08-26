@@ -86,21 +86,21 @@
         <%= case Siwapp.Invoices.status(invoice) do %>
           <% :draft -> %>
             <td class="table-span">
-              <span class="tag is-info">
+              <span class="tag is-info has-text-white">
                 Draft
               </span>
             </td>
             <td></td>
           <% :failed -> %>
             <td class="table-span">
-              <span class="tag is-black">
+              <span class="tag is-black has-text-white">
                 Failed
               </span>
             </td>
             <td></td>
           <% :paid -> %>
             <td class="table-span">
-              <span class="tag is-success">
+              <span class="tag is-success has-text-white">
                 Paid
               </span>
             </td>
@@ -116,7 +116,7 @@
             </td>
           <% :past_due -> %>
             <td class="table-span">
-              <span class="tag is-danger">
+              <span class="tag is-danger has-text-white">
                 Past_Due
               </span>
             </td>

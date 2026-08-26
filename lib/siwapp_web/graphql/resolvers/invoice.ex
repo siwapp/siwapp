@@ -9,6 +9,8 @@ defmodule SiwappWeb.GraphQL.Resolvers.Invoice do
   alias SiwappWeb.GraphQL.Resolvers.Helpers
   alias SiwappWeb.PageView
 
+  @max_invoice_ids 100
+
   @spec get(map, Absinthe.Resolution.t()) :: {:ok, map} | {:error, binary}
   def get(%{id: id}, _resolution) do
     case Invoices.get(id) do
@@ -17,8 +19,15 @@ defmodule SiwappWeb.GraphQL.Resolvers.Invoice do
     end
   end
 
-  @spec list(map(), Absinthe.Resolution.t()) :: {:ok, [Invoices.Invoice.t()]}
-  def list(%{limit: limit, offset: offset} = params, _resolution) do
+  @spec list(map(), Absinthe.Resolution.t()) ::
+          {:ok, [Invoices.Invoice.t()]} | {:error, String.t()}
+  def list(%{ids: nil} = params, resolution), do: list(Map.delete(params, :ids), resolution)
+
+  def list(%{ids: ids}, _resolution) when length(ids) > @max_invoice_ids,
+    do: {:error, "A maximum of #{@max_invoice_ids} invoice IDs is allowed."}
+
+  def list(%{offset: offset} = params, _resolution) do
+    limit = effective_limit(params)
     filters = get_filters(params)
 
     invoices =
@@ -39,6 +48,10 @@ defmodule SiwappWeb.GraphQL.Resolvers.Invoice do
 
     {:ok, invoices}
   end
+
+  defp effective_limit(%{limit: limit}) when is_integer(limit), do: limit
+  defp effective_limit(%{ids: ids}), do: length(ids)
+  defp effective_limit(_params), do: 10
 
   @spec create(map(), Absinthe.Resolution.t()) :: {:error, map()} | {:ok, Invoices.Invoice.t()}
   def create(args, _resolution) do
