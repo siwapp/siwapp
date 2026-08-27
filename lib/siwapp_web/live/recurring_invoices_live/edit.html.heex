@@ -1,64 +1,71 @@
 <h1>
-  <%= @page_title %>
+  {@page_title}
 </h1>
 
-<.form :let={f} for={@changeset} as={:invoice} phx-change="validate" phx-submit="save">
-  <%= render(SiwappWeb.PageView, "invoice_customer_form.html", f: f, view: :recurring_invoices) %>
+<.form
+  :let={f}
+  id="recurring-invoice-form"
+  for={@changeset}
+  as={:invoice}
+  phx-change="validate"
+  phx-submit="save"
+>
+  {render(SiwappWeb.PageView, "invoice_customer_form.html", f: f, view: :recurring_invoices)}
 
   <fieldset class="fieldset">
     <h2>Configuration</h2>
 
     <div class="field">
       <label class="checkbox">
-        <%= checkbox(f, :enabled, phx_debounce: "blur", class: "checkbox") %> Enable this recurring invoice
+        {checkbox(f, :enabled, phx_debounce: "blur", class: "checkbox")} Enable this recurring invoice
       </label>
     </div>
     <div class="field">
       <label class="checkbox">
-        <%= checkbox(f, :send_by_email, phx_debounce: "blur", class: "checkbox") %> Automatically send generated invoices by email
+        {checkbox(f, :send_by_email, phx_debounce: "blur", class: "checkbox")} Automatically send generated invoices by email
       </label>
     </div>
 
     <div class="field is-horizontal field-body">
       <div class="field">
-        <%= label(f, :starting_date, class: "label") %>
+        {label(f, :starting_date, class: "label")}
         <p class="control">
-          <%= date_input(f, :starting_date, class: "input") %>
+          {date_input(f, :starting_date, class: "input")}
         </p>
-        <%= error_tag(f, :starting_date) %>
+        {error_tag(f, :starting_date)}
       </div>
       <div class="field">
-        <%= label(f, :finishing_date, class: "label") %>
+        {label(f, :finishing_date, class: "label")}
         <p class="control">
-          <%= date_input(f, :finishing_date, class: "input") %>
+          {date_input(f, :finishing_date, class: "input")}
         </p>
-        <%= error_tag(f, :finishing_date) %>
+        {error_tag(f, :finishing_date)}
       </div>
     </div>
 
     <div class="field is-horizontal field-body">
       <div class="field">
-        <%= label(f, :period, class: "label") %>
+        {label(f, :period, class: "label")}
         <p class="control">
-          <%= number_input(f, :period, class: "input") %>
+          {number_input(f, :period, class: "input")}
         </p>
-        <%= error_tag(f, :period) %>
+        {error_tag(f, :period)}
       </div>
       <div class="field">
-        <%= label(f, :period_type, class: "label") %>
+        {label(f, :period_type, class: "label")}
         <p class="control select is-fullwidth">
-          <%= select(f, :period_type, ["Daily", "Monthly", "Yearly"]) %>
+          {select(f, :period_type, ["Daily", "Monthly", "Yearly"])}
         </p>
       </div>
     </div>
 
     <div class="field is-horizontal field-body">
       <div class="field">
-        <%= label(f, :max_ocurrences, class: "label") %>
+        {label(f, :max_ocurrences, class: "label")}
         <p class="control">
-          <%= number_input(f, :max_ocurrences, class: "input") %>
+          {number_input(f, :max_ocurrences, class: "input")}
         </p>
-        <%= error_tag(f, :max_ocurrences) %>
+        {error_tag(f, :max_ocurrences)}
       </div>
     </div>
   </fieldset>
@@ -67,22 +74,22 @@
     <h2>Invoice Details</h2>
     <div class="field is-horizontal field-body">
       <div class="field">
-        <%= label(f, :series_id, class: "label") %>
+        {label(f, :series_id, class: "label")}
         <p class=" control select is-fullwidth">
-          <%= select(f, :series_id, Enum.map(@series, &{&1.name, &1.id})) %>
+          {select(f, :series_id, Enum.map(@series, &{&1.name, &1.id}))}
         </p>
       </div>
       <div class="field">
-        <%= label(f, :days_to_due, class: "label") %>
+        {label(f, :days_to_due, class: "label")}
         <p class="control">
-          <%= number_input(f, :days_to_due, class: "input") %>
+          {number_input(f, :days_to_due, class: "input")}
         </p>
-        <%= error_tag(f, :days_to_due) %>
+        {error_tag(f, :days_to_due)}
       </div>
       <div class="field">
-        <%= label(f, :currency, class: "label") %>
+        {label(f, :currency, class: "label")}
         <p class="control select is-fullwidth">
-          <%= select(f, :currency, @currency_options) %>
+          {select(f, :currency, @currency_options)}
         </p>
       </div>
     </div>
@@ -104,16 +111,16 @@
   >
     <div class="navbar-end navbar-items buttons">
       <%= if @live_action == :edit do %>
-        <%= link("Delete",
+        {link("Delete",
           to: "#",
           phx_click: "delete",
           phx_value_id: @recurring_invoice.id,
           data: [confirm: "Are you sure?"],
           class: "button is-danger"
-        ) %>
+        )}
       <% end %>
-      <%= link("Back", to: "#", onclick: "history.back()", class: "button is-dark") %>
-      <%= submit("Save", class: "button is-success") %>
+      {link("Back", to: "#", onclick: "history.back()", class: "button is-dark")}
+      {submit("Save", class: "button is-success")}
     </div>
   </nav>
 </.form>

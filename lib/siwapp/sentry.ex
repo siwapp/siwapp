@@ -3,16 +3,8 @@ defmodule Siwapp.Sentry do
   Module for configuring Sentry
   """
 
-  defmodule EventFilter do
-    @moduledoc """
-    Module for filtering events sent to Sentry
-    """
-
-    @behaviour Sentry.EventFilter
-
-    @spec exclude_exception?(struct, atom) :: boolean
-    def exclude_exception?(%Ecto.NoResultsError{}, _), do: true
-    def exclude_exception?(%Phoenix.Router.NoRouteError{}, _), do: true
-    def exclude_exception?(_exception, _source), do: false
-  end
+  @spec before_send(Sentry.Event.t()) :: Sentry.Event.t() | false
+  def before_send(%Sentry.Event{original_exception: %Ecto.NoResultsError{}}), do: false
+  def before_send(%Sentry.Event{original_exception: %Phoenix.Router.NoRouteError{}}), do: false
+  def before_send(event), do: event
 end

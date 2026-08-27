@@ -59,7 +59,7 @@ defmodule SiwappWeb.LayoutView do
   @spec render_button(map) :: Phoenix.LiveView.Rendered.t()
   defp render_button(assigns) do
     ~H"""
-    <.link navigate={@to} class="button is-info"><%= @text %></.link>
+    <.link navigate={@to} class="button is-info">{@text}</.link>
     """
   end
 

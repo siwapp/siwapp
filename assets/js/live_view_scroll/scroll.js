@@ -1,23 +1,21 @@
 function type_of_root(el) {
-  id = el.id;
+  const id = el.id;
 
   if (id == "infinite-scroll") {
-    root = null;
+    return null;
   } else {
-    root = document.querySelector("#customers_list_ancestor");
+    return document.querySelector("#customers_list_ancestor");
   }
-
-  return root;
 }
 
 let Hooks = {};
 
 Hooks.InfiniteScroll = {
   page() {
-    return this.el.dataset.page;
+    return Number(this.el.dataset.page);
   },
   no_more_queries() {
-    return this.el.dataset.no_more_queries;
+    return Number(this.el.dataset.no_more_queries);
   },
   loadMore(entries) {
     const target = entries[0];
@@ -33,6 +31,10 @@ Hooks.InfiniteScroll = {
   },
   mounted() {
     this.pending = this.page();
+    this.observe();
+  },
+  observe() {
+    this.observer?.disconnect();
     this.observer = new IntersectionObserver(
       (entries) => this.loadMore(entries),
       {
@@ -43,20 +45,12 @@ Hooks.InfiniteScroll = {
     );
     this.observer.observe(this.el);
   },
-  beforeDestroy() {
-    this.observer.unobserve(this.el);
+  destroyed() {
+    this.observer.disconnect();
   },
   updated() {
     this.pending = this.page();
-    this.observer = new IntersectionObserver(
-      (entries) => this.loadMore(entries),
-      {
-        root: type_of_root(this.el), // window by default
-        rootMargin: "0px",
-        threshold: 1.0,
-      },
-    );
-    this.observer.observe(this.el);
+    this.observe();
   },
 };
 

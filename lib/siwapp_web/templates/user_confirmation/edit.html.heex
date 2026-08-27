@@ -7,10 +7,10 @@
   action={Routes.user_confirmation_path(@conn, :update, @token)}
 >
   <div>
-    <%= submit("Confirm my account") %>
+    {submit("Confirm my account")}
   </div>
 </.form>
 
 <p>
-  <%= link("Log in", to: Routes.user_session_path(@conn, :new)) %>
+  {link("Log in", to: Routes.user_session_path(@conn, :new))}
 </p>

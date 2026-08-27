@@ -7,22 +7,22 @@
   <div class="navbar-menu mr-3">
     <div class="navbar-end">
       <div class="navbar-item buttons">
-        <%= link("Delete",
+        {link("Delete",
           to: "#",
           phx_click: "delete",
           data: [confirm: "Are you sure?"],
           class: "button is-danger"
-        ) %>
-        <%= link("Send Email",
+        )}
+        {link("Send Email",
           to: "#",
           phx_click: "send_email",
           class: "button is-purple"
-        ) %>
-        <%= link("Download PDf",
+        )}
+        {link("Download PDf",
           to: download_url(@checked),
           class: "button is-info"
-        ) %>
-        <button class="button is-info" , phx-click="set_paid">
+        )}
+        <button class="button is-info" phx-click="set_paid">
           Set Paid
         </button>
       </div>
@@ -38,11 +38,11 @@
   invoices={@invoices}
 />
 
-<%= render(SiwappWeb.PageView, "invoices_table.html",
+{render(SiwappWeb.PageView, "invoices_table.html",
   invoices: @invoices,
   checked: @checked,
   sort_map: @sort_map
-) %>
+)}
 
 <div
   id="infinite-scroll"

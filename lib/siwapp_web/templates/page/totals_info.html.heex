@@ -6,7 +6,7 @@
       </td>
       <%= for {currency, total} <- @gross_totals do %>
         <td class="has-text-weight-medium has-text-right">
-          <%= money_format(total, currency) %>
+          {money_format(total, currency)}
         </td>
       <% end %>
     </tr>
@@ -16,18 +16,18 @@
       </td>
       <%= for {currency, total} <- @net_totals do %>
         <td class="has-text-weight-medium has-text-right">
-          <%= money_format(total, currency) %>
+          {money_format(total, currency)}
         </td>
       <% end %>
     </tr>
     <%= for {name, list} <- @taxes do %>
       <tr>
         <td class="has-text-weight-bold">
-          <%= name %> :
+          {name} :
         </td>
         <%= for {currency, total} <- list do %>
           <td class="has-text-weight-medium has-text-right">
-            <%= money_format(total, currency) %>
+            {money_format(total, currency)}
           </td>
         <% end %>
       </tr>

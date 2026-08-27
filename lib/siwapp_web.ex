@@ -20,7 +20,9 @@ defmodule SiwappWeb do
   @spec controller :: tuple
   def controller do
     quote do
-      use Phoenix.Controller, namespace: SiwappWeb
+      use Phoenix.Controller, formats: [html: "View", json: "View"]
+
+      plug :put_layout, html: {SiwappWeb.LayoutView, :app}
 
       import Plug.Conn
       use Gettext, backend: SiwappWeb.Gettext
@@ -95,8 +97,7 @@ defmodule SiwappWeb do
       import Phoenix.HTML.Form
       use PhoenixHTMLHelpers
 
-      # Import LiveView and .heex helpers (live_render, live_patch, <.form>, etc)
-      import Phoenix.LiveView.Helpers
+      # Import LiveView and .heex helpers
       import Phoenix.Component
       import SiwappWeb.LiveHelpers
 

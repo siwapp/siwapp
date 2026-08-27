@@ -38,9 +38,9 @@ defmodule SiwappWeb.InvoicesLive.HeaderComponent do
       <div class="is-flex is-justify-content-space-between ">
         <div class="is-flex is-align-items-end">
           <h1 class="mb-2">
-            <%= @page_title %>
+            {@page_title}
             <span class="subtitle is-5">
-              <%= "(#{@count} Found)" %>
+              {"(#{@count} Found)"}
             </span>
           </h1>
         </div>
@@ -52,11 +52,11 @@ defmodule SiwappWeb.InvoicesLive.HeaderComponent do
           <div class="card-header-content m-3 is-flex is-flex-wrap-wrap is-justify-content-space-around is-two-fifths">
             <%= for {currency, total} <- @other_totals do %>
               <span class="has-text-weight-medium p-2">
-                <%= money_format(total, currency) %>
+                {money_format(total, currency)}
               </span>
             <% end %>
             <span class="has-text-weight-bold p-2">
-              <%= money_format(@default_total, @default_currency) %>
+              {money_format(@default_total, @default_currency)}
             </span>
           </div>
           <button class="card-header-icon pl-0" aria-label="more options">
@@ -71,13 +71,13 @@ defmodule SiwappWeb.InvoicesLive.HeaderComponent do
         <%= if @summary_state.visibility == "is-block" do %>
           <div class="card-content">
             <div class="content">
-              <%= summary_chart(@chart_data) %>
+              {summary_chart(@chart_data)}
             </div>
-            <%= render(SiwappWeb.PageView, "totals_info.html",
+            {render(SiwappWeb.PageView, "totals_info.html",
               gross_totals: @gross_totals,
               net_totals: @net_totals,
               taxes: @taxes
-            ) %>
+            )}
           </div>
         <% end %>
       </div>

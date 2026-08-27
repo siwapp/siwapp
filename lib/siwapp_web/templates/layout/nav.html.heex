@@ -1,7 +1,7 @@
 <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
   <div class="navbar-brand pt-2">
-    <%= img_tag(Routes.static_path(@socket_or_conn, "/images/logo.svg"))
-    |> link(to: Routes.home_index_path(@socket_or_conn, :index), class: "navbar-item") %>
+    {img_tag(Routes.static_path(@socket_or_conn, "/images/logo.svg"))
+    |> link(to: Routes.home_index_path(@socket_or_conn, :index), class: "navbar-item")}
     <a
       role="button"
       class="navbar-burger"
@@ -18,25 +18,22 @@
   <%= if assigns[:current_user] do %>
     <div class="navbar-menu">
       <div class="navbar-start">
-        <%= render_search_live(@socket_or_conn) %>
+        {render_search_live(@socket_or_conn)}
         <.link
           navigate={Routes.invoices_index_path(@socket_or_conn, :index)}
           class="navbar-item"
-          }
         >
           Invoices
         </.link>
         <.link
           navigate={Routes.recurring_invoices_index_path(@socket_or_conn, :index)}
           class="navbar-item"
-          }
         >
           Recurring Invoices
         </.link>
         <.link
           navigate={Routes.customers_index_path(@socket_or_conn, :index)}
           class="navbar-item"
-          }
         >
           Customers
         </.link>
@@ -46,9 +43,8 @@
           </a>
           <div class="navbar-dropdown">
             <.link
-              navigate={Routes.user_settings_path(@socket_or_conn, :edit)}
+              href={Routes.user_settings_path(@socket_or_conn, :edit)}
               class="navbar-item"
-              }
             >
               Profile
             </.link>
@@ -57,34 +53,30 @@
               <.link
                 navigate={Routes.users_index_path(@socket_or_conn, :index)}
                 class="navbar-item"
-                }
               >
                 Users
               </.link>
               <hr class="navbar-divider" />
             <% end %>
-            <.link navigate={Routes.settings_path(@socket_or_conn, :edit)} class="navbar-item" }>
+            <.link href={Routes.settings_path(@socket_or_conn, :edit)} class="navbar-item">
               Settings
             </.link>
             <hr class="navbar-divider" />
             <.link
               navigate={Routes.series_index_path(@socket_or_conn, :index)}
               class="navbar-item"
-              }
             >
               Series
             </.link>
             <.link
               navigate={Routes.taxes_index_path(@socket_or_conn, :index)}
               class="navbar-item"
-              }
             >
               Taxes
             </.link>
             <.link
               navigate={Routes.templates_index_path(@socket_or_conn, :index)}
               class="navbar-item"
-              }
             >
               Templates
             </.link>
@@ -93,7 +85,6 @@
               href={Routes.user_session_path(@socket_or_conn, :delete)}
               method={:delete}
               class="navbar-item"
-              }
             >
               Log out
             </.link>
@@ -103,7 +94,7 @@
 
       <div class="navbar-end">
         <div class="navbar-item">
-          <%= shared_button(@socket_or_conn) %>
+          {shared_button(@socket_or_conn)}
         </div>
       </div>
     </div>

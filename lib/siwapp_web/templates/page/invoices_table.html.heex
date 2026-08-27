@@ -64,13 +64,13 @@
           </td>
         <% end %>
         <td>
-          <%= SiwappWeb.PageView.reference(invoice.series.code, invoice.number) %>
+          {SiwappWeb.PageView.reference(invoice.series.code, invoice.number)}
         </td>
         <td>
-          <%= invoice.name %>
+          {invoice.name}
         </td>
         <td>
-          <%= invoice.issue_date %>
+          {invoice.issue_date}
         </td>
 
         <%= if invoice.sent_by_email do %>
@@ -112,7 +112,7 @@
               </span>
             </td>
             <td class="has-text-right">
-              <%= money_format(invoice.gross_amount - invoice.paid_amount, invoice.currency) %>
+              {money_format(invoice.gross_amount - invoice.paid_amount, invoice.currency)}
             </td>
           <% :past_due -> %>
             <td class="table-span">
@@ -121,12 +121,12 @@
               </span>
             </td>
             <td class="has-text-right">
-              <%= money_format(invoice.gross_amount - invoice.paid_amount, invoice.currency) %>
+              {money_format(invoice.gross_amount - invoice.paid_amount, invoice.currency)}
             </td>
         <% end %>
 
         <td class="has-text-right">
-          <%= money_format(invoice.gross_amount, invoice.currency) %>
+          {money_format(invoice.gross_amount, invoice.currency)}
         </td>
       </tr>
     <% end %>

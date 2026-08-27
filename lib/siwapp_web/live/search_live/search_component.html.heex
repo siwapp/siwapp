@@ -1,10 +1,10 @@
-<div class="navbar-item">
+<div class="navbar-item" phx-click-away={JS.hide(to: "#search-menu")}>
   <.form
     :let={f}
+    id="search-form"
     for={@changeset}
     phx-change="change"
     phx-submit="search"
-    phx-capture-click={JS.hide(to: "#search-menu")}
     phx-target={@myself}
   >
     <div class="search-input">
@@ -18,10 +18,10 @@
           <i class="fas fa-angle-down" aria-hidden="true"></i>
         </span>
       </button>
-      <%= search_input(f, :search_input,
+      {search_input(f, :search_input,
         class: "input",
         placeholder: "Search by name, ID or email"
-      ) %>
+      )}
       <button class="button is-info">
         <span class="icon is-small is-right">
           <i class="fas fa-search"></i>
@@ -31,24 +31,24 @@
 
     <div class="search-menu">
       <div class="search-menu-content" id="search-menu">
-        <%= render(
+        {render(
           SiwappWeb.PageView,
           "#{@view}_filters.html",
           series_names: @series_names,
           f: f,
           target: @myself
-        ) %>
+        )}
         <div class="buttons is-right">
-          <%= link("Export to CSV",
+          {link("Export to CSV",
             to: Routes.page_path(@socket, :csv, Map.put(f.params, :view, @view)),
             class: "button is-info",
             disabled: not @changeset.valid?
-          ) %>
-          <%= submit("Search",
+          )}
+          {submit("Search",
             class: "button is-info",
             disabled: not @changeset.valid?,
             "phx-click": JS.hide(to: "#search-menu")
-          ) %>
+          )}
         </div>
       </div>
     </div>

@@ -6,7 +6,7 @@
     <%= if @error_message do %>
       <div class="alert alert-danger">
         <p>
-          <%= @error_message %>
+          {@error_message}
         </p>
       </div>
     <% end %>
@@ -30,11 +30,11 @@
 
     <div class="columns is-desktop is-multiline">
       <div class="column is-half">
-        <%= label(f, :remember_me, "Remember me on this computer") %>
-        <%= checkbox(f, :remember_me) %>
+        {label(f, :remember_me, "Remember me on this computer")}
+        {checkbox(f, :remember_me)}
       </div>
       <div class="column is-half">
-        <%= link("Forgot your password?", to: Routes.user_reset_password_path(@conn, :new)) %>
+        {link("Forgot your password?", to: Routes.user_reset_password_path(@conn, :new))}
       </div>
       <div class="column is-one-fifth">
         <input class="button is-success is-fullwidth" type="submit" value="Log in" />

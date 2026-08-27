@@ -7,8 +7,6 @@ import Config
 # any compile-time configuration in here, as it won't be applied.
 # The block below contains prod specific runtime configuration.
 
-config :siwapp, SiwappWeb.Endpoint, server: true
-
 if config_env() == :prod do
   # The secret key base is used to sign/encrypt cookies and other secrets.
   # A default value is used in config/dev.exs and config/test.exs but you
@@ -23,6 +21,7 @@ if config_env() == :prod do
       """
 
   config :siwapp, SiwappWeb.Endpoint,
+    server: true,
     http: [
       # Enable IPv6 and bind on all interfaces.
       # Set it to  {0, 0, 0, 0, 0, 0, 0, 1} for local network only access.
@@ -129,7 +128,7 @@ if config_env() == :prod do
   # For this example you need include a HTTP client required by Swoosh API client.
   # Swoosh supports Hackney and Finch out of the box:
   #
-  config :swoosh, :api_client, Swoosh.ApiClient.Hackney
+  config :swoosh, :api_client, Swoosh.ApiClient.Finch
   #
   # See https://hexdocs.pm/swoosh/Swoosh.html#module-installation for details.
 end

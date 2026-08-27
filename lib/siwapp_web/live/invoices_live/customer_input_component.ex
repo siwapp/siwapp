@@ -32,11 +32,11 @@ defmodule SiwappWeb.InvoicesLive.CustomerInputComponent do
   def render(%{view: :customer} = assigns) do
     ~H"""
     <div class="field">
-      <%= label(@f, :name, class: "label") %>
+      {label(@f, :name, class: "label")}
       <p class="control">
-        <%= text_input(@f, :name, phx_debounce: "blur", class: "input") %>
+        {text_input(@f, :name, phx_debounce: "blur", class: "input")}
       </p>
-      <%= error_tag(@f, :name) %>
+      {error_tag(@f, :name)}
     </div>
     """
   end
@@ -45,16 +45,16 @@ defmodule SiwappWeb.InvoicesLive.CustomerInputComponent do
     ~H"""
     <div class="field">
       <%= if @f.name != "search" do %>
-        <%= label(@f, :name, class: "label") %>
+        {label(@f, :name, class: "label")}
       <% end %>
       <p class="control has-dropdown">
         <div class="input-with-dropdown control">
-          <%= text_input(@f, :name,
+          {text_input(@f, :name,
             phx_debounce: "500",
             class: "input",
             value: @customer_name,
             autocomplete: "off"
-          ) %>
+          )}
           <div class={"dropdown below-input #{@display}"}>
             <div id="customers_list_ancestor" class="dropdown-menu dropdown-content" role="menu">
               <%= for {name, id} <- @customer_suggestions do %>
@@ -66,7 +66,7 @@ defmodule SiwappWeb.InvoicesLive.CustomerInputComponent do
                   phx-target={@myself}
                   class="dropdown-item"
                 >
-                  <%= name %>
+                  {name}
                 </a>
               <% end %>
               <div
@@ -81,7 +81,7 @@ defmodule SiwappWeb.InvoicesLive.CustomerInputComponent do
           </div>
         </div>
       </p>
-      <%= error_tag(@f, :name) %>
+      {error_tag(@f, :name)}
     </div>
     """
   end

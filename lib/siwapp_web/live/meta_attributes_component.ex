@@ -9,8 +9,11 @@ defmodule SiwappWeb.MetaAttributesComponent do
   def update(assigns, socket) do
     attributes =
       case Form.input_value(assigns.f, assigns.field) do
-        "" -> %{}
-        attrs -> attrs
+        "" ->
+          %{}
+
+        attrs ->
+          attrs
       end
 
     socket =
@@ -30,14 +33,20 @@ defmodule SiwappWeb.MetaAttributesComponent do
     <fieldset>
       <h2>Meta Attributes</h2>
       <%= for {k, v} <- @attributes do %>
-        <div class="field is-horizontal">
+        <div class="field is-horizontal mb-3">
           <div class="field-label is-normal">
             <label class="label">
-              <%= k %> :
+              {k} :
             </label>
           </div>
           <div class="field-body">
-            <input class="input field" type="text" name={"#{@name}[#{@field}][#{k}]"} value={v} />
+            <input
+              class="input field"
+              type="text"
+              name={"#{@name}[#{@field}][#{k}]"}
+              value={v}
+              phx-no-unused-field
+            />
             <span
               class="icon has-text-danger is-clickable"
               phx-click="remove"
@@ -54,7 +63,7 @@ defmodule SiwappWeb.MetaAttributesComponent do
         <input type="hidden" name={"#{@name}[#{@field}]"} />
       <% end %>
 
-      <div class="field is-horizontal field-body">
+      <div class="field is-horizontal field-body mt-4">
         <input
           class="input field"
           type="text"

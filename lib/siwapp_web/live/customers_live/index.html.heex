@@ -1,5 +1,5 @@
 <h1>
-  <%= @page_title %>
+  {@page_title}
 </h1>
 <table class="table is-responsive is-bordered is-striped is-hoverable is-fullwidth">
   <thead>
@@ -24,31 +24,30 @@
     <%= for customer <- @customers do %>
       <tr phx-click="edit" phx-value-id={customer.id} class="is-clickable">
         <td class="no-wrap">
-          <%= customer.name %>
+          {customer.name}
         </td>
         <td class="no-wrap">
-          <%= customer.identification %>
+          {customer.identification}
         </td>
         <td class="has-text-right">
-          <%= money_format(
+          {money_format(
             due(customer.total, customer.paid),
             set_currency(customer.currencies),
             symbol_option(customer.currencies)
-          ) %>
+          )}
         </td>
         <td class="has-text-right">
-          <%= money_format(
+          {money_format(
             customer.total,
             set_currency(customer.currencies),
             symbol_option(customer.currencies)
-          ) %>
+          )}
         </td>
         <td class="has-text-centered">
           <.link
             navigate={Routes.invoices_index_path(@socket, :customer, customer.id)}
             class="icon fas fa-list"
-          >
-          </.link>
+          ></.link>
         </td>
       </tr>
     <% end %>
