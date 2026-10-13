@@ -11,7 +11,12 @@ config :siwapp,
       "--no-sandbox",
       "--disable-setuid-sandbox"
     ],
-    chrome_executable: "/usr/bin/chromium",
+    chrome_executable:
+      System.get_env("CHROME_PATH") ||
+        Enum.find(
+          ["/usr/bin/google-chrome-stable", "/usr/bin/google-chrome", "/usr/bin/chromium", "/usr/bin/chromium-browser"],
+          &File.exists?/1
+        ) || "/usr/bin/google-chrome-stable",
     discard_stderr: false
   ]
 
@@ -28,18 +33,11 @@ config :siwapp, SiwappWeb.Endpoint,
   url: [host: System.get_env("APP_HOST"), port: System.get_env("PORT") || "4000"],
   cache_static_manifest: "priv/static/cache_manifest.json"
 
-database_url =
-  System.get_env("DATABASE_URL") ||
-    raise """
-    environment variable DATABASE_URL is missing.
-    For example: ecto://USER:PASS@HOST/DATABASE
-    """
-
-config :siwapp, Siwapp.Repo,
-  # socket_options: [:inet6],
-  url: database_url,
-  database: "siwapp_prod",
-  timeout: 30_000
+if database_url = System.get_env("DATABASE_URL") do
+  config :siwapp, Siwapp.Repo,
+    url: database_url,
+    timeout: 30_000
+end
 
 # Do not print debug messages in production
 config :logger, level: :info
