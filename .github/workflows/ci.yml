@@ -53,11 +53,13 @@ jobs:
           npm --prefix ./api_docs install
 
       - name: Install Mix Dependencies
-        if: steps.mix-cache.outputs.cache-hit != 'true'
         run: |
           mix local.rebar --force
           mix local.hex --force
-          mix deps.get
+          mix deps.get --check-locked
+
+      - name: Check for vulnerable or retired Hex packages
+        run: mix hex.audit --check-unused-ignores
 
       - name: Check Formatting
         run: mix format --check-formatted
@@ -94,5 +96,3 @@ jobs:
         run: npm run --prefix ./api_docs format-check
         env:
           MIX_ENV: dev
-      
-
