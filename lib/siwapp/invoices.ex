@@ -87,11 +87,13 @@ defmodule Siwapp.Invoices do
     end
   end
 
-  @spec mailer_options(nil | binary) :: [] | [adapter: atom]
+  @spec mailer_options(nil | binary) :: Keyword.t()
   defp mailer_options(nil), do: []
 
-  defp mailer_options(mailer),
-    do: [adapter: String.to_existing_atom("Elixir.Swoosh.Adapters.#{mailer}")]
+  defp mailer_options(mailer) do
+    config = Application.get_env(:siwapp, Siwapp.Mailer, [])
+    Keyword.merge(config, adapter: String.to_existing_atom("Elixir.Swoosh.Adapters.#{mailer}"))
+  end
 
   @spec set_paid(Invoice.t()) :: {:ok, Invoice.t()} | {:error, Ecto.Changeset.t()}
   def set_paid(invoice) do

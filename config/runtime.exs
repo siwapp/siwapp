@@ -32,9 +32,18 @@ if config_env() == :prod do
     ],
     secret_key_base: secret_key_base
 
+  database_url =
+    System.get_env("DATABASE_URL") ||
+      raise """
+      environment variable DATABASE_URL is missing.
+      For example: ecto://USER:PASS@HOST/DATABASE
+      """
+
   config :siwapp, Siwapp.Repo,
+    url: database_url,
     pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10"),
-    queue_target: String.to_integer(System.get_env("QUEUE_TARGET") || "2000")
+    queue_target: String.to_integer(System.get_env("QUEUE_TARGET") || "2000"),
+    timeout: 30_000
 
   # ## Using releases
   #
@@ -110,16 +119,46 @@ if config_env() == :prod do
         qmail: true
 
     mailer == "SMTP" ->
+      smtp_port =
+        case System.get_env("SMTP_PORT") do
+          nil -> 587
+          port when is_binary(port) -> String.to_integer(port)
+        end
+
+      ssl =
+        case System.get_env("SMTP_SSL") do
+          "true" -> true
+          "false" -> false
+          _ -> smtp_port == 465
+        end
+
+      tls =
+        case System.get_env("SMTP_TLS") || System.get_env("SMTP_ENABLE_STARTTLS_AUTO") do
+          "always" -> :always
+          "never" -> :never
+          "if_available" -> :if_available
+          "true" -> :always
+          "false" -> :never
+          _ -> :if_available
+        end
+
+      auth =
+        case System.get_env("SMTP_AUTHENTICATION") do
+          "always" -> :always
+          "never" -> :never
+          _ -> :if_available
+        end
+
       config :siwapp, Siwapp.Mailer,
-        adapter: mailer_adapters,
-        relay: System.get_env("SMTP_DOMAIN"),
+        adapter: Swoosh.Adapters.SMTP,
+        relay: System.get_env("SMTP_DOMAIN") || System.get_env("SMTP_HOST") || "localhost",
         username: System.get_env("SMTP_USER"),
         password: System.get_env("SMTP_PASSWORD"),
-        ssl: true,
-        tls: System.get_env("SMTP_ENABLE_STARTTLS_AUTO"),
-        auth: System.get_env("SMTP_AUTHENTICATION"),
-        port: System.get_env("SMTP_PORT"),
-        hostname: System.get_env("SMTP_HOST")
+        ssl: ssl,
+        tls: tls,
+        auth: auth,
+        port: smtp_port,
+        hostname: System.get_env("SMTP_HOST") || System.get_env("SMTP_DOMAIN") || "localhost"
 
     true ->
       config :siwapp, Siwapp.Mailer, adapter: Swoosh.Adapters.Local
