@@ -5,7 +5,6 @@ config :siwapp,
   pdf_opts: [
     no_sandbox: true,
     discard_stderr: true,
-    chrome_executable: "/opt/google/chrome/chrome",
     session_pool: [size: 1, timeout: 10_000]
   ]
 
