@@ -12,22 +12,12 @@ RUN apt update -qq && \
     apt install -y --no-install-recommends \
       build-essential \
       ca-certificates \
+      chromium \
       fonts-liberation \
       git \
-      gnupg \
-      inotify-tools \
-      libasound2 \
-      libnspr4 \
-      libnss3 \
-      libu2f-udev \
-      libvulkan1 \
-      wget \
-      xdg-utils && \
-    wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
-    apt-get install -y ./google-chrome-stable_current_amd64.deb && \
+      inotify-tools && \
     apt-get clean && \
-    rm -rf /var/lib/apt/lists/* && \
-    rm -f google-chrome-stable_current_amd64.deb
+    rm -rf /var/lib/apt/lists/*
 
 RUN addgroup --system --gid "$GID" "$GROUP" && \
     useradd --system --create-home --uid "$UID" --gid "$GROUP" "$USER" && \
